@@ -1,0 +1,2 @@
+export const REGISTER_FAIL = 'REGISTER_FAIL';
+export const REGISTER_SUCCEED = 'REGISTER_SUCCEED';

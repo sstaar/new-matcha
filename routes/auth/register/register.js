@@ -23,7 +23,10 @@ router.post('/register', async (request, response) => {
 		error_lastname: null
 	};
 
-	let resp = {};
+	let resp = {
+		errors: null,
+		success: null
+	};
 
 	if (!info.username)
 		errors.error_username = 'Please enter a username.';
@@ -60,12 +63,10 @@ router.post('/register', async (request, response) => {
 				info.firstname,
 				info.lastname
 			]);
-		resp = {
-			success: 'Account has been created please chech your mail for activation.'
-		};
+		resp.success = 'Account has been created please chech your mail for activation.';
 	}
 	else
-		resp = errors;
+		resp.errors = errors;
 	response.json(resp);
 });
 

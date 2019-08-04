@@ -1,8 +1,12 @@
 require('dotenv').config();
 const express		= require('express');
 const db			= require('./modules/Database')
+const cors			= require('cors')
 
 const app			= express();
+
+app.use(cors());
+
 db.init({
 	host        : 'localhost',
 	user        : 'matcha',
