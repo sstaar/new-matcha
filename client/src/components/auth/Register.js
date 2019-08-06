@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch, useSelector, connectAdvanced } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../actions/registerActions';
 import Input from '../helpers/Input';
 
@@ -65,18 +65,19 @@ const Register = () => {
 				firstname: '',
 				lastname: ''
 			});
-			setFormData({ ...formData, errors: { success:errors }});
-		}		
+			setFormData({ ...formData, errors: { success: errors } });
+		}
 	}
 
 	//The Input tag is a custom tag that i made that we could use when ever we have an imput
 	//It manage in the error case to display the error 
 	//Can be found in /client/src/components/helpers/Input.js
 	return (
+
 		<div className="container">
 			<form className="needs-validation" onSubmit={e => onSubmit(e)} noValidate>
 
-				{errors.success ? <div className="alert alert-success" role="alert">{errors.success}</div> : <div></div> }
+				{errors.success ? <div className="alert alert-success" role="alert">{errors.success}</div> : <div></div>}
 
 				<Input display="Username" type="text" name="username" onChange={e => onChange(e)} value={username} error={errors.error_username} />
 
@@ -95,4 +96,4 @@ const Register = () => {
 	);
 }
 
-export default (Register);
+export default Register;

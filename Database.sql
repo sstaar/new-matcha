@@ -8,5 +8,7 @@ CREATE TABLE users
     firstname VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
     gender VARCHAR(50),
-    Age INT
+    age INT,
+    activated INT DEFAULT 0,
+    bio VARCHAR(200)
 );

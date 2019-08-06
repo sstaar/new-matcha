@@ -9,13 +9,12 @@ const initialState = {
 }
 
 export default function(state = initialState, action) {
-	console.log('in reducer');
 	switch(action.type) {
 		case REGISTER_FAIL:
-			state.registration = action.payload
+			state.registration = action.payload;
 			return state;
 		case REGISTER_SUCCEED:
-			state.registration = action.payload
+			state.registration = action.payload;
 			return state;
 		default:
 			return state;
