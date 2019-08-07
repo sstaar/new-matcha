@@ -1,56 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, setState } from 'react';
 import './Profile.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { userInfo } from '../../actions/userActions';
+import EditUserInfo from './EditUserInfo';
 
 const Profile = () => {
+	//This just initialize the state im going to use throughout the component
 	const [infoData, setInfoData] = useState({
 		username: null,
 		firstname: null,
 		lastname: null,
 		gender: null,
 		age: null,
-		bio: null
+		bio: null,
+		loading: true,
+		change: true
 	});
 
-	const { username, firstname, lastname, gender, age, bio } = infoData;
+	//Simplification
+	const { username, firstname, lastname, gender, age, bio, loading, change } = infoData;
 
+	//Allows to use dispatch
 	const dispatch = useDispatch();
 
+	//Allows as to access the redux store
 	const user = useSelector(state => state.user);
 
-	// console.log(user.info.username);
-	
-	// console.log(user);
-
+	//The useEffect function calls it's first parameter
+	//The callback after each render it can't be an async function
+	//We need the the information before laoding the user info 
 	useEffect(() => {
+
 		const test = async () => {
 			dispatch(await userInfo())
 		};
 
-		
 		test();
-		console.log(user);
+	}, [dispatch]);
 
-		//console.log(user.info.username);
 
-		// setTimeout(() => {
-		// 	console.log(user.info.username);
-		// 	setInfoData({
-		// 		...infoData,
-		// 		username: user.info.username,
-		// 	})
-		// }, 5000);
-		
-		
-		// setInfoData({
-		// 	...infoData,
-		// 	username: user.info.username,
-		// })
-	
-	}, [userInfo, dispatch]);
-
-	if (!username)
+	//We keep checking if the user info is recieved or not
+	//By rendering the component until we get the informations we need
+	//Check the userReducer to understand how loading works
+	if (loading === true)
 		setTimeout(() => {
 			setInfoData({
 				...infoData,
@@ -59,33 +51,66 @@ const Profile = () => {
 				lastname: user.info.lastname,
 				gender: user.info.gender,
 				age: user.info.age,
-				bio: user.info.bio
+				bio: user.info.bio,
+				loading: user.loading,
+				change: true
 			})
 		}, 100);
 
-	// console.log(user.info.username);
+	//We use this update function to update the component
+	//After we change the user info in the child EditUserInfo
+	//It will be passed as a prop to EditUserInfo
+	const update = (data) => {
+		setInfoData({
+			...infoData,
+			...data
+		});
 
-	
+	}
 
-	
+	//The if statment ensures that while we still don't have the userInfo
+	//The component will display a loading screen
+	//And once we have the info we display them in a card
+	if (loading === false)
+		return (
+			<div className="container" style={{ margin: '50px auto' }}>
+				<div className="card bg-light text-center card-cus" >
+					<img className="main-img card-img-top" src="/imgs/user.png" alt="Main pic" />
+					<div className="card-body">
+						<div className="badge badge-primary text-wrap" >
+							{username}
+						</div>
+						<h5 className="card-title">{firstname + ' ' + lastname}</h5>
+						<p className="card-text">{age}</p>
+						<p className="card-text">{gender}</p>
+						<p className="card-text">{bio.split("\n").map(function (item, idx) {
+							return (
+								<span key={idx}>
+									{item}
+									<br />
+								</span>
+							)
+						})}</p>
+					</div>
+					{/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
 
+					<button id="edit" type="button" className="btn btn-primary" data-toggle="modal" data-target="#ChangeInfo">
+						Change your info
+					</button>
 
-	const change = e => {
-		
-	};
+					<EditUserInfo update={update} user={infoData} />
 
-	return (
-		<div className="container" style={{ margin: '50px auto' }}>
-			<div className="card bg-light text-center card-cus" >
-				<img className="main-img card-img-top" src="/imgs/user.png" alt="Main pic" />
-				<div className="card-body">
-					<h5 onChange={e => change(e)} className="card-title">{username}</h5>
-					<p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 				</div>
-				<a  href="#" className="btn btn-primary">Go somewhere</a>
 			</div>
-		</div>
-	)
+		)
+	else
+		return (
+			<div className="d-flex justify-content-center">
+				<div className="spinner-border" role="status">
+					<span className="sr-only">Loading...</span>
+				</div>
+			</div>
+		)
 }
 
 export default Profile

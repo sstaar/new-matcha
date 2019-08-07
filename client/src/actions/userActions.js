@@ -1,6 +1,10 @@
 import { INFO_FAILED, INFO_RECIEVED } from './types';
 import axios from 'axios';
 
+
+//The request to the back-end server will take the token
+//Extract the userId embeded in the token and return the user informations
+//In case there is a problem with the token the response will containe an error
 export const userInfo = async () => {
 	const token = window.localStorage.getItem('token');
 

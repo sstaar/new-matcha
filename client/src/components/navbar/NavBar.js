@@ -10,7 +10,9 @@ const NavBar = () => {
 	  e.preventDefault();
   
 	  dispatch({ type : LOGOUT });
-	}
+  }
+  //A simple navbar containing the logout dispatch
+  //Look at the loginReducer for more info
 	return (
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <Link className="navbar-brand" to="/register">Navbar</Link>
@@ -37,7 +39,7 @@ const NavBar = () => {
                 </div>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#" onClick={e => onClickLogout(e)} >LogOut</a>
+                <Link className="nav-link" to="#" onClick={e => onClickLogout(e)} >LogOut</Link>
               </li>
             </ul>
             <form className="form-inline my-2 my-lg-0">

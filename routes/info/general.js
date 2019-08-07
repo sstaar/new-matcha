@@ -5,20 +5,22 @@ const jwt			= require('jsonwebtoken');
 router = express.Router();
 
 router.post('/general', async (request, response) => {
+	let resp = {};
+	let user = null;
+
 	if (!request.body.token)
 		resp = { error: "Something is wrong!" };
+
 	let info = {
 		token:	request.body.token
 	};
 
-	let resp = {};
-	let user = null;
-
 	token = jwt.verify(info.token, "GALATA");
 
-	if (!token.user)
+	if (!resp.error && !token.user)
 		resp = { error: "Something is wrong!" };
-	else if (!resp.error) {
+
+	if (!resp.error) {
 		try {
 			user = await db.personalQuery('SELECT * FROM users WHERE id LIKE ?', [ token.user ]);
 		if (user.length === 0)

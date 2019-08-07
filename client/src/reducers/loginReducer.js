@@ -1,5 +1,8 @@
 import { LOGIN_FAIL, LOGIN_SUCCEED, LOGOUT } from '../actions/types';
 
+
+//Pulling the informations from the local storage
+//In the user browser and initiating the redux store with it
 let token = window.localStorage.getItem('token');
 let connected = window.localStorage.getItem('connected');
 
@@ -9,6 +12,8 @@ const initialState = {
 	errors			: {}
 }
 
+//In login_success we store the informations for latter extraction
+//In login_failure or logout we set everything to null
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case LOGIN_SUCCEED:
