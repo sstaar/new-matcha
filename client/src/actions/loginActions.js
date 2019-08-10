@@ -7,7 +7,7 @@ import axios from 'axios';
 //In case of failure we send the errors to the userReducer 
 //To affect them in the form
 export const login = async (info) => {
-	let res = await axios.post('http://localhost:5000/api/login', info);
+	let res = await axios.post('http://e1r4p14.1337.ma:5000/api/login', info);
 
 	if (res.data.error_username || res.data.error_password) {
 		return {

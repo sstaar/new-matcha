@@ -2,16 +2,16 @@
 const jwt = require('jsonwebtoken');
 
 exports.validateToken = (request, res, next) => {
-    const authorizationHeaader = requestheaders.authorization;
+    const authorizationBody = request.body.token;
     let result;
-    if (authorizationHeaader) {
-      const token = requestheaders.authorization.split(' ')[1]; // Bearer <token>
+    if (authorizationBody) {
+      const token = authorizationBody; // Bearer <token>
       const options = {
         expiresIn: '2d'
       };
       try {
         // Verify makes sure that the token hasn't expired and has been issued by us.
-        result = jwt.verify(token, process.env.JWT_SECRET, options);
+        result = jwt.verify(token, process.env.JWT_SECRET || "GALATA", options);
 
         // Let's pass back the decoded token to the request object.
         request.decoded = result;

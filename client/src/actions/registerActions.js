@@ -6,7 +6,7 @@ import axios from 'axios';
 //That returns an object containing the type and the payload
 //We can change the names (type and payload) Its just a fitting name
 export const register = async (info) => {
-	let res = await axios.post('http://localhost:5000/api/register', info);
+	let res = await axios.post('http://e1r4p14.1337.ma:5000/api/register', info);
 
 	console.log('in action');
 	if (res.data.errors)

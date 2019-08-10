@@ -23,8 +23,8 @@ function App() {
         <NotConnectedComponent path="/login" component={Login} />
         <ConnectedComponent path="/profile" component={Profile} />
       </Router>
-      	</Provider>
-      );
-    }
-    
-    export default App;
+    </Provider>
+  );
+}
+
+export default App;

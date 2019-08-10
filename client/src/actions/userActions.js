@@ -8,7 +8,7 @@ import axios from 'axios';
 export const userInfo = async () => {
 	const token = window.localStorage.getItem('token');
 
-	const info = await axios.post('http://localhost:5000/api/info/general', { token:token });
+	const info = await axios.post('http://e1r4p14.1337.ma:5000/api/info/general', { token:token });
 
 	if (info.error)
 		return {

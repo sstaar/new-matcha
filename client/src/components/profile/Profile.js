@@ -3,6 +3,7 @@ import './Profile.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { userInfo } from '../../actions/userActions';
 import EditUserInfo from './EditUserInfo';
+import Tags from './Tags';
 
 const Profile = () => {
 	//This just initialize the state im going to use throughout the component
@@ -83,25 +84,21 @@ const Profile = () => {
 						<h5 className="card-title">{firstname + ' ' + lastname}</h5>
 						<p className="card-text">{age}</p>
 						<p className="card-text">{gender}</p>
-						<p className="card-text">{bio.split("\n").map(function (item, idx) {
-							return (
-								<span key={idx}>
-									{item}
-									<br />
-								</span>
-							)
-						})}</p>
+						<p className="card-text">{bio}</p>
 					</div>
 					{/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
 
-					<button id="edit" type="button" className="btn btn-primary" data-toggle="modal" data-target="#ChangeInfo">
+					<button id="edit" type="button" className="edit-butt btn btn-primary" data-toggle="modal" data-target="#ChangeInfo">
 						Change your info
 					</button>
 
 					<EditUserInfo update={update} user={infoData} />
 
 				</div>
+				<Tags />
 			</div>
+
+			
 		)
 	else
 		return (

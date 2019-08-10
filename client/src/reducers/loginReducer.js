@@ -3,6 +3,7 @@ import { LOGIN_FAIL, LOGIN_SUCCEED, LOGOUT } from '../actions/types';
 
 //Pulling the informations from the local storage
 //In the user browser and initiating the redux store with it
+//We will have to change the method later on for more security
 let token = window.localStorage.getItem('token');
 let connected = window.localStorage.getItem('connected');
 

@@ -12,3 +12,9 @@ CREATE TABLE users
     activated INT DEFAULT 0,
     bio VARCHAR(200)
 );
+
+CREATE TABLE tags
+(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    tagname VARCHAR(100) NOT NULL
+);
