@@ -1,7 +1,6 @@
 'use strict'
 const express		= require('express');
 const db			= require('../../modules/Database');
-const jwt			= require('jsonwebtoken');
 
 router = express.Router();
 
@@ -16,30 +15,40 @@ router.post('/addtag', async (request, response) => {
 		user		: request.decoded.user,
 		tag			: (request.body.tag).trim()
 	};
-
-	let resp = {};
 	
 	if (!info.tag || !verifyTag(info.tag))
 		response.json({ error: "Something is wrong with your tag!" });
-	
 	if (!resp.error) {
 		try {
-			
 			let tags = await db.personalQuery("SELECT * FROM tags WHERE `tagname` LIKE ?", [ info.tag ]);
 			if (tags.length == 0) {
 				await db.personalQuery('INSERT INTO tags (tagname) VALUES (?)', [ info.tag ])
 				let tagid = await db.personalQuery('SELECT LAST_INSERT_ID() as id');
 				await db.personalQuery('INSERT INTO usertags (userid, tagid) VALUE (?, ?)', [info.user, tagid[0].id])
 				response.json({
-					ALLO:tagid[0].id,
-					ALLO2:tags.length
+					success: 'A new tag has been added to our database and added to your tag list.',
+					id:tagid[0].id
 				});
 			} else {
-				console.log('ALLA');
-				response.json("old Tag");
+				let tagid = tags[0].id;
+				let already = await db.personalQuery('SELECT * FROM users INNER JOIN usertags ON users.id = usertags.userid WHERE users.id LIKE ? AND usertags.tagid LIKE ? ', [ info.user, tagid ]);
+				if (already.length == 0) {
+					await db.personalQuery('INSERT INTO usertags (userid, tagid) VALUES (?, ?)', [ info.user, tagid ]);
+					response.json({
+						success: 'This tag has been added to you.',
+						id:tagid
+					})
+				} else {
+					response.json({
+						error: 'You already have this tag please enter another one.'
+					});
+				}
 			}
 		} catch(err) {
 			console.log(err);
+			response.json({
+				error: 'Something is wrong.'
+			});
 		}
 	}
 });
