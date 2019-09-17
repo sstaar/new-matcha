@@ -58,11 +58,11 @@ const EditUserInfo = ({ user: user, update:update }) => {
 
 							<Input display="Last name" type="text" name="lastname" onChange={e => onChange(e)} value={lastname} error={errors.error_lastname} />
 
-							<Input display="Age" type="text" name="age" onChange={e => onChange(e)} value={age} error={errors.error_age} />
+							<Input display="Age" type="text" name="age" onChange={e => onChange(e)} value={age?age:0} error={errors.error_age} />
 
 							<div className="form-group">
-								<label htmlFor="age">Example select</label>
-								<select onChange={e => onChange(e)} value={gender} name="gender" className="form-control" id="age">
+								<label htmlFor="age">Gender</label>
+								<select onChange={e => onChange(e)} value={gender?gender:'Please select your gender'} name="gender" className="form-control" id="age">
 									<option>male</option>
 									<option>female</option>
 									{ gender !== "male" && gender !== "female" && <option>{gender}</option>}
@@ -71,7 +71,7 @@ const EditUserInfo = ({ user: user, update:update }) => {
 
 							<div className="form-group">
 								<label htmlFor="biography">Biography</label>
-								<textarea onChange={e => onChange(e)} name="bio" className="form-control" id="biography" rows="3" value={bio}></textarea>
+								<textarea onChange={e => onChange(e)} name="bio" className="form-control" id="biography" rows="3" value={bio?bio:'Please enter your bio'}></textarea>
 							</div>
 
 						</div>

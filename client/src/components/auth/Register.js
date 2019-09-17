@@ -26,6 +26,29 @@ const Register = () => {
 		errors
 	} = formData;
 
+	//Testing geolocation
+	// const [location, setLocation] = useState({
+	// 	lat:null,
+	// 	lng:null
+	// });
+
+	// let geoOptions = {
+	// 	enableHighAccuracy: true,
+	// 	timeOut: 20000,
+	// 	maximumAge: 60 * 60 * 60
+	// }
+
+	// let geoSuccess = (pos) => {
+	// 	console.log(pos);
+	// }
+
+	// let geoFail = (err) => {
+
+	// }
+
+	// navigator.geolocation.getCurrentPosition(geoSuccess, geoFail, geoOptions);
+	//End of test
+
 	//This allows me to dispatch my action
 	//My action is to send a request to the registeration api
 	const dispatch = useDispatch();
