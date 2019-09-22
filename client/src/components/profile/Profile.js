@@ -1,9 +1,10 @@
-import React, { useState, useEffect, setState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Profile.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { userInfo } from '../../actions/userActions';
 import EditUserInfo from './EditUserInfo';
 import Tags from './Tags';
+
 
 const Profile = () => {
 	//This just initialize the state im going to use throughout the component
@@ -15,11 +16,11 @@ const Profile = () => {
 		age: null,
 		bio: null,
 		loading: true,
-		change: true
+		tags:{}
 	});
 
 	//Simplification
-	const { username, firstname, lastname, gender, age, bio, loading, change } = infoData;
+	const { username, firstname, lastname, gender, age, bio, loading, tags } = infoData;
 
 	//Allows to use dispatch
 	const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const Profile = () => {
 	useEffect(() => {
 
 		const test = async () => {
-			dispatch(await userInfo())
+			dispatch(await userInfo());
 		};
 
 		test();
@@ -54,7 +55,7 @@ const Profile = () => {
 				age: user.info.age,
 				bio: user.info.bio,
 				loading: user.loading,
-				change: true
+				tags: user.tags
 			})
 		}, 100);
 
@@ -66,7 +67,6 @@ const Profile = () => {
 			...infoData,
 			...data
 		});
-
 	}
 
 	//The if statment ensures that while we still don't have the userInfo
@@ -95,7 +95,7 @@ const Profile = () => {
 					<EditUserInfo update={update} user={infoData} />
 
 				</div>
-				<Tags />
+				<Tags tags={tags}/>
 			</div>
 
 			

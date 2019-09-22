@@ -8,7 +8,9 @@ router = express.Router();
 router.post('/login', async (request, response) => {
 	let info = {
 		username: request.body.username,
-		password: request.body.password
+		password: request.body.password,
+		longitude: request.body.longitude,
+		latitude: request.body.latitude
 	};
 
 	let errors = {
@@ -34,10 +36,9 @@ router.post('/login', async (request, response) => {
 				errors.error_username = 'Username or password is incorect.';
 			}
 			else {
-				//resp = res[0];
-				console.log(res[0].id);
+				await db.personalQuery('UPDATE users SET longitude = ?, latitude = ? WHERE username LIKE ?', [ info.longitude, info.latitude, info.username ]);
 				const payload = { user: res[0].id }
-				const options = { expiresIn: '2d' }
+				//const options = { expiresIn: '2d' }
 				const result = await jwt.sign(payload, /*process.env.JWT_SECRET*/ "GALATA");
 				resp = {
 					id: res[0].id,

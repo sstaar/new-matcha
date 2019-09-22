@@ -18,6 +18,7 @@ export default function (state = initialState, action) {
 		case INFO_RECIEVED:
 			state = {
 				info		: action.payload,
+				tags		: action.tags,
 				loading		: false
 			}
 			return state;

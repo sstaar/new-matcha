@@ -3,11 +3,25 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../actions/loginActions';
 import Input from '../helpers/Input';
 
+const getGeoLocation = () => {
+	return new Promise((resolve, reject) => {
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				resolve(position);
+			},
+			(error) => {
+				reject(error)
+			});
+	});
+}
+
 const Login = () => {
 	//This just initialize the state im going to use throughout the form
 	const [formData, setFormData] = useState({
 		username: '',
 		password: '',
+		longitude: 0,
+		latitude: 0,
 		errors: {}
 	});
 
@@ -25,7 +39,10 @@ const Login = () => {
 	//This is activated on the submit
 	const onSubmit = async e => {
 		e.preventDefault();
-
+		let pos = await getGeoLocation();
+		const { latitude, longitude } = pos.coords;
+		console.log(pos);
+		setFormData({ ...formData, latitude, longitude });
 		dispatch(await login(formData));
 	}
 

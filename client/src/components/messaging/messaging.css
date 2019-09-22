@@ -1,0 +1,29 @@
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0;
+    text-align: center;
+}
+
+.matches {
+    width: 30%;
+    margin: auto;
+}
+
+.messages {
+    width: 60%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+}
+
+.messages-input {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}

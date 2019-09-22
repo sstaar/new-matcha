@@ -11,7 +11,7 @@ router.post('/general', async (request, response) => {
 	if (!request.body.token)
 		resp = { error: "Something is wrong!" };
 
-	console.log(request.decoded.user);
+	// console.log(request.decoded.user);
 
 	let info = {
 		token:	request.body.token

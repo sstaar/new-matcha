@@ -28,3 +28,18 @@ CREATE TABLE usertags
     `tagid` INT NOT NULL,
     UNIQUE(userid, tagid)
 );
+
+CREATE TABLE relations
+(
+    `primaryuser` INT NOT NULL,
+    `secondaryuser` INT NOT NULL,
+    `relation` INT NOT NULL,
+    UNIQUE(primaryuser, secondaryuser)
+);
+
+CREATE TABLE matches
+(
+    `user1` INT NOT NULL,
+    `user2` INT NOT NULL,
+    UNIQUE(user1, user2)
+)

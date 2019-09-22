@@ -9,8 +9,9 @@ export const userInfo = async () => {
 	const token = window.localStorage.getItem('token');
 
 	const info = await axios.post('http://localhost:5000/api/info/general', { token:token });
+	const tags = await axios.post('http://localhost:5000/api/info/gettags', { token:token });
 
-	if (info.error)
+	if (info.error || tags.data.error)
 		return {
 			type: INFO_FAILED,
 			payload:info.data.error
@@ -18,6 +19,7 @@ export const userInfo = async () => {
 	else
 		return {
 			type:INFO_RECIEVED,
-			payload:info.data
+			payload:info.data,
+			tags:tags.data
 		};
 }

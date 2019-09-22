@@ -1,11 +1,16 @@
 'use strict'
 require('dotenv').config();
 const express = require('express');
-const db = require('./modules/Database')
 const cors = require('cors')
 const bodyParser = require('body-parser');
 
 const app = express();
+
+var	http = require('http').createServer(app);
+var io = require('socket.io')(http);
+
+const db = require('./modules/Database');
+const tokenToId = require('./helpers/tokenToId').tokenToId;
 
 app.use(cors());
 app.disable('x-powered-by');
@@ -32,5 +37,20 @@ app.use((err, request, response, next) => {
 const api = require('./routes/root');
 app.use('/api', api);
 
+
+var sockets = {};
+
+io.on('connection', function(socket){
+	let token = socket.request._query['token'];
+	let id = tokenToId(token);
+	// console.log(id);
+	sockets[id] = socket;
+	// console.log(sockets);
+	socket.on('message', (msg) => {
+		//console.log(msg);
+	});
+	socket.send('Message from server.');
+});  
+
 const port = 5000;
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+http.listen(port, () => console.log(`Example app listening on port ${port}!`))

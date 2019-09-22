@@ -1,9 +1,9 @@
-import React, { useState, createRef } from 'react';
+import React, { useState } from 'react';
 import Input from '../helpers/Input';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-const EditUserInfo = ({ user: user, update:update }) => {
+const EditUserInfo = ({ user, update }) => {
 	//This just initialize the state im going to use throughout the form
 	const [formData, setFormData] = useState({
 		firstname: user.firstname,
@@ -19,9 +19,6 @@ const EditUserInfo = ({ user: user, update:update }) => {
 
 	//simplifications
 	const { firstname, lastname, age, gender, bio, errors } = formData;
-
-	//Allows us to use dispatch
-	const dispatch = useDispatch();
 
 	//It keeps on updating the form inputs
 	const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });

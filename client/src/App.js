@@ -8,13 +8,19 @@ import NavBar from './components/navbar/NavBar';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ConnectedComponent from './components/helpers/ConnectedComponent';
 import NotConnectedComponent from './components/helpers/NotConnectedComponent';
-import Profile from './components/profile/Profile'
+import Profile from './components/profile/Profile';
+import Suggestion from './components/matching/Suggestion';
+import Messaging from './components/messaging/Messaging';
+
 import store from './store';
 import { Provider } from 'react-redux';
+
+
 
 //This app file is the main file where we gonna have the main layout
 //It contains the navbar and the router
 function App() {
+
   return (
     <Provider store={store}>
       <Router>
@@ -22,6 +28,8 @@ function App() {
         <NotConnectedComponent path="/register" component={Register} />
         <NotConnectedComponent path="/login" component={Login} />
         <ConnectedComponent path="/profile" component={Profile} />
+        <ConnectedComponent path="/suggestions" component={Suggestion} />
+        <ConnectedComponent path="/Messaging" component={Messaging} />
       </Router>
     </Provider>
   );

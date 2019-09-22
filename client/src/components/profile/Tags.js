@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -28,15 +29,48 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Tags = () => {
+const Tags = ({ tags }) => {
+
+	const [newTag, setNewTag] = useState({
+		newtag: ''
+	});
+
+	const newtag = newTag.newtag;
+
+	const onChange = e => setNewTag({ ...newTag, [e.target.name]: e.target.value });
+
+	const [oldTags, setOldTags] = useState(tags);
+
+	const oldtags = oldTags;
+
+	const token = useSelector(state => state.login).token;
+
 	const classes = useStyles();
 
-	const handleDelete = () => {
-
+	const handleDelete = async (tagid) => {
+		await axios.post('http://localhost:5000/api/info/removetag', { token, tagid: tagid });
+		console.log(tagid);
+		let newtags = [];
+		oldtags.forEach(element => {
+			if (element.tagid !== tagid)
+				newtags = [...newtags, element]
+		});
+		setOldTags([...newtags]);
 	}
 
-	const handleChange = () => {
+	const addTag = async () => {
+		let res = await axios.post('http://localhost:5000/api/info/addtag', { token, tag: newtag });
 
+		console.log(res);
+		if (!res.data.error) {
+			let newer = {
+				tagname: newtag,
+				tagid: res.data.id
+			};
+			setOldTags([...oldtags, newer]);
+			console.log(newer);
+			setNewTag({ newtag: '' });
+		}
 	}
 
 	return (
@@ -46,18 +80,22 @@ const Tags = () => {
 
 					<h5 className="card-title badge badge-primary">Tags</h5>
 					<div className={classes.root}>
-						<Chip
-							label="Deletable Primary Chip"
-							onDelete={handleDelete}
-							className={classes.chip}
-							color="primary"
-							variant="outlined"
-						/>
+
+						{oldtags.map((oldtag) =>
+							<Chip
+								key={oldtag.tagid}
+								label={oldtag.tagname}
+								onDelete={tagid => handleDelete(oldtag.tagid)}
+								className={classes.chip}
+								color="primary"
+								variant="outlined"
+							/>
+						)}
 					</div>
-					<div className="input-group mb-3" style={{width: '40%', margin: '1rem auto'}}>
-						<input type="text" className="form-control" placeholder="New Tag" aria-label="New Tag" aria-describedby="addTag" />
+					<div className="input-group mb-3" style={{ width: '40%', margin: '1rem auto' }}>
+						<input onChange={e => onChange(e)} value={newtag} name='newtag' type="text" className="form-control" placeholder="New Tag" aria-label="New Tag" aria-describedby="addTag" />
 						<div className="input-group-append">
-							<button className="btn btn-outline-secondary" type="button" id="addTag">Add a new tag</button>
+							<button onClick={addTag} className="btn btn-outline-secondary" type="button" id="addTag">Add a new tag</button>
 						</div>
 					</div>
 
