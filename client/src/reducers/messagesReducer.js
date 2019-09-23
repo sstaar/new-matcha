@@ -6,17 +6,26 @@ import io from "socket.io-client";
 let token = window.localStorage.getItem('token');
 let connected = window.localStorage.getItem('connected');
 
-const initialState = {};
-
-if (connected) {
-    const socket = io(':5000', { query: 'token=' + token });
-    socket.emit('user1|user2', 'hello');
+var initialState = {
+    matches: {},
+    socket: null,
+    messages: {}
+}
+var socket = null;
+console.log(connected);
+if (connected === "true") {
+    console.log(connected);
+    socket = io(':5000', { query: 'token=' + token });
+    // socket.emit('message', 'hello');
     socket.on('message', (msg) => {
         console.log(msg);
     });
 
-    const initialState = {
-        matches: {},
+    initialState = {
+        matches: {
+            users: {},
+            loading: true
+        },
         socket: socket,
         messages: {}
     }
@@ -27,8 +36,14 @@ export default function(state = initialState, action) {
         case RECIEVE_MATCHES:
             state = {
                 ...state,
-                matches:action.payload
+                matches: {
+                    users: action.payload,
+                    loading: false
+                }
             }
+            return state;
+        case SEND_MESSAGE:
+            socket.send(action.payload);
             return state;
 		default:
 			return state;

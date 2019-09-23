@@ -43,3 +43,12 @@ CREATE TABLE matches
     `user2` INT NOT NULL,
     UNIQUE(user1, user2)
 )
+
+CREATE TABLE messages
+(
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `sender` INT NOT NULL,
+    `receiver` INT NOT NULL,
+    `date` DATETIME DEFAULT NOW(),
+    `message` TINYTEXT NOT NULL
+)

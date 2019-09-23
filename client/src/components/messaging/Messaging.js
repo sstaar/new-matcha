@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import MatchesList from './MatchesList'
 
 import './messaging.css';
 
 import { recieveMatches } from '../../actions/recieveMatchesAction'
+import { sendMessage } from '../../actions/messagesAction'
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -34,16 +36,24 @@ const useStyles = makeStyles(theme => ({
 
 const Messaging = () => {
 
+    const [messagesData, setMessagesData] = useState({
+        matches: {},
+        message: '',
+        receiver: null,
+        loading: true
+    });
+
+
     const dispatch = useDispatch();
 
     const classes = useStyles();
 
-    const matches = useSelector(state => state.messages.matches);
+    const matchesStore = useSelector(state => state.messages.matches);
 
-    const [message, setMessage] = useState('');
+    const { matches, message, receiver, loading } = messagesData;
 
     const handleChange = (e) => {
-        setMessage(e.target.value);
+        setMessagesData({ ...messagesData, message: e.target.value });
     }
 
     useEffect(() => {
@@ -53,19 +63,52 @@ const Messaging = () => {
         };
 
         test();
+        setMessagesData({
+            ...messagesData,
+            matches: matchesStore.users,
+            loading: matchesStore.loading
+        })
     }, [dispatch]);
+
+    if (loading === true) {
+        setTimeout(() => {
+            setMessagesData({
+                ...messagesData,
+                matches: matchesStore.users?matchesStore.users:matches,
+                loading: matchesStore.loading === false?matchesStore.loading:loading
+            })
+        }, 100);
+    }
+
+    const send = () => {
+        if (message)
+            dispatch(sendMessage(message, receiver));
+    }
+
+    console.log(matches +'|'+loading);
+
+    const setReceiver = (newReceiver) => {
+        if (newReceiver)
+            setMessagesData({
+                ...messagesData,
+                receiver:newReceiver
+            });
+    }
 
     return (
         <div className='main'>
             <div className='matches'>
                 Matches
                 <div className={classes.root}>
-                    <ListItem button>
-                        <ListItemText primary="Inbox" />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemText primary="Drafts" />
-                    </ListItem>
+                    {/* <MatchesList matches={matches} loading={loading} /> */}
+                    {
+                        !loading&&matches?
+                        matches.map((match) => 
+                        <ListItem button onClick={e => setReceiver(match.id)} key={match.id}>
+                            <ListItemText primary={match.username} />
+                        </ListItem>
+                    ):<div></div>
+                    }
                 </div>
             </div>
             <div className='messages'>
@@ -87,6 +130,7 @@ const Messaging = () => {
                         variant="contained"
                         color="primary"
                         className={classes.button}
+                        onClick={e => send()}
                     >
                         Send
                         <Icon className={classes.rightIcon}>send</Icon>

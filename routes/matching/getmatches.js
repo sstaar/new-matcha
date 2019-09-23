@@ -1,3 +1,4 @@
+'use strict'
 const express = require('express');
 const db = require('../../modules/Database');
 
@@ -13,18 +14,16 @@ router.post('/getmatches', async (request, response) => {
         let res2 = await db.personalQuery('SELECT user1 FROM matches WHERE user2 LIKE ?', [ info.user ]);
 
         let res = [ ...res1, ...res2 ];
-        let resFinal = {};
+        // response.json(res);
+        let matches = {};
+        let ids = []
         let key = 0;
-        res.forEach(async (element) => {
-            console.log(element);
-            resFinal[key] = element.user1?element.user1:element.user2;
-            console.log(resFinal[key]);
-            resFinal[key] = await db.personalQuery('SELECT * FROM users WHERE id LIKE ?', [ resFinal[key] ]);
-            resFinal[key] = resFinal[key][0];
-            console.log(resFinal[key]);
-            key++;
+
+        Object.keys(res).forEach((item) => {
+            ids[key++] = res[item].user1?res[item].user1:res[item].user2;
         });
-        response.json(resFinal);
+        matches = await db.personalQuery('SELECT id, username, firstname, lastname FROM users WHERE id IN (?)',[ ids ]);
+        response.json(matches);
     } catch (error) {
         console.log(error);
         return response.status(200).json({

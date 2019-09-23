@@ -11,6 +11,7 @@ var io = require('socket.io')(http);
 
 const db = require('./modules/Database');
 const tokenToId = require('./helpers/tokenToId').tokenToId;
+const saveMessage = require('./helpers/saveMessage');
 
 app.use(cors());
 app.disable('x-powered-by');
@@ -43,14 +44,21 @@ var sockets = {};
 io.on('connection', function(socket){
 	let token = socket.request._query['token'];
 	let id = tokenToId(token);
-	// console.log(id);
+	console.log("A user is connected, User id :" + id);
 	sockets[id] = socket;
-	// console.log(sockets);
-	socket.on('message', (msg) => {
-		//console.log(msg);
+	socket.on('message', async (msg) => {
+		try {
+			await saveMessage(msg.token, msg.receiver, msg.message);
+			sockets[msg.receiver].send(msg.message)
+		} catch (error) {
+			console.log(error)
+		}
 	});
-	socket.send('Message from server.');
-});  
+});
+
+
+
+
 
 const port = 5000;
 http.listen(port, () => console.log(`Example app listening on port ${port}!`))
