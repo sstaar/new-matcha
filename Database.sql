@@ -12,7 +12,9 @@ CREATE TABLE users
     `activated` INT DEFAULT 0,
     `latitude` DOUBLE,
     `longitude` DOUBLE,
-    `bio` VARCHAR(200)
+    `bio` VARCHAR(200),
+    `is_online` BOOLEAN DEFAULT FALSE,
+    `last_connection` DATETIME DEFAULT NOW()
 
 );
 
@@ -42,7 +44,7 @@ CREATE TABLE matches
     `user1` INT NOT NULL,
     `user2` INT NOT NULL,
     UNIQUE(user1, user2)
-)
+);
 
 CREATE TABLE messages
 (
@@ -51,4 +53,13 @@ CREATE TABLE messages
     `receiver` INT NOT NULL,
     `date` DATETIME DEFAULT NOW(),
     `message` TINYTEXT NOT NULL
-)
+);
+
+CREATE TABLE notifications
+(
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `userid` INT NOT NULL,
+    `date` DATETIME DEFAULT NOW(),
+    `content` TINYTEXT NOT NULL,
+    `read` INT NOT NULL DEFAULT 0
+);

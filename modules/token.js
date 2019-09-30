@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 exports.validateToken = (request, res, next) => {
     const authorizationBody = request.body.token;
+    // return res.json( request.body);
     let result;
     if (authorizationBody) {
       const token = authorizationBody; // Bearer <token>
@@ -28,10 +29,11 @@ exports.validateToken = (request, res, next) => {
       }
     }
     else {
+      console.log("HAHA");
       result = {
         error: `Authentication error. Token required al7mar.`,
         status: 401
       };
-      res.status(401).send(result);
+      res.status(200).send(result);
     }
 };

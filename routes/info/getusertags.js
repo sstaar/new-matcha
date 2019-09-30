@@ -4,7 +4,7 @@ const db = require('../../modules/Database');
 
 router = express.Router();
 
-router.post('/gettags', async (request, response) => {
+router.post('/getusertags', async (request, response) => {
 
     let info = {
         user: request.decoded.user

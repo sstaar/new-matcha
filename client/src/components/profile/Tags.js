@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { addTag, removeTag } from '../../actions/userActions';
+
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -29,49 +31,21 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Tags = ({ tags }) => {
+const Tags = () => {
 
-	const [newTag, setNewTag] = useState({
-		newtag: ''
-	});
+	//Allows to use dispatch
+	const dispatch = useDispatch();
 
-	const newtag = newTag.newtag;
+	const [newTag, setNewTag] = useState('');
 
-	const onChange = e => setNewTag({ ...newTag, [e.target.name]: e.target.value });
+	const onChange = e => setNewTag(e.target.value );
 
-	const [oldTags, setOldTags] = useState(tags);
-
-	const oldtags = oldTags;
-
-	const token = useSelector(state => state.login).token;
+	const tags = useSelector(state => state.user.tags);
 
 	const classes = useStyles();
 
-	const handleDelete = async (tagid) => {
-		await axios.post('http://localhost:5000/api/info/removetag', { token, tagid: tagid });
-		console.log(tagid);
-		let newtags = [];
-		oldtags.forEach(element => {
-			if (element.tagid !== tagid)
-				newtags = [...newtags, element]
-		});
-		setOldTags([...newtags]);
-	}
 
-	const addTag = async () => {
-		let res = await axios.post('http://localhost:5000/api/info/addtag', { token, tag: newtag });
 
-		console.log(res);
-		if (!res.data.error) {
-			let newer = {
-				tagname: newtag,
-				tagid: res.data.id
-			};
-			setOldTags([...oldtags, newer]);
-			console.log(newer);
-			setNewTag({ newtag: '' });
-		}
-	}
 
 	return (
 		<div className="container" style={{ margin: '50px auto' }}>
@@ -81,11 +55,11 @@ const Tags = ({ tags }) => {
 					<h5 className="card-title badge badge-primary">Tags</h5>
 					<div className={classes.root}>
 
-						{oldtags.map((oldtag) =>
+						{tags.map((tag) =>
 							<Chip
-								key={oldtag.tagid}
-								label={oldtag.tagname}
-								onDelete={tagid => handleDelete(oldtag.tagid)}
+								key={tag.tagid}
+								label={tag.tagname}
+								onDelete={async () => dispatch(await removeTag(tags, tag.tagid))}
 								className={classes.chip}
 								color="primary"
 								variant="outlined"
@@ -93,9 +67,9 @@ const Tags = ({ tags }) => {
 						)}
 					</div>
 					<div className="input-group mb-3" style={{ width: '40%', margin: '1rem auto' }}>
-						<input onChange={e => onChange(e)} value={newtag} name='newtag' type="text" className="form-control" placeholder="New Tag" aria-label="New Tag" aria-describedby="addTag" />
+						<input onChange={e => onChange(e)} value={newTag} name='newtag' type="text" className="form-control" placeholder="New Tag" aria-label="New Tag" aria-describedby="addTag" />
 						<div className="input-group-append">
-							<button onClick={addTag} className="btn btn-outline-secondary" type="button" id="addTag">Add a new tag</button>
+							<button onClick={async () => dispatch(await addTag(newTag))} className="btn btn-outline-secondary" type="button" id="addTag">Add a new tag</button>
 						</div>
 					</div>
 

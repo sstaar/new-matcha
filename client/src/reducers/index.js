@@ -4,6 +4,8 @@ import loginReducer from './loginReducer';
 import userReducer from './userReducer';
 import suggestionListReducer from './suggestionListReducer';
 import messagesReducer from './messagesReducer';
+import searchReducer from './searchReducer';
+import notificationsReducer from './notificationsReducer'
 
 
 //this only comine all the reducers because
@@ -13,5 +15,7 @@ export default combineReducers({
 	login			: loginReducer,
 	user			: userReducer,
 	suggestionList	: suggestionListReducer,
-	messages		: messagesReducer
+	chat			: messagesReducer,
+	search			: searchReducer,
+	notifications	: notificationsReducer
 })

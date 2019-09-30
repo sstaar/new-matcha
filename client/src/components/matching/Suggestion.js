@@ -5,14 +5,7 @@ import UserCard from './UserCard'
 
 export default function Suggestion() {
 
-	const [suggestionListData, setSuggestionListData] = useState({
-		list: {},
-		loading: true,
-	});
-
 	const dispatch = useDispatch();
-
-	const { list, loading, } = suggestionListData;
 
 	const suggestionList = useSelector(state => state.suggestionList);
 
@@ -25,19 +18,10 @@ export default function Suggestion() {
 		test();
 	}, [dispatch]);
 
-	if (loading === true)
-		setTimeout(() => {
-			setSuggestionListData({
-				...suggestionListData,
-				list: suggestionList.list,
-				loading: suggestionList.loading,
-			})
-		}, 100);
-
-	if (loading === false)
+	if (suggestionList.loading === false)
 		return (
 			<div>
-				{list.map((user) =>
+				{suggestionList.list.map((user) =>
 					<UserCard user={user} key={user.id} />
 				)}
 			</div>

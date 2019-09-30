@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './Profile.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { userInfo } from '../../actions/userActions';
@@ -7,26 +7,14 @@ import Tags from './Tags';
 
 
 const Profile = () => {
-	//This just initialize the state im going to use throughout the component
-	const [infoData, setInfoData] = useState({
-		username: null,
-		firstname: null,
-		lastname: null,
-		gender: null,
-		age: null,
-		bio: null,
-		loading: true,
-		tags:{}
-	});
-
-	//Simplification
-	const { username, firstname, lastname, gender, age, bio, loading, tags } = infoData;
 
 	//Allows to use dispatch
 	const dispatch = useDispatch();
 
 	//Allows as to access the redux store
-	const user = useSelector(state => state.user);
+	const userStore = useSelector(state => state.user);
+
+	const { username, firstname, lastname, gender, age, bio } = userStore.info
 
 	//The useEffect function calls it's first parameter
 	//The callback after each render it can't be an async function
@@ -40,39 +28,10 @@ const Profile = () => {
 		test();
 	}, [dispatch]);
 
-
-	//We keep checking if the user info is recieved or not
-	//By rendering the component until we get the informations we need
-	//Check the userReducer to understand how loading works
-	if (loading === true)
-		setTimeout(() => {
-			setInfoData({
-				...infoData,
-				username: user.info.username,
-				firstname: user.info.firstname,
-				lastname: user.info.lastname,
-				gender: user.info.gender,
-				age: user.info.age,
-				bio: user.info.bio,
-				loading: user.loading,
-				tags: user.tags
-			})
-		}, 100);
-
-	//We use this update function to update the component
-	//After we change the user info in the child EditUserInfo
-	//It will be passed as a prop to EditUserInfo
-	const update = (data) => {
-		setInfoData({
-			...infoData,
-			...data
-		});
-	}
-
 	//The if statment ensures that while we still don't have the userInfo
 	//The component will display a loading screen
 	//And once we have the info we display them in a card
-	if (loading === false)
+	if (userStore.loading === false)
 		return (
 			<div className="container" style={{ margin: '50px auto' }}>
 				<div className="card bg-light text-center card-cus" >
@@ -86,16 +45,11 @@ const Profile = () => {
 						<p className="card-text">{gender}</p>
 						<p className="card-text">{bio}</p>
 					</div>
-					{/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
 
-					<button id="edit" type="button" className="edit-butt btn btn-primary" data-toggle="modal" data-target="#ChangeInfo">
-						Change your info
-					</button>
-
-					<EditUserInfo update={update} user={infoData} />
+					<EditUserInfo user={userStore.info} />
 
 				</div>
-				<Tags tags={tags}/>
+				<Tags />
 			</div>
 
 			

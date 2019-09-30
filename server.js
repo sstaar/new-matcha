@@ -10,6 +10,7 @@ var	http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 const db = require('./modules/Database');
+const notify = require('./modules/notify');
 const tokenToId = require('./helpers/tokenToId').tokenToId;
 const saveMessage = require('./helpers/saveMessage');
 
@@ -24,6 +25,10 @@ db.init({
 });
 
 // Used to parse the post data of the body.
+
+app.put('/test', (req, res) => {
+	res.send('this is put');
+});
 
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ extended: false })); // to support URL-encoded bodies
@@ -48,17 +53,19 @@ io.on('connection', function(socket){
 	sockets[id] = socket;
 	socket.on('message', async (msg) => {
 		try {
-			await saveMessage(msg.token, msg.receiver, msg.message);
-			sockets[msg.receiver].send(msg.message)
+			console.log(msg);
+			let response = await saveMessage(msg.token, msg.receiver, msg.message);
+			console.log(response);
+			notify(msg.receiver, 'You have recieved a message');
+			if (sockets[msg.receiver]) {
+				sockets[msg.receiver].send(response)
+			}
+			socket.send(response)
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
 	});
 });
-
-
-
-
 
 const port = 5000;
 http.listen(port, () => console.log(`Example app listening on port ${port}!`))

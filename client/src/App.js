@@ -11,6 +11,8 @@ import NotConnectedComponent from './components/helpers/NotConnectedComponent';
 import Profile from './components/profile/Profile';
 import Suggestion from './components/matching/Suggestion';
 import Messaging from './components/messaging/Messaging';
+import Search from './components/search/Search';
+import Notifications from './components/notification/Notifications';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -30,6 +32,8 @@ function App() {
         <ConnectedComponent path="/profile" component={Profile} />
         <ConnectedComponent path="/suggestions" component={Suggestion} />
         <ConnectedComponent path="/Messaging" component={Messaging} />
+        <ConnectedComponent path="/Search" component={Search} />
+        <ConnectedComponent path="/notifications" component={Notifications} />
       </Router>
     </Provider>
   );

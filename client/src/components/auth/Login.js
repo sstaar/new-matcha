@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { login } from '../../actions/loginActions';
+import { useDispatch, useSelector } from 'react-redux';
 import Input from '../helpers/Input';
 
 const getGeoLocation = () => {
@@ -10,7 +10,9 @@ const getGeoLocation = () => {
 				resolve(position);
 			},
 			(error) => {
-				reject(error)
+				if (error.code === 1)
+					resolve({ coords: { latitude: 0, longitude: 0 } })
+				reject(error);
 			});
 	});
 }
@@ -21,12 +23,11 @@ const Login = () => {
 		username: '',
 		password: '',
 		longitude: 0,
-		latitude: 0,
-		errors: {}
+		latitude: 0
 	});
 
 	//This is just for simplification when calling a state variable
-	const { username, password, errors } = formData;
+	const { username, password } = formData;
 
 
 	//This allows me to dispatch my action
@@ -36,24 +37,38 @@ const Login = () => {
 	//This is to allow the input to change, While chamging the state variable as well
 	const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+	//To get the informations in case of login fail
+	const loginStore = useSelector(state => state.login);
+
 	//This is activated on the submit
 	const onSubmit = async e => {
-		e.preventDefault();
-		let pos = await getGeoLocation();
-		const { latitude, longitude } = pos.coords;
-		console.log(pos);
-		setFormData({ ...formData, latitude, longitude });
-		dispatch(await login(formData));
+		try {
+			console.log('You are trying to connect.')
+			e.preventDefault();
+			let pos = await getGeoLocation();
+			const { latitude, longitude } = pos.coords;
+			console.log('pos is :');
+			console.log(latitude, longitude );
+			setFormData({ ...formData, latitude, longitude });
+			dispatch(await login({ ...formData, latitude, longitude }));
+			console.log('Connecting...')
+				
+		} catch (error) {
+			console.log(error)
+		}
+
 	}
+
+	console.log(loginStore.errors);
 
 	return (
 		<div className="container">
 			<form className="needs-validation" onSubmit={e => onSubmit(e)} noValidate>
-			<Input display="Username" type="text" name="username" onChange={e => onChange(e)} value={username} error={errors.error_username} />
+				<Input display="Username" type="text" name="username" onChange={e => onChange(e)} value={username} error={loginStore.errors.username} />
 
-			<Input display="Password" type="password" name="password" onChange={e => onChange(e)} value={password} error={errors.error_password} />
+				<Input display="Password" type="password" name="password" onChange={e => onChange(e)} value={password} error={loginStore.errors.password} />
 
-			<button type="submit" className="btn btn-primary">Submit</button>
+				<button type="submit" className="btn btn-primary">Submit</button>
 			</form>
 		</div>
 	)

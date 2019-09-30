@@ -9,17 +9,15 @@ const initialState = {
 export default function (state = initialState, action) {
 	switch(action.type) {
 		case SUGGESTIONS_FAILED:
-			state = {
+			return {
 				error		: action.payload,
 				loading		: false
 			};
-			return state;
 		case SUGGESTIONS_RECIEVED:
-			state = {
+			return {
 				list		: action.payload,
 				loading		: false
 			}
-			return state;
 		default:
 			return state;
 	}

@@ -1,5 +1,4 @@
-'use strict'
-import { SEND_MESSAGE, RECIEVE_MATCHES } from '../actions/types';
+import { NEW_MESSAGE, RECIEVE_MATCHES, RECEIVE_CONVO, SET_RECEIVER } from '../actions/types';
 
 import io from "socket.io-client";
 
@@ -9,17 +8,18 @@ let connected = window.localStorage.getItem('connected');
 var initialState = {
     matches: {},
     socket: null,
-    messages: {}
+    receiver:{},
+    messages: {
+        messages: {},
+        loading: true
+    }
 }
 var socket = null;
-console.log(connected);
+
 if (connected === "true") {
     console.log(connected);
     socket = io(':5000', { query: 'token=' + token });
     // socket.emit('message', 'hello');
-    socket.on('message', (msg) => {
-        console.log(msg);
-    });
 
     initialState = {
         matches: {
@@ -27,24 +27,56 @@ if (connected === "true") {
             loading: true
         },
         socket: socket,
-        messages: {}
+        receiver:{},
+        messages: {
+            messages: {},
+            loading: true
+        }
     }
 }
 
 export default function(state = initialState, action) {
 	switch(action.type) {
         case RECIEVE_MATCHES:
-            state = {
+            return {
                 ...state,
                 matches: {
                     users: action.payload,
                     loading: false
                 }
             }
-            return state;
-        case SEND_MESSAGE:
-            socket.send(action.payload);
-            return state;
+        case NEW_MESSAGE:
+            return {
+                ...state,
+                matches:{ ...state.matches },
+                receiver: { ...state.receiver },
+                messages:{
+                    ...state.messages,
+                    messages:[
+                        ...state.messages.messages,
+                        action.payload
+                    ]
+                }
+            }
+        case RECEIVE_CONVO:
+            return {
+                ...state,
+                receiver: { ...state.receiver },
+                messages:{
+                    messages:action.payload,
+                    loading:false
+                }
+            }
+        case SET_RECEIVER:
+            return {
+                ...state,
+                matches:{ ...state.matches },
+                receiver: action.payload,
+                messages:{
+                    messages:{},
+                    loading: true
+                }
+            }
 		default:
 			return state;
 	}

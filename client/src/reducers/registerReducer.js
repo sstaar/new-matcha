@@ -5,17 +5,22 @@ import { REGISTER_FAIL, REGISTER_SUCCEED } from '../actions/types';
 //In REGISTER_SUCCEED will fill it with a single message
 //In REGISTER_FAIL we will fill it with all the errors returned in the back-end
 const initialState = {
-	registration: {}
+	errors: {},
+	success: null
 }
 
 export default function(state = initialState, action) {
 	switch(action.type) {
 		case REGISTER_FAIL:
-			state.registration = action.payload;
-			return state;
+			return {
+				...state,
+				errors: action.payload
+			}
 		case REGISTER_SUCCEED:
-			state.registration = action.payload;
-			return state;
+			return {
+				...state,
+				success: action.payload
+			}
 		default:
 			return state;
 	}

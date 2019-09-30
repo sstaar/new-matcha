@@ -9,10 +9,10 @@ import axios from 'axios';
 export const login = async (info) => {
 	let res = await axios.post('http://localhost:5000/api/login', info);
 
-	if (res.data.error_username || res.data.error_password) {
+	if (res.data.errors) {
 		return {
 			type		: LOGIN_FAIL,
-			payload		: res.data
+			payload		: res.data.errors
 		};
 	}
 	else {

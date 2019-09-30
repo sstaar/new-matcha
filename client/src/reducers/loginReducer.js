@@ -20,31 +20,27 @@ export default function (state = initialState, action) {
 		case LOGIN_SUCCEED:
 			window.localStorage.setItem('token', action.payload.token);
 			window.localStorage.setItem('connected', true);
-			state = {
+			return {
 				token			: action.payload.token,
 				username		:action.payload.username,
 				connected		: true
 			}
-			return state;
 		case LOGIN_FAIL:
 			window.localStorage.setItem('token', null);
 			window.localStorage.setItem('connected', false);
-			// /state.errors = action.payload;
-			state = {
+			return {
 				token			: null,
 				connected		: false,
 				errors			: action.payload
 			};
-			return state
 		case LOGOUT:
 			window.localStorage.setItem('token', null);
 			window.localStorage.setItem('connected', false);
-			state = {
+			return {
 				token			: null,
 				connected		: false,
 				errors			: {}
 			};
-			return state;
 		default:
 			return state;
 	}

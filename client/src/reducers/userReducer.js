@@ -1,7 +1,8 @@
-import { INFO_FAILED, INFO_RECIEVED } from '../actions/types';
+import { INFO_FAILED, INFO_RECIEVED, ADD_TAG, ADD_TAG_FAILED, REMOVE_TAG, UPDATE_INFO } from '../actions/types';
 
 const initialState = {
 	info			: {},
+	tags			: {},
 	loading			: true,
 	error			: null
 };
@@ -10,18 +11,34 @@ const initialState = {
 export default function (state = initialState, action) {
 	switch(action.type) {
 		case INFO_FAILED:
-			state = {
+			return {
 				error		: action.payload,
 				loading		: false
 			};
-			return state;
 		case INFO_RECIEVED:
-			state = {
+			return {
 				info		: action.payload,
 				tags		: action.tags,
 				loading		: false
 			}
-			return state;
+		case UPDATE_INFO:
+			return{
+				...state,
+				tags:[ ...state.tags ],
+				info: { ...action.payload }
+			}
+		case ADD_TAG:
+			return {
+				...state,
+				info : { ...state.info },
+				tags :[ ...state.tags, action.payload ]
+			};
+		case REMOVE_TAG:
+			return {
+				...state,
+				info : { ...state.info },
+				tags :[ ...action.payload ]
+			}
 		default:
 			return state;
 	}
