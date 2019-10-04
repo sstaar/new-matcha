@@ -1,4 +1,4 @@
-import { INFO_FAILED, INFO_RECIEVED, ADD_TAG, ADD_TAG_FAILED, REMOVE_TAG, UPDATE_INFO } from './types';
+import { INFO_FAILED, INFO_RECIEVED, ADD_TAG, ADD_TAG_FAILED, REMOVE_TAG, UPDATE_INFO, REMOVE_IMG, ADD_IMG } from './types';
 import axios from 'axios';
 
 
@@ -8,31 +8,31 @@ import axios from 'axios';
 export const userInfo = async () => {
 	const token = window.localStorage.getItem('token');
 
-	const info = await axios.post('http://localhost:5000/api/info/general', { token:token });
-	const tags = await axios.post('http://localhost:5000/api/info/getusertags', { token:token });
+	const info = await axios.post('http://localhost:5000/api/info/general', { token: token });
+	const tags = await axios.post('http://localhost:5000/api/info/getusertags', { token: token });
 
 	if (info.error || tags.data.error)
 		return {
 			type: INFO_FAILED,
-			payload:info.data.error
+			payload: info.data.error
 		};
 	else
 		return {
-			type:INFO_RECIEVED,
-			payload:info.data,
-			tags:tags.data
+			type: INFO_RECIEVED,
+			payload: info.data,
+			tags: tags.data
 		};
 };
 
 export const updateInfo = async (newInfo) => {
 	const token = window.localStorage.getItem('token');
 
-	await axios.post('http://localhost:5000/api/info/edit', {...newInfo, token});
+	await axios.post('http://localhost:5000/api/info/edit', { ...newInfo, token });
 
-	
+
 	return {
 		type: UPDATE_INFO,
-		payload:newInfo
+		payload: newInfo
 	}
 }
 
@@ -46,15 +46,15 @@ export const addTag = async (newtag) => {
 			type: ADD_TAG_FAILED
 		}
 
-		let newer = {
-			tagname: newtag,
-			tagid: res.data.id
-		};
+	let newer = {
+		tagname: newtag,
+		tagid: res.data.id
+	};
 
-		return {
-			type:ADD_TAG,
-			payload:newer
-		}
+	return {
+		type: ADD_TAG,
+		payload: newer
+	}
 };
 
 export const removeTag = async (tags, tagid) => {
@@ -62,14 +62,40 @@ export const removeTag = async (tags, tagid) => {
 
 	await axios.post('http://localhost:5000/api/info/removetag', { token, tagid: tagid });
 
-		console.log(tagid);
-		let newtags = [];
-		tags.forEach(element => {
-			if (element.tagid !== tagid)
-				newtags = [...newtags, element]
-		});
+	console.log(tagid);
+	let newtags = [];
+	tags.forEach(element => {
+		if (element.tagid !== tagid)
+			newtags = [...newtags, element]
+	});
+	return {
+		type: REMOVE_TAG,
+		payload: newtags
+	};
+};
+
+export const removeImg = async (imageId) => {
+	const token = window.localStorage.getItem('token');
+
+	await axios.post('http://localhost:5000/api/info/removeimg', { token, imageId });
+
+
+	return {
+		type: REMOVE_IMG,
+		payload: imageId
+	}
+};
+
+export const addImg = async (base64) => {
+
+	const token = window.localStorage.getItem('token');
+
+	let img = await axios.post('http://localhost:5000/api/info/uploadimg', { img: base64, token })
+	img = img.data;
+
+	if (!img.warning || !img.error)
 		return {
-			type: REMOVE_TAG,
-			payload: newtags
-		};
+			type: ADD_IMG,
+			payload: img.data
+		}
 };

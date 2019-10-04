@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { visitUser, blockUser } from '../../actions/visitingUserActions';
 import UserInfoDisplayer from '../helpers/UserInfoDisplayer';
+import TagsDisplayer from '../helpers/TagsDisplayer';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -45,6 +46,7 @@ const UserPage = ({ match }) => {
                         <Button onClick={block} variant="contained" color="secondary" className={classes.button}>
                             Block
                         </Button>
+                        <TagsDisplayer tags={visitedUserStore.tags} canDelete={false} />
                     </div>
             }
         </div>

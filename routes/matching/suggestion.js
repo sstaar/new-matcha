@@ -53,8 +53,6 @@ router.post('/suggestion', async (request, response) => {
             console.log(tags);
             user.commonTagsCount = connectedUserTags.filter(tag => tags.includes(tag.tagid)).length;
         });
-
-
         //------------
 
 

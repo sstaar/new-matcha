@@ -34,6 +34,7 @@ router.post('/getuser', async (request, response) => {
         let dist = await distance(user.latitude, user.longitude, res.latitude, res.longitude);
         addToHistory(info.target, info.user, ' has visited you.');//In the front-end we will display for example "Test has visited you."
         let userImgs = await db.personalQuery('SELECT path from images WHERE user = ?', [ info.target ]);
+        let tags = await db.personalQuery('select tagname, userid from usertags INNER JOIN tags ON usertags.tagid = tags.id WHERE userid = ?', [ info.target ]);
         return response.json({
             id: res.id,
             username: res.username,
@@ -47,7 +48,8 @@ router.post('/getuser', async (request, response) => {
             is_online: res.is_online,
             last_connection :res.last_connection,
             fame_rate: res.fame_rating,
-            images: userImgs
+            images: userImgs,
+            tags,
         });
     } catch (error) {
         console.log(error);

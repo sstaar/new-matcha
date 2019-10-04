@@ -16,6 +16,7 @@ const removetag = require('./info/removetag');
 const getusertags = require('./info/getusertags');
 const getalltags = require('./info/getalltags');
 const uploadimg = require('./info/uploadimg');
+const removeimg = require('./info/removeimg');
 
 const suggestion = require('./matching/suggestion');
 const relation = require('./matching/relation');
@@ -43,6 +44,7 @@ router.use('/info', removetag);
 router.use('/info', getusertags);
 router.use('/info', getalltags);
 router.use('/info', uploadimg);
+router.use('/info', removeimg);
 
 router.use('/matching', validateToken);
 router.use('/matching', blockCheck);

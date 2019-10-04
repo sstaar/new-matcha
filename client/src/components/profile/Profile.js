@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import EditUserImages from './EditUserImages';
 
 const useStyles = makeStyles(theme => ({
 	button: {
@@ -22,32 +23,10 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const getBase64 = (file) => {
-	return new Promise((resolve, reject) => {
-		let reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onloadend = async () => {
-			resolve(reader.result);
-		};
-	})
-}
+
 
 const Profile = () => {
 
-	const [upload, setUpload] = useState('');
-
-	const onChange = async e => {
-		// console.log(e.target.files);
-		const token = window.localStorage.getItem('token');
-		
-		
-		let base = await getBase64(e.target.files[0])
-		console.log(base);
-		await axios.post('http://localhost:5000/api/info/uploadimg', { img:base, token })
-		// setUpload(e.target.value)
-	};
-
-	console.log(upload);
 
 	const classes = useStyles();
 
@@ -77,10 +56,11 @@ const Profile = () => {
 	if (userStore.loading === false)
 		return (
 			<div>
-				<input onChange={e => onChange(e)} type="file" name="avatar" />
+				
 
 				<UserInfoDisplayer user={userStore.info} />
 				<EditUserInfo user={userStore.info} />
+				<EditUserImages />
 				<Grid container>
 					{
 						tags.length > 0 ?

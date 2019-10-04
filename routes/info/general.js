@@ -1,6 +1,5 @@
 const express = require('express');
 const db = require('../../modules/Database');
-const jwt = require('jsonwebtoken');
 
 router = express.Router();
 
@@ -15,7 +14,7 @@ router.post('/general', async (request, response) => {
 			user = await db.personalQuery('SELECT * FROM users WHERE id LIKE ?', [info.user]);
 			if (user.length === 0)
 				return response.json({ error: "Something is wrong!" });
-			let userImgs = await db.personalQuery('SELECT path from images WHERE user = ?', [ info.user ]);
+			let userImgs = await db.personalQuery('SELECT path, id from images WHERE user = ?', [ info.user ]);
 			return response.json({
 				username: user[0].username,
 				firstname: user[0].firstname,
