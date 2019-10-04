@@ -2,6 +2,7 @@
 const express = require('express');
 const db = require('../../modules/Database');
 const distance = require('../../helpers/distance');
+const addToHistory = require('../../modules/history').addToHistory;
 
 router = express.Router();
 
@@ -16,11 +17,14 @@ router.post('/getuser', async (request, response) => {
 
     try {
         let res = await db.personalQuery(sqlQuery1, [ info.target ]);
+        let likes = await db.personalQuery(sqlQuery2, [ info.user, info.target ])
+        let matches = await db.personalQuery(sqlQuery3, [ info.user, info.target, info.user, info.target ]);
+
+        if (res.length === 0)
+            return response.json({ error: 'Error 404 user not found.' });
         // for relation 1=> matched|0=>liked|-1=>no relation
         let relation = -1;
         res = res[0];
-        let likes = await db.personalQuery(sqlQuery2, [ info.user, info.target ])
-        let matches = await db.personalQuery(sqlQuery3, [ info.user, info.target, info.user, info.target ]);
         if (likes.length > 0)
             relation = 0;
         else if (matches.length > 0)
@@ -28,7 +32,9 @@ router.post('/getuser', async (request, response) => {
         let user = await db.personalQuery(sqlQuery1, [ info.user ]);
         user = user[0];
         let dist = await distance(user.latitude, user.longitude, res.latitude, res.longitude);
-        response.json({
+        addToHistory(info.target, info.user, ' has visited you.');//In the front-end we will display for example "Test has visited you."
+        let userImgs = await db.personalQuery('SELECT path from images WHERE user = ?', [ info.target ]);
+        return response.json({
             id: res.id,
             username: res.username,
             firstname: res.firstname,
@@ -37,7 +43,11 @@ router.post('/getuser', async (request, response) => {
             age: res.age,
             bio: res.bio,
             distance:dist,
-            relation
+            relation,
+            is_online: res.is_online,
+            last_connection :res.last_connection,
+            fame_rate: res.fame_rating,
+            images: userImgs
         });
     } catch (error) {
         console.log(error);

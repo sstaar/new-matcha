@@ -3,7 +3,45 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../actions/registerActions';
 import Input from '../helpers/Input';
 
+import { makeStyles } from '@material-ui/core/styles';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+
+const useStyles = makeStyles(theme => ({
+	center: {
+        margin: '20px auto',
+        textAlign: 'center',
+    },
+	root: {
+		display: 'flex',
+		flexWrap: 'wrap',
+	},
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 120,
+	},
+	selectEmpty: {
+		marginTop: theme.spacing(2),
+	},
+}));
+
+const formatDate = (date) => {
+	let dateInfo = date.toLocaleString();
+		let datePattern = /^(?:([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})).+$/;
+		let matches = dateInfo.match(datePattern);
+		let res = matches[3] + '-' + matches[2] + '-' + matches[1];
+
+		return (res);
+};
+
+
 const Register = () => {
+
+	const classes = useStyles();
+
 	//This just initialize the state im going to use throughout the form
 	const [formData, setFormData] = useState({
 		username: '',
@@ -11,8 +49,11 @@ const Register = () => {
 		password1: '',
 		password2: '',
 		firstname: '',
-		lastname: ''
+		lastname: '',
+		gender : 'male',
 	});
+
+	const [date, setDate] = useState(new Date())
 
 	//This is just for simplification when calling a state variable
 	const {
@@ -21,7 +62,8 @@ const Register = () => {
 		firstname,
 		lastname,
 		password1,
-		password2
+		password2,
+		gender
 	} = formData;
 
 	//This allows me to dispatch my action
@@ -30,6 +72,10 @@ const Register = () => {
 
 	//This is to allow the input to change, While chamging the state variable as well
 	const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+	const handleDateChange = date => {
+		setDate(date);
+	  }; 
 
 	//This part is for getting the data from the redux store
 	//The main store can be found in /client/src/store.js
@@ -47,10 +93,10 @@ const Register = () => {
 	const onSubmit = async e => {
 		//This prevent the from from reloading the page or redirecting to somewhere else
 		e.preventDefault();
-
+		console.log(formData);
 		//This dispatch the action that sends the request to the ap
 		//and storing the result into the redux store
-		dispatch(await register(formData));
+		dispatch(await register({ ...formData, birthday:formatDate(date)}));
 	}
 
 
@@ -62,7 +108,7 @@ const Register = () => {
 		<div className="container">
 			<form className="needs-validation" onSubmit={e => onSubmit(e)} noValidate>
 
-				{registerationSuccess? <div className="alert alert-success" role="alert">{registerationSuccess}</div> : <div></div>}
+				{registerationSuccess ? <div className="alert alert-success" role="alert">{registerationSuccess}</div> : <div></div>}
 
 				<Input display="Username" type="text" name="username" onChange={e => onChange(e)} value={username} error={registerationErrors.username} />
 
@@ -71,6 +117,39 @@ const Register = () => {
 				<Input display="Lastname" type="text" name="lastname" onChange={e => onChange(e)} value={lastname} error={registerationErrors.lastname} />
 
 				<Input display="E-Mail" type="mail" name="email" onChange={e => onChange(e)} value={email} error={registerationErrors.email} />
+
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					<KeyboardDatePicker
+						disableToolbar
+						variant="inline"
+						format="yyyy-mm-dd"
+						margin="normal"
+						id="date-picker-inline"
+						label="Birthdate"
+						value={date}
+						onChange={handleDateChange}
+						KeyboardButtonProps={{
+							'aria-label': 'change date',
+						}}
+					/>
+				</MuiPickersUtilsProvider>
+
+				<FormControl variant="outlined" className={classes.formControl}>
+						<Select
+							native
+							value={gender ? gender : ''}
+							onChange={e => onChange(e)}
+							labelWidth={50}
+							inputProps={{
+								name: 'gender',
+								id: 'outlined-age-native-simple',
+							}}
+							name="gender"
+						>
+							<option>male</option>
+							<option>female</option>
+						</Select>
+				</FormControl>
 
 				<Input display="Password" type="password" name="password1" onChange={e => onChange(e)} value={password1} error={registerationErrors.password1} />
 

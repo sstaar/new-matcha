@@ -30,6 +30,7 @@ const _daysOfMonth = function (month, year) {
 	return (28);
 }
 
+//yyyy-mm-dd
 const isDate = (date) => {
     let datePattern = /^([0-9]{4,4})-([0-9]{1,2})-([0-9]{1,2})(?: ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}))?$/;
 

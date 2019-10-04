@@ -16,6 +16,9 @@ import Draggable from 'react-draggable';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+
 
 
 function PaperComponent(props) {
@@ -27,6 +30,10 @@ function PaperComponent(props) {
 }
 
 const useStyles = makeStyles(theme => ({
+	center: {
+		margin: '20px auto',
+		textAlign: 'center',
+	},
 	root: {
 		display: 'flex',
 		flexWrap: 'wrap',
@@ -63,16 +70,16 @@ const EditUserInfo = ({ user }) => {
 	const [formData, setFormData] = useState({
 		firstname: user.firstname,
 		lastname: user.lastname,
-		age: user.age,
 		gender: user.gender,
 		bio: user.bio,
+		orientation: user.orientation,
 		errors: {}
 	});
 
 	//Getting the token from the redux store
 
 	//simplifications
-	const { firstname, lastname, age, gender, bio, errors } = formData;
+	const { firstname, lastname, gender, bio, orientation, errors } = formData;
 
 	//It keeps on updating the form inputs
 	const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -88,9 +95,9 @@ const EditUserInfo = ({ user }) => {
 
 	return (
 
-		<div>
+		<div className={classes.center}>
 			<Button variant="outlined" color="primary" onClick={handleClickOpen}>
-				Open form dialog
+				Edit Your info
       		</Button>
 			<Dialog
 				open={open}
@@ -110,8 +117,6 @@ const EditUserInfo = ({ user }) => {
 
 					<Input display="Last name" type="text" name="lastname" onChange={e => onChange(e)} value={lastname} error={errors.error_lastname} />
 
-					<Input display="Age" type="text" name="age" onChange={e => onChange(e)} value={age ? age : 0} error={errors.error_age} />
-
 					<FormControl variant="outlined" className={classes.formControl}>
 						<Select
 							native
@@ -127,6 +132,22 @@ const EditUserInfo = ({ user }) => {
 							<option>male</option>
 							<option>female</option>
 							{gender !== "male" && gender !== "female" && <option>{gender}</option>}
+						</Select>
+					</FormControl>
+
+					<FormControl className={classes.formControl}>
+						<InputLabel htmlFor="age-simple">Sexual preferences</InputLabel>
+						<Select
+							value={orientation}
+							onChange={e => onChange(e)}
+							inputProps={{
+								name: 'orientation',
+								id: 'age-simple',
+							}}
+						>
+							<MenuItem value={'male'}>male</MenuItem>
+							<MenuItem value={'female'}>female</MenuItem>
+							<MenuItem value={'both'}>both</MenuItem>
 						</Select>
 					</FormControl>
 

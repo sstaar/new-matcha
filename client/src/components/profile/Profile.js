@@ -1,12 +1,55 @@
-import React, { useEffect } from 'react';
-import './Profile.css';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+// import './Profile.css';
 import { userInfo } from '../../actions/userActions';
 import EditUserInfo from './EditUserInfo';
-import Tags from './Tags';
+import AddTags from './AddTags';
+import UserInfoDisplayer from '../helpers/UserInfoDisplayer';
+import TagsDisplayer from '../helpers/TagsDisplayer';
 
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import axios from 'axios';
+
+const useStyles = makeStyles(theme => ({
+	button: {
+		margin: theme.spacing(1),
+	},
+	input: {
+		display: 'none',
+	},
+}));
+
+const getBase64 = (file) => {
+	return new Promise((resolve, reject) => {
+		let reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onloadend = async () => {
+			resolve(reader.result);
+		};
+	})
+}
 
 const Profile = () => {
+
+	const [upload, setUpload] = useState('');
+
+	const onChange = async e => {
+		// console.log(e.target.files);
+		const token = window.localStorage.getItem('token');
+		
+		
+		let base = await getBase64(e.target.files[0])
+		console.log(base);
+		await axios.post('http://localhost:5000/api/info/uploadimg', { img:base, token })
+		// setUpload(e.target.value)
+	};
+
+	console.log(upload);
+
+	const classes = useStyles();
 
 	//Allows to use dispatch
 	const dispatch = useDispatch();
@@ -14,7 +57,7 @@ const Profile = () => {
 	//Allows as to access the redux store
 	const userStore = useSelector(state => state.user);
 
-	const { username, firstname, lastname, gender, age, bio } = userStore.info
+	const tags = useSelector(state => state.user.tags);
 
 	//The useEffect function calls it's first parameter
 	//The callback after each render it can't be an async function
@@ -33,26 +76,28 @@ const Profile = () => {
 	//And once we have the info we display them in a card
 	if (userStore.loading === false)
 		return (
-			<div className="container" style={{ margin: '50px auto' }}>
-				<div className="card bg-light text-center card-cus" >
-					<img className="main-img card-img-top" src="/imgs/user.png" alt="Main pic" />
-					<div className="card-body">
-						<div className="badge badge-primary text-wrap" >
-							{username}
-						</div>
-						<h5 className="card-title">{firstname + ' ' + lastname}</h5>
-						<p className="card-text">{age}</p>
-						<p className="card-text">{gender}</p>
-						<p className="card-text">{bio}</p>
-					</div>
+			<div>
+				<input onChange={e => onChange(e)} type="file" name="avatar" />
 
-					<EditUserInfo user={userStore.info} />
+				<UserInfoDisplayer user={userStore.info} />
+				<EditUserInfo user={userStore.info} />
+				<Grid container>
+					{
+						tags.length > 0 ?
+							<Grid
+								item
+								xs={12}
+								sm={8}
+								style={{ margin: '20px auto' }} >
+								<TagsDisplayer tags={tags} canDelete={true} />
+							</Grid> : <div></div>
+					}
 
-				</div>
-				<Tags />
+					<Grid item xs={10} sm={5} style={{ margin: '20px auto' }} ><AddTags /></Grid>
+				</Grid>
+
+
 			</div>
-
-			
 		)
 	else
 		return (

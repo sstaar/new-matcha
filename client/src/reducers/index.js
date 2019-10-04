@@ -6,6 +6,8 @@ import suggestionListReducer from './suggestionListReducer';
 import messagesReducer from './messagesReducer';
 import searchReducer from './searchReducer';
 import notificationsReducer from './notificationsReducer'
+import visitedUserReducer from './visitedUserReducer';
+import historyReducer from './historyReducer';
 
 
 //this only comine all the reducers because
@@ -17,5 +19,7 @@ export default combineReducers({
 	suggestionList	: suggestionListReducer,
 	chat			: messagesReducer,
 	search			: searchReducer,
-	notifications	: notificationsReducer
+	notifications	: notificationsReducer,
+	visitedUser		: visitedUserReducer,
+	history			: historyReducer
 })

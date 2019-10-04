@@ -4,7 +4,7 @@ const db = require('../../modules/Database');
 
 router = express.Router();
 
-router.post('/getallnotifs', async (request, response) => {
+router.post('/getnotifs', async (request, response) => {
     const sqlQuery = `SELECT * FROM notifications WHERE userid = ? ORDER BY date desc`;
     let info = {
         user: request.decoded.user

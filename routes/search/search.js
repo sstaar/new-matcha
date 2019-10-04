@@ -27,6 +27,10 @@ router.post('/search', async (request, response) => {
 
             return dis <= info.distanceGap && Math.abs(user.age - item.age) <= info.ageGap;
         });
+
+        res.forEach((item) => {
+            item.distance = distance(user.latitude, user.longitude, item.latitude, item.longitude);
+        });
         
         response.json( res );
     } catch (error) {

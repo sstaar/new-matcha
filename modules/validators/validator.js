@@ -53,7 +53,7 @@ const string = () => {
 		'email': setEmail,
 		'required': setRequired,
 		'match': setPattern,
-		'date': setDate
+		'date': setDate,
     }
 }
 

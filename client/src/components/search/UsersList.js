@@ -32,7 +32,7 @@ const UsersList = () => {
         <div>
             {searchDataStore.length > 0 ?
                 searchDataStore.map((user) =>
-                    <React.Fragment>
+                    <React.Fragment key={user.id}>
                         <CssBaseline />
                         <Container maxWidth="sm">
                             <img className="main-img card-img-top" src="/imgs/user.png" alt="Main pic" />
@@ -40,17 +40,9 @@ const UsersList = () => {
                             <div>{user.firstname + ' ' + user.lastname}</div>
                             <div>{user.age}</div>
                             <Divider />
-                            <Paper className={classes.root}>
-                                <Typography component="p">
-                                    {user.bio ? user.bio : 'No bio yet!.'}
-                                </Typography>
-                            </Paper>
                             <Button variant="outlined" color="secondary" className={classes.button}>
                                 dislike
-                </Button>
-                            <Button variant="outlined" color="primary" className={classes.button}>
-                                Like
-                </Button>
+                            </Button>
                         </Container>
                     </React.Fragment>
                 ):<div></div>}

@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const express = require('express');
 const db = require('../../modules/Database');
 
@@ -22,6 +22,8 @@ router.post('/getmatches', async (request, response) => {
         Object.keys(res).forEach((item) => {
             ids[key++] = res[item].user1?res[item].user1:res[item].user2;
         });
+        if (ids.length === 0)
+            return response.json({ error: 'You have no matches.' });
         matches = await db.personalQuery('SELECT id, username, firstname, lastname FROM users WHERE id IN (?)',[ ids ]);
         response.json(matches);
     } catch (error) {

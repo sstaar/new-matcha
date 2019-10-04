@@ -27,9 +27,11 @@ router.post('/edit', async (request, response) => {
 		firstname	: validateInfo(request.body.firstname),
 		lastname	: validateInfo(request.body.lastname),
 		gender		: validateGender(request.body.gender),
-		age			: regex.test(request.body.age) ? request.body.age : 0,
-		bio			: validateInfo(request.body.bio)
+		bio			: validateInfo(request.body.bio),
+		orientation : request.body.orientation
 	};
+
+	console.log(info);
 
 	token = jwt.verify(info.token, "GALATA");
 
@@ -38,13 +40,13 @@ router.post('/edit', async (request, response) => {
 
 	try {
 		if (!resp.error) {
-			await db.personalQuery("UPDATE users SET firstname = ?, lastname = ?, gender = ?, age = ?, bio = ? WHERE id LIKE ?", [
+			await db.personalQuery("UPDATE users SET firstname = ?, lastname = ?, gender = ?, bio = ?, orientation = ? WHERE id LIKE ?", [
 				info.firstname,
 				info.lastname,
 				info.gender,
-				info.age,
 				info.bio,
-				token.user
+				info.orientation,
+				token.user,
 			]);
 		}
 	} catch (err) {

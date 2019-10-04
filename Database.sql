@@ -1,5 +1,5 @@
-CREATE DATABASE db_helbouaz;
-CREATE TABLE users
+CREATE DATABASE `db_helbouaz`;
+CREATE TABLE `users`
 (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `username` VARCHAR(50) NOT NULL,
@@ -7,31 +7,32 @@ CREATE TABLE users
     `email` VARCHAR(100) NOT NULL,
     `firstname` VARCHAR(50) NOT NULL,
     `lastname` VARCHAR(50) NOT NULL,
-    `gender` VARCHAR(50),
-    `age` INT,
+    `gender` VARCHAR(50) NOT NULL,
+    `age` INT NOT NULL,
     `activated` INT DEFAULT 0,
-    `latitude` DOUBLE,
-    `longitude` DOUBLE,
-    `bio` VARCHAR(200),
-    `is_online` BOOLEAN DEFAULT FALSE,
-    `last_connection` DATETIME DEFAULT NOW()
-
+    `latitude` DOUBLE NOT NULL DEFAULT 0,
+    `longitude` DOUBLE NOT NULL DEFAULT 0,
+    `bio` VARCHAR(200) NOT NULL DEFAULT 'No bio yet.',
+    `is_online` INT NOT NULL DEFAULT FALSE,
+    `last_connection` DATETIME DEFAULT NOW(),
+    `fame_rating` DOUBLE NOT NULL DEFAULT 0,
+    `orientation` VARCHAR(50) NOT NULL DEFAULT 'both'
 );
 
-CREATE TABLE tags
+CREATE TABLE `tags`
 (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `tagname` VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE usertags
+CREATE TABLE `usertags`
 (
     `userid` INT NOT NULL,
     `tagid` INT NOT NULL,
     UNIQUE(userid, tagid)
 );
 
-CREATE TABLE relations
+CREATE TABLE `relations`
 (
     `primaryuser` INT NOT NULL,
     `secondaryuser` INT NOT NULL,
@@ -39,14 +40,14 @@ CREATE TABLE relations
     UNIQUE(primaryuser, secondaryuser)
 );
 
-CREATE TABLE matches
+CREATE TABLE `matches`
 (
     `user1` INT NOT NULL,
     `user2` INT NOT NULL,
     UNIQUE(user1, user2)
 );
 
-CREATE TABLE messages
+CREATE TABLE `messages`
 (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `sender` INT NOT NULL,
@@ -55,11 +56,42 @@ CREATE TABLE messages
     `message` TINYTEXT NOT NULL
 );
 
-CREATE TABLE notifications
+CREATE TABLE `notifications`
 (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `userid` INT NOT NULL,
     `date` DATETIME DEFAULT NOW(),
     `content` TINYTEXT NOT NULL,
     `read` INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE `block`
+(
+    `user1` INT NOT NULL,
+    `user2` INT NOT NULL,
+    UNIQUE(user1, user2)
+);
+
+CREATE TABLE `history`
+(
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `user` INT NOT NULL,
+    `invoker` INT NOT NULL,
+    `content` TINYTEXT NOT NULL,
+    `date` DATETIME DEFAULT NOW()
+);
+
+CREATE TABLE `images`
+(
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `user` INT NOT NULL,
+    `path` TINYTEXT NOT NULL,
+    `date` DATETIME DEFAULT NOW()
+);
+
+CREATE TABLE `reports`
+(
+    `user1` INT NOT NULL,
+    `user2` INT NOT NULL,
+    UNIQUE(user1, user2)
 );

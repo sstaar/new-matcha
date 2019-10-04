@@ -25,7 +25,7 @@ export default function (state = initialState, action) {
 			return{
 				...state,
 				tags:[ ...state.tags ],
-				info: { ...action.payload }
+				info: { ...state.info, ...action.payload }
 			}
 		case ADD_TAG:
 			return {

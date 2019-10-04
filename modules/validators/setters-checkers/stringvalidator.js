@@ -15,7 +15,7 @@ const stringValidationErrors = function(input) {
 	else if (this.isEmail === true && isEmail(input) === false)
 		return `"${this.label}" must be an email.`;
 	else if (this.pattern instanceof RegExp && this.pattern.test(input) === false)
-		return `"${this.label}" with value "${input}" fails to match the pattern ${this.pattern}`;
+		return `"${this.label}" must be valid.`;
     return (null);
 }
 

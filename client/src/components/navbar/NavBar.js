@@ -53,6 +53,12 @@ const NavBar = () => {
           <li className="nav-item">
             <Link className="nav-link" to="/Search">Search</Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/notifications">Notifications</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/history">History</Link>
+          </li>
           <li className="nav-item dropdown">
             <Link className="nav-link dropdown-toggle" to="/register" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Dropdown</Link>
@@ -67,10 +73,6 @@ const NavBar = () => {
             <Link className="nav-link" to="#" onClick={e => onClickLogout(e)} >LogOut</Link>
           </li>
         </ul>
-        <form className="form-inline my-2 my-lg-0">
-          <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-          <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
       </div>
     </nav>
   )

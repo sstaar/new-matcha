@@ -1,46 +1,38 @@
-const express		= require('express');
-const db			= require('../../modules/Database');
-const jwt			= require('jsonwebtoken');
+const express = require('express');
+const db = require('../../modules/Database');
+const jwt = require('jsonwebtoken');
 
 router = express.Router();
 
 router.post('/general', async (request, response) => {
-	let resp = {};
-	let user = null;
-
-	if (!request.body.token)
-		resp = { error: "Something is wrong!" };
-
-	// console.log(request.decoded.user);
 
 	let info = {
-		token:	request.body.token
+		user: request.decoded.user,
+		target: request.body.target
 	};
 
-	token = jwt.verify(info.token, "GALATA");
-
-	if (!resp.error && !token.user)
-		resp = { error: "Something is wrong!" };
-
-	if (!resp.error) {
 		try {
-			user = await db.personalQuery('SELECT * FROM users WHERE id LIKE ?', [ token.user ]);
-		if (user.length === 0)
-			resp = { error: "Something is wrong!" };
-		else
-			resp = {
-				username		: user[0].username,
-				firstname		: user[0].firstname,
-				lastname		: user[0].lastname,
-				gender			: user[0].gender,
-				age				: user[0].age,
-				bio				: user[0].bio
-			};
-		}catch(err) {
-			resp = { error:err };
+			user = await db.personalQuery('SELECT * FROM users WHERE id LIKE ?', [info.user]);
+			if (user.length === 0)
+				return response.json({ error: "Something is wrong!" });
+			let userImgs = await db.personalQuery('SELECT path from images WHERE user = ?', [ info.user ]);
+			return response.json({
+				username: user[0].username,
+				firstname: user[0].firstname,
+				lastname: user[0].lastname,
+				gender: user[0].gender,
+				age: user[0].age,
+				bio: user[0].bio,
+				fame_rate: user[0].fame_rating,
+				images: userImgs,
+				orientation: user[0].orientation
+			});
+		} catch (err) {
+			console.log(err);
+			return response.json({
+				error: 'Something is wrong.'
+			});
 		}
-	}
-	response.json(resp);
 
 });
 

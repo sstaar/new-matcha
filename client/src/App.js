@@ -13,6 +13,8 @@ import Suggestion from './components/matching/Suggestion';
 import Messaging from './components/messaging/Messaging';
 import Search from './components/search/Search';
 import Notifications from './components/notification/Notifications';
+import History from './components/history/History';
+import UserPage from './components/userPage/UserPage';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -34,6 +36,8 @@ function App() {
         <ConnectedComponent path="/Messaging" component={Messaging} />
         <ConnectedComponent path="/Search" component={Search} />
         <ConnectedComponent path="/notifications" component={Notifications} />
+        <ConnectedComponent path="/history" component={History} />
+        <ConnectedComponent path="/user/:id" component={UserPage} />
       </Router>
     </Provider>
   );

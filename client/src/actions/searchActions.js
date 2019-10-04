@@ -24,7 +24,8 @@ export const changeSelectedTags = async (tags) => {
 export const searchRequest = async (info) => {
     const token = window.localStorage.getItem('token');
 
-    let res = await axios.post('http://localhost:5000/api/search/seach', { ...info, token });
+    console.log(info);
+    let res = await axios.post('http://localhost:5000/api/search/search', { ...info, token });
     console.log(res);
     return {
         type:SET_SEARCH_DATA,

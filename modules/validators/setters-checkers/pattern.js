@@ -1,4 +1,4 @@
-const setPattern = function (patern) {
+const setPattern = function (pattern) {
     this.pattern = pattern;
     return (this);
 };
