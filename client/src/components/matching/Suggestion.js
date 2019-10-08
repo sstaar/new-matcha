@@ -86,7 +86,7 @@ export default function Suggestion() {
 		commonTags: highestCommonTags
 	})
 
-	if (suggestionList.loading === false) {
+	if (suggestionList.list.length > 0 && suggestionList.loading === false) {
 		lowestAge = Math.min(...suggestionList.list.map((item) => item.age));
 		highestAge = Math.max(...suggestionList.list.map((item) => item.age));
 
@@ -177,7 +177,7 @@ export default function Suggestion() {
 					<Button onClick={sortCommonTagsButton} >Sort common tags</Button>
 				</ButtonGroup>
 
-				{suggestionList.list.map((user) =>
+				{suggestionList.list.length > 0 && suggestionList.list.map((user) =>
 					<UserCard user={user} key={user.id} />
 				)}
 			</div>

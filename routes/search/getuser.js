@@ -16,9 +16,9 @@ router.post('/getuser', async (request, response) => {
     };
 
     try {
-        let res = await db.personalQuery(sqlQuery1, [ info.target ]);
-        let likes = await db.personalQuery(sqlQuery2, [ info.user, info.target ])
-        let matches = await db.personalQuery(sqlQuery3, [ info.user, info.target, info.user, info.target ]);
+        let res = await db.personalQuery(sqlQuery1, [info.target]);
+        let likes = await db.personalQuery(sqlQuery2, [info.user, info.target])
+        let matches = await db.personalQuery(sqlQuery3, [info.user, info.target, info.user, info.target]);
 
         if (res.length === 0)
             return response.json({ error: 'Error 404 user not found.' });
@@ -29,12 +29,12 @@ router.post('/getuser', async (request, response) => {
             relation = 0;
         else if (matches.length > 0)
             relation = 1;
-        let user = await db.personalQuery(sqlQuery1, [ info.user ]);
+        let user = await db.personalQuery(sqlQuery1, [info.user]);
         user = user[0];
         let dist = await distance(user.latitude, user.longitude, res.latitude, res.longitude);
         addToHistory(info.target, info.user, ' has visited you.');//In the front-end we will display for example "Test has visited you."
-        let userImgs = await db.personalQuery('SELECT path from images WHERE user = ?', [ info.target ]);
-        let tags = await db.personalQuery('select tagname, userid from usertags INNER JOIN tags ON usertags.tagid = tags.id WHERE userid = ?', [ info.target ]);
+        let userImgs = await db.personalQuery('SELECT path from images WHERE user = ?', [info.target]);
+        let tags = await db.personalQuery('select tagname, userid, tagid from usertags INNER JOIN tags ON usertags.tagid = tags.id WHERE userid = ?', [info.target]);
         return response.json({
             id: res.id,
             username: res.username,
@@ -43,19 +43,19 @@ router.post('/getuser', async (request, response) => {
             gender: res.gender,
             age: res.age,
             bio: res.bio,
-            distance:dist,
+            distance: dist,
             relation,
             is_online: res.is_online,
-            last_connection :res.last_connection,
+            last_connection: res.last_connection,
             fame_rate: res.fame_rating,
             images: userImgs,
             tags,
         });
     } catch (error) {
         console.log(error);
-		return response.json({
-			error: 'Something is wrong.'
-		});
+        return response.json({
+            error: 'Something is wrong.'
+        });
     }
 
 });

@@ -13,8 +13,9 @@ exports.blockCheck = async (request, response, next) => {
             target,
             user
         ]);
-        if (res.length === 0)
+        if (res.length === 0) {
             return next();
+        }
         return response.status(200).json({ error: 'Bad request.' });
     } catch (error) {
         return response.status(500).json({ error: 'Something is wrong.' });

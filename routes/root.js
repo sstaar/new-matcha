@@ -21,6 +21,7 @@ const removeimg = require('./info/removeimg');
 const suggestion = require('./matching/suggestion');
 const relation = require('./matching/relation');
 const getmatches = require('./matching/getmatches');
+const unlike = require('./matching/unlike');
 
 const getconversation = require('./messages/getconversation');
 
@@ -51,6 +52,7 @@ router.use('/matching', blockCheck);
 router.use('/matching', suggestion);
 router.use('/matching', relation);
 router.use('/matching', getmatches);
+router.use('/matching', unlike);
 
 router.use('/messages', validateToken);
 router.use('/messages', blockCheck);

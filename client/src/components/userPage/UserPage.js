@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { visitUser, blockUser } from '../../actions/visitingUserActions';
+import { visitUser, blockUser, unLikeUser } from '../../actions/visitingUserActions';
 import UserInfoDisplayer from '../helpers/UserInfoDisplayer';
 import TagsDisplayer from '../helpers/TagsDisplayer';
 
@@ -35,6 +35,11 @@ const UserPage = ({ match }) => {
         dispatch(await blockUser(visitedUserStore.id));
     }
 
+
+    const unlike = async () => {
+        dispatch(await unLikeUser(visitedUserStore.id));
+    }
+
     if (visitedUserStore.error)
         return (<div>{visitedUserStore.error}</div>)
     return (
@@ -46,6 +51,10 @@ const UserPage = ({ match }) => {
                         <Button onClick={block} variant="contained" color="secondary" className={classes.button}>
                             Block
                         </Button>
+                        {visitedUserStore.relation != -1 && <Button onClick={unlike} variant="contained" color="secondary" className={classes.button}>
+                            Unlike
+                        </Button>}
+
                         <TagsDisplayer tags={visitedUserStore.tags} canDelete={false} />
                     </div>
             }
