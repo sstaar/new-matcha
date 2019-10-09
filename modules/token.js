@@ -1,7 +1,8 @@
 'use strict'
 const jwt = require('jsonwebtoken');
+const db = require('./Database')
 
-exports.validateToken = (request, res, next) => {
+exports.validateToken = async (request, res, next) => {
 
   const authorizationBody = request.body.token;
   // return res.json( request.body);
@@ -17,14 +18,15 @@ exports.validateToken = (request, res, next) => {
 
       // Let's pass back the decoded token to the request object.
       request.decoded = result;
+      const user = await db.personalQuery('SELECT * FROM users WHERE id = ?', [result.user]);
+      if (user.length != 1)
+        return res.status(401).json({ error: `Authentication error.7mar.` })
       // We call next to pass execution to the subsequent middleware.
-      next();
+      return next();
     } catch (err) {
       // Throw an error just in case anything goes wrong with verification.
-      // TODO: Make the error invisible to client and push it to logs.
-      res.json({
-        status: 500,
-        message: "PORN"
+      return res.status(500).json({
+        error: "PORN"
       })
       console.log(Error(err));
     }
@@ -33,8 +35,7 @@ exports.validateToken = (request, res, next) => {
     console.log("HAHA");
     result = {
       error: `Authentication error. Token required al7mar.`,
-      status: 401
     };
-    res.status(200).send(result);
+    return res.status(200).send(result);
   }
 };

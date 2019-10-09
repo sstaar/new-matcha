@@ -25,7 +25,7 @@ router.post('/suggestion', async (request, response) => {
                 info.user,
                 info.user,
             ]);
-        let userOrientation = await db.personalQuery('SELECT orientation FROM users WHERE id = ?', [ info.user ]);
+        let userOrientation = await db.personalQuery('SELECT orientation FROM users WHERE id = ?', [info.user]);
         userOrientation = userOrientation[0].orientation;
         res = res.filter((item) => {
             let distanceBetween = distance(info.latitude, info.longitude, item.latitude, item.longitude);
@@ -37,11 +37,13 @@ router.post('/suggestion', async (request, response) => {
             return (distance1 - distance2);
         })
 
-        
+        if (res.length === 0)
+            return response.json({ res });
+
         //------------
         let existingTags = res.map((item) => item.id);
-        let connectedUserTags = await db.personalQuery('SELECT tagid FROM usertags WHERE userid = ?', [ info.user ]);
-        let suggestionUsersTags = await db.personalQuery('SELECT * FROM usertags WHERE userid IN (?)', [ existingTags ]);
+        let connectedUserTags = await db.personalQuery('SELECT tagid FROM usertags WHERE userid = ?', [info.user]);
+        let suggestionUsersTags = await db.personalQuery('SELECT * FROM usertags WHERE userid IN (?)', [existingTags]);
         console.log(connectedUserTags);
         res.forEach((user) => {
             let tags = [];
