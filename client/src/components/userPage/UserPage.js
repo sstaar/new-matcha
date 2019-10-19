@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { visitUser, blockUser, unLikeUser } from '../../actions/visitingUserActions';
+import { visitUser, blockUser, unLikeUser, reportUser } from '../../actions/visitingUserActions';
 import UserInfoDisplayer from '../helpers/UserInfoDisplayer';
 import TagsDisplayer from '../helpers/TagsDisplayer';
 
@@ -36,6 +36,11 @@ const UserPage = ({ match }) => {
     }
 
 
+    const report = async () => {
+        dispatch(await reportUser(visitedUserStore.id));
+    }
+
+
     const unlike = async () => {
         dispatch(await unLikeUser(visitedUserStore.id));
     }
@@ -50,6 +55,9 @@ const UserPage = ({ match }) => {
                         <UserInfoDisplayer user={visitedUserStore} />
                         <Button onClick={block} variant="contained" color="secondary" className={classes.button}>
                             Block
+                        </Button>
+                        <Button onClick={report} variant="contained" color="secondary" className={classes.button}>
+                            Report fake account
                         </Button>
                         {visitedUserStore.relation != -1 && <Button onClick={unlike} variant="contained" color="secondary" className={classes.button}>
                             Unlike

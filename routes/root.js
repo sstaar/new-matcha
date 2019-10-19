@@ -32,6 +32,7 @@ const getnotifs = require('./notifications/getnotifs');
 const gethistory = require('./notifications/gethistory');
 
 const blockuser = require('./block/blockuser');
+const reportuser = require('./block/reportuser');
 
 router.use('', register);
 router.use('', login);
@@ -70,5 +71,6 @@ router.use('/notifications', gethistory);
 router.use('/block', validateToken);
 router.use('/block', blockCheck);
 router.use('/block', blockuser);
+router.use('/block', reportuser);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import { VISIT_USER, BLOCK_USER, UNLIKE_USER_SECCESS, UNLIKE_USER_FAIL } from './types';
+import { VISIT_USER, BLOCK_USER, UNLIKE_USER_SECCESS, UNLIKE_USER_FAIL, REPORT_USER } from './types';
 import axios from 'axios';
 
 export const visitUser = async (target) => {
@@ -22,6 +22,15 @@ export const blockUser = async (target) => {
     }
 };
 
+export const reportUser = async (target) => {
+    const token = window.localStorage.getItem('token');
+
+    await axios.post('http://localhost:5000/api/block/reportuser', { token, target });
+
+    return {
+        type: REPORT_USER
+    }
+};
 
 export const unLikeUser = async (target) => {
     const token = window.localStorage.getItem('token');
