@@ -12,9 +12,9 @@ import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles(theme => ({
 	center: {
-        margin: '20px auto',
-        textAlign: 'center',
-    },
+		margin: '20px auto',
+		textAlign: 'center',
+	},
 	root: {
 		display: 'flex',
 		flexWrap: 'wrap',
@@ -30,11 +30,12 @@ const useStyles = makeStyles(theme => ({
 
 const formatDate = (date) => {
 	let dateInfo = date.toLocaleString();
-		let datePattern = /^(?:([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})).+$/;
-		let matches = dateInfo.match(datePattern);
-		let res = matches[3] + '-' + matches[2] + '-' + matches[1];
-
-		return (res);
+	console.log(dateInfo);
+	let datePattern = /^(?:([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})).+$/;
+	let matches = dateInfo.match(datePattern);
+	let res = matches[3] + '-' + matches[1] + '-' + matches[2];
+	console.log(res);
+	return (res);
 };
 
 
@@ -50,7 +51,7 @@ const Register = () => {
 		password2: '',
 		firstname: '',
 		lastname: '',
-		gender : 'male',
+		gender: 'male',
 	});
 
 	const [date, setDate] = useState(new Date())
@@ -75,7 +76,7 @@ const Register = () => {
 
 	const handleDateChange = date => {
 		setDate(date);
-	  }; 
+	};
 
 	//This part is for getting the data from the redux store
 	//The main store can be found in /client/src/store.js
@@ -93,10 +94,9 @@ const Register = () => {
 	const onSubmit = async e => {
 		//This prevent the from from reloading the page or redirecting to somewhere else
 		e.preventDefault();
-		console.log(formData);
 		//This dispatch the action that sends the request to the ap
 		//and storing the result into the redux store
-		dispatch(await register({ ...formData, birthday:formatDate(date)}));
+		dispatch(await register({ ...formData, birthday: formatDate(date) }));
 	}
 
 
@@ -135,20 +135,20 @@ const Register = () => {
 				</MuiPickersUtilsProvider>
 
 				<FormControl variant="outlined" className={classes.formControl}>
-						<Select
-							native
-							value={gender ? gender : ''}
-							onChange={e => onChange(e)}
-							labelWidth={50}
-							inputProps={{
-								name: 'gender',
-								id: 'outlined-age-native-simple',
-							}}
-							name="gender"
-						>
-							<option>male</option>
-							<option>female</option>
-						</Select>
+					<Select
+						native
+						value={gender ? gender : ''}
+						onChange={e => onChange(e)}
+						labelWidth={50}
+						inputProps={{
+							name: 'gender',
+							id: 'outlined-age-native-simple',
+						}}
+						name="gender"
+					>
+						<option>male</option>
+						<option>female</option>
+					</Select>
 				</FormControl>
 
 				<Input display="Password" type="password" name="password1" onChange={e => onChange(e)} value={password1} error={registerationErrors.password1} />

@@ -15,7 +15,6 @@ router.post('/suggestion', async (request, response) => {
         let res = await db.personalQuery('SELECT latitude, longitude  FROM users WHERE id LIKE ?', [info.user]);
         info = { ...info, ...res[0] };
         const dist = 50;
-        // res = await db.personalQuery(`SELECT * from users WHERE (latitude >= ? - ${dist} AND longitude <= ? + ${dist}) AND (longitude >= ? - ${dist} AND longitude <= ? + ${dist})`, [ info.latitude, info.latitude, info.longitude, info.longitude ]);
         res = await db.personalQuery(`SELECT * FROM users WHERE (id NOT LIKE ?)
                                         AND id NOT IN (SELECT secondaryuser FROM relations WHERE primaryuser = ?)
                                         AND id NOT IN (SELECT user1 FROM matches WHERE user2 LIKE ?)

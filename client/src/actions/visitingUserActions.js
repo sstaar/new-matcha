@@ -1,4 +1,4 @@
-import { UNLIKE_USER, VISIT_USER, BLOCK_USER } from './types';
+import { VISIT_USER, BLOCK_USER, UNLIKE_USER_SECCESS, UNLIKE_USER_FAIL } from './types';
 import axios from 'axios';
 
 export const visitUser = async (target) => {
@@ -27,12 +27,19 @@ export const unLikeUser = async (target) => {
     const token = window.localStorage.getItem('token');
 
     try {
-        await axios.post('http://localhost:5000/api/matching/unlike', { token, target });
+        let response = await axios.post('http://localhost:5000/api/matching/unlike', { token, target });
+        if (response.data.error)
+            return {
+                type: UNLIKE_USER_FAIL
+            }
+        return {
+            type: UNLIKE_USER_SECCESS
+        }
     } catch (error) {
         console.log(error);
+        return {
+            type: UNLIKE_USER_FAIL
+        }
     }
 
-    return {
-        type: UNLIKE_USER
-    }
 };

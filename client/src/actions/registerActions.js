@@ -8,9 +8,6 @@ import axios from 'axios';
 export const register = async (info) => {
 	console.log(info);
 	let res = await axios.post('http://localhost:5000/api/register', info);
-
-	console.log(res);
-	console.log('in action');
 	if (res.data.errors)
 		return {
 			type: REGISTER_FAIL,

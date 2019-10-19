@@ -1,6 +1,6 @@
 const setDate = function () {
-    this.isDate = true;
-    return (this);
+	this.isDate = true;
+	return (this);
 };
 
 const _isLeapYear = function (year) {
@@ -21,7 +21,7 @@ const _isLeapYear = function (year) {
 // 11 - December - 31 days
 
 const _daysOfMonth = function (month, year) {
-	if ([ 1, 3, 5, 7, 8, 10, 12 ].includes(month))
+	if ([1, 3, 5, 7, 8, 10, 12].includes(month))
 		return (31);
 	if (month !== 2)
 		return (30);
@@ -32,9 +32,10 @@ const _daysOfMonth = function (month, year) {
 
 //yyyy-mm-dd
 const isDate = (date) => {
-    let datePattern = /^([0-9]{4,4})-([0-9]{1,2})-([0-9]{1,2})(?: ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}))?$/;
+	console.log(date);
+	let datePattern = /^([0-9]{4,4})-([0-9]{1,2})-([0-9]{1,2})(?: ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}))?$/;
 
-    const matches = date.match(datePattern);
+	const matches = date.match(datePattern);
 	if (matches === null)
 		return (false);
 	const year = matches[1];
@@ -53,6 +54,6 @@ const isDate = (date) => {
 };
 
 module.exports = {
-    setDate,
-    isDate
+	setDate,
+	isDate
 };

@@ -1,58 +1,60 @@
-const express		= require('express');
-const db			= require('../../modules/Database');
-const jwt			= require('jsonwebtoken');
+const express = require('express');
+const db = require('../../modules/Database');
+const jwt = require('jsonwebtoken');
+const sv = require('../../modules/validators/validator');
 
 router = express.Router();
 
-const validateInfo = (info) => {
-	if (info)
-		return (info);
-	return ('none');
-};
-
-const validateGender = (gender) => {
-	if (gender && (gender === "male" || gender === "female"))
-		return (gender);
-	return ('none')
-};
-
 router.post('/edit', async (request, response) => {
-	let resp = {};
-	let regex = /^[0-9]+$/;
 
-	if (!request.body.token)
-		resp = { error: "Something is wrong!" };
+	let userSchema = {
+		firstname: sv.string().required(),
+		lastname: sv.string().required(),
+		orientation: sv.string().required().match(/^(male|female|both)$/),
+		gender: sv.string().required().match(/^(male|female)$/),
+		longitude: sv.number().required(),
+		latitude: sv.number().required(),
+	}
+
 	let info = {
-		token		: validateInfo(request.body.token),
-		firstname	: validateInfo(request.body.firstname),
-		lastname	: validateInfo(request.body.lastname),
-		gender		: validateGender(request.body.gender),
-		bio			: validateInfo(request.body.bio),
-		orientation : request.body.orientation
+		user: request.decoded.user,
+		firstname: request.body.firstname,
+		lastname: request.body.lastname,
+		gender: request.body.gender,
+		bio: request.body.bio,
+		orientation: request.body.orientation,
+		longitude: request.body.longitude,
+		latitude: request.body.latitude
 	};
 
 	console.log(info);
 
-	token = jwt.verify(info.token, "GALATA");
-
-	if (!token.user)
-		resp = { error: "Something is wrong!" };
-
 	try {
-		if (!resp.error) {
-			await db.personalQuery("UPDATE users SET firstname = ?, lastname = ?, gender = ?, bio = ?, orientation = ? WHERE id LIKE ?", [
+		await sv.validate(info, userSchema);
+		console.log(info);
+
+		await db.personalQuery(`UPDATE users SET
+					firstname = ?, lastname = ?, gender = ?, bio = ?, orientation = ?, longitude = ?, latitude = ?
+					WHERE id LIKE ? `, [
 				info.firstname,
 				info.lastname,
 				info.gender,
 				info.bio,
 				info.orientation,
-				token.user,
+				info.longitude,
+				info.latitude,
+				info.user,
 			]);
-		}
-	} catch (err) {
-		resp = { error: "Something is wrong!" };
+		return response.json({ success: 'You informations have been updated.' })
+
+	} catch (error) {
+		console.log(error);
+		if (error.customErrors)
+			return response.json({ errors: error.customErrors });
+		console.log(error.customErrors);
+		return;
 	}
-	
+
 	response.json(resp);
 });
 

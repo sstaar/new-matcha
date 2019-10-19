@@ -73,13 +73,15 @@ const EditUserInfo = ({ user }) => {
 		gender: user.gender,
 		bio: user.bio,
 		orientation: user.orientation,
+		longitude: user.longitude,
+		latitude: user.latitude,
 		errors: {}
 	});
 
 	//Getting the token from the redux store
 
 	//simplifications
-	const { firstname, lastname, gender, bio, orientation, errors } = formData;
+	const { firstname, lastname, gender, bio, orientation, longitude, latitude, errors } = formData;
 
 	//It keeps on updating the form inputs
 	const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -162,6 +164,24 @@ const EditUserInfo = ({ user }) => {
 						margin="normal"
 						variant="outlined"
 						value={bio ? bio : 'Please enter your bio'}
+					/>
+
+					<Input
+						display="latitude"
+						type="text"
+						name="latitude"
+						onChange={e => onChange(e)}
+						value={latitude}
+						error={errors.error_lastname}
+					/>
+
+					<Input
+						display="longitude"
+						type="text"
+						name="longitude"
+						onChange={e => onChange(e)}
+						value={longitude}
+						error={errors.error_lastname}
 					/>
 
 				</DialogContent>

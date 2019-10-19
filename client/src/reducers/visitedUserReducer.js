@@ -1,10 +1,10 @@
-import { VISIT_USER, BLOCK_USER } from '../actions/types';
+import { VISIT_USER, BLOCK_USER, UNLIKE_USER_SECCESS } from '../actions/types';
 
 const initialState = { loading: true };
 
 //The user reducer is for dealing with user informations
 export default function (state = initialState, action) {
-	switch(action.type) {
+    switch (action.type) {
         case VISIT_USER:
             return {
                 ...action.payload,
@@ -12,10 +12,15 @@ export default function (state = initialState, action) {
             };
         case BLOCK_USER:
             return {
-                loading:false,
+                loading: false,
                 error: 'Error 404 user not found.'
             }
-		default:
-			return state;
-	}
+        case UNLIKE_USER_SECCESS:
+            return {
+                ...state,
+                relation: -1
+            }
+        default:
+            return state;
+    }
 }

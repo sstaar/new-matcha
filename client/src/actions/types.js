@@ -41,4 +41,5 @@ export const RECEIVE_HISTORY = "RECEIVE_HISTORY";
 
 export const VISIT_USER = "VISIT_USER";
 export const BLOCK_USER = "BLOCK_USER";
-export const UNLIKE_USER = "UNLIKE_USER";
+export const UNLIKE_USER_SECCESS = "UNLIKE_USER_SECCESS";
+export const UNLIKE_USER_FAIL = "UNLIKE_USER_FAIL";
