@@ -45,9 +45,9 @@ const MatchesList = () => {
     return (
         <div className={classes.root} >
             {
-                !matchesDataStore.loading && matchesDataStore.users.length > 0?
+                !matchesDataStore.loading && matchesDataStore.users && matchesDataStore.users.length > 0 ?
                     matchesDataStore.users.map((match) =>
-                        <ListItem button onClick={e => setter(match) } key={match.id}>
+                        <ListItem button onClick={e => setter(match)} key={match.id}>
                             <ListItemText primary={match.username} />
                         </ListItem>
                     ) :

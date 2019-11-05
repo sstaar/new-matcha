@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-var	http = require('http').createServer(app);
+var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 const db = require('./modules/Database');
@@ -39,7 +39,7 @@ app.use('/test', (request, response) => {
 	console.log('AAAA');
 	var base64Data = request.body.img.split(';base64,').pop();
 	console.log(base64Data);
-	require("fs").writeFile("imgs/out.png", base64Data, {encoding: 'base64'}, function(err) {
+	require("fs").writeFile("imgs/out.png", base64Data, { encoding: 'base64' }, function (err) {
 		console.log(err);
 	});
 	response.json(request.body.img)
@@ -52,15 +52,15 @@ app.use('/api', api);
 
 var sockets = {};
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
 	let token = socket.request._query['token'];
 	let id = tokenToId(token);
 	console.log("A user is connected, User id :" + id);
 	sockets[id] = socket;
-	db.personalQuery('UPDATE users SET is_online = 1 WHERE id = ? ', [ id ]);
+	db.personalQuery('UPDATE users SET is_online = 1 WHERE id = ? ', [id]);
 	socket.on('disconnect', () => {
 		console.log(id);
-		db.personalQuery('UPDATE users SET is_online = 0, last_connection = NOW() WHERE id = ?', [ id ]);
+		db.personalQuery('UPDATE users SET is_online = 0, last_connection = NOW() WHERE id = ?', [id]);
 	});
 	socket.on('message', async (msg) => {
 		try {
@@ -68,10 +68,12 @@ io.on('connection', function(socket){
 			let response = await saveMessage(msg.token, msg.receiver, msg.message);
 			console.log(response);
 			notify(msg.receiver, 'You have recieved a message');
+
 			if (sockets[msg.receiver]) {
 				sockets[msg.receiver].send(response)
 			}
 			socket.send(response)
+
 		} catch (error) {
 			console.log(error);
 		}
