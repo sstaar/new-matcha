@@ -118,7 +118,7 @@ const Register = () => {
 	return (
 		
 		<div className="holder col-lg-6 col-md-10 col-sm-12 mx-auto">
-			<h1 class="text-center font-weight-bold mb-5 animated heartBeat">Match <span class="animated rotateIn">🔥</span>, Chat  <span class="animated rotateIn">😋</span>, Date  <span class="animated rotateIn">😍</span></h1>
+			<h1 className="text-center font-weight-bold mb-5 animated heartBeat">Match <span className="animated rotateIn">🔥</span>, Chat  <span className="animated rotateIn">😋</span>, Date  <span className="animated rotateIn">😍</span></h1>
 				<div className="bg-light rounded p-4 animated fadeInUp">
 					<h3>Create new Account</h3>
 					<form className="needs-validation" onSubmit={e => onSubmit(e)} noValidate>

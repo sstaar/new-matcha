@@ -49,15 +49,27 @@ const Search = () => {
 
     const [sortOrder, setSortOrder] = useState(1);
 
-    const handleSliderChange = (event, newValue) => {
-        setValue(newValue);
-        console.log(newValue);
+    const [searchData,setSearchData] = useState({
+        ageGap:searchDataStore.ageGap,
+        distanceGap:searchDataStore.distanceGap,
+        fameGap:searchDataStore.fameGap,
+    })
+
+    const handleSliderChange = (event, newValue, name) => {
+        console.log(name)
+        setSearchData({
+            ...searchData,
+            [name]:newValue
+        })
+        // setValue(newValue);
+        // console.log(newValue);
     };
 
     const sendSearchRequest = async () => {
         dispatch(await searchRequest({
-            ageGap: searchDataStore.ageGap,
-            distanceGap: searchDataStore.distanceGap,
+            ageGap: searchData.ageGap,
+            fameGap:searchData.fameGap,
+            distanceGap: searchData.distanceGap,
             tags: searchDataStore.selectedTags
         }));
     };
@@ -83,20 +95,26 @@ const Search = () => {
             <Grid className={classes.parent} container spacing={3}>
                 <Grid className={classes.item} item xs={8} sm={4}>
                     <Paper className={classes.paper}>
+                    AgeGap
                         <Slider
-                            value={typeof value === 'number' ? value : 0}
-                            onChange={handleSliderChange}
+                            value={typeof value === 'number' ? searchData.ageGap : 0}
+                            onChange={(event, newValue) => handleSliderChange(event, newValue, 'ageGap')}
                             aria-labelledby="input-slider"
+                            name="ageGap"
                         />
+                    DistanceGap
                         <Slider
-                            value={typeof value === 'number' ? value : 0}
-                            onChange={handleSliderChange}
+                            value={typeof value === 'number' ? searchData.distanceGap : 0}
+                            onChange={(event, newValue) => handleSliderChange(event, newValue, 'distanceGap')}
                             aria-labelledby="input-slider"
+                            name="distanceGap"
                         />
+                    fameGap
                         <Slider
-                            value={typeof value === 'number' ? value : 0}
-                            onChange={handleSliderChange}
+                            value={typeof value === 'number' ? searchData.fameGap : 0}
+                            onChange={(event, newValue) => handleSliderChange(event, newValue, 'fameGap')}
                             aria-labelledby="input-slider"
+                            name="fameGap"
                         />
                         <TagSelection />
                         <Button onClick={e => sendSearchRequest()} variant="contained" color="primary" className={classes.button}>

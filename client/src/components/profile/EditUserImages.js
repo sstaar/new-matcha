@@ -85,17 +85,14 @@ const EditUserImages = () => {
     //To save it on the database and after that uses the function
     //Update to update the informations in the parent component
     const handleSave = async e => {
-        dispatch();
         setOpen(false);
     }
 
     const onChange = async e => {
-		const token = window.localStorage.getItem('token');
-		
-		
-		let base = await getBase64(e.target.files[0])
-		console.log(base);
-		dispatch(await addImg(base));
+        if (imagesStore.length < 5) {
+		    let base = await getBase64(e.target.files[0])
+		    dispatch(await addImg(base));
+        }
     };
     
     return (

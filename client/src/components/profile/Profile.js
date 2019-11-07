@@ -56,7 +56,7 @@ const Profile = () => {
 	if (userStore.loading === false)
 		return (
 			<div>
-				<h1 class="font-weight-bold text-center mb-3">👨Your Profile</h1>
+				<h1 className="font-weight-bold text-center mb-3">👨Your Profile</h1>
 				<UserInfoDisplayer user={userStore.info} />
 				<EditUserInfo className="d-inline" user={userStore.info} />
 				<EditUserImages className="d-inline"/>

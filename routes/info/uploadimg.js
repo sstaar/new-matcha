@@ -28,10 +28,8 @@ router.post('/uploadimg', async (request, response) => {
     try {
         let imgsCount = await db.personalQuery('SELECT count(*) as count FROM images WHERE user = ?', [info.user]);
         if (imgsCount[0].count >= 5)
-            return response.json({ warning: "You exceed 5 images." })
-
+            return response.json({ warning: "You exceeded 5 images." })
         let imgLoc = '/app/client/public/imgs/';
-
         if (!fs.existsSync(imgLoc + info.user))
             await fs.mkdirSync(imgLoc + info.user);
         let imgData = info.img.split(';base64,').pop();

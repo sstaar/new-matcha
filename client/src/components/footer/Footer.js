@@ -2,7 +2,7 @@ import React from 'react'
 
 export const Footer = () => {
     return (
-        <div class="footer">
+        <div className="footer">
                 Made with 💛 @ 1337
         </div>
     )

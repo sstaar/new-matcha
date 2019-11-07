@@ -11,6 +11,7 @@ const initialState = {
     searchData: {
         ageGap: 50,
         distanceGap: 50,
+        fameGap: 50,
         tags: [],
         selectedTags: [],
         loading: true

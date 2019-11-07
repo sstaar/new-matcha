@@ -96,6 +96,9 @@ export const addImg = async (base64) => {
 	if (!img.warning || !img.error)
 		return {
 			type: ADD_IMG,
-			payload: img.data
+			payload: {
+				path:base64,
+				id:Date.now()
+			}
 		}
 };

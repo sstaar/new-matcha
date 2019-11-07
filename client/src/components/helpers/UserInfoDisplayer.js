@@ -78,13 +78,13 @@ const UserInfoDisplayer = ({ user }) => {
     const classes = useStyles();
 
     return (
-        <div class="col-6 p-10 profileContainer p-4 mx-auto text-center">
-            <UserImagesDisplay class="w-100" imgs={user.images} />
-            <h3>{user.username} <span class="badge badge-secondary">{user.age}</span></h3>
+        <div className="col-6 p-10 profileContainer p-4 mx-auto text-center">
+            <UserImagesDisplay className="w-100" imgs={user.images} />
+            <h3>{user.username} <span className="badge badge-secondary">{user.age}</span></h3>
             <Progress className="w-50 mx-auto" theme="warning" value={user.fame_rate * 10}>{user.fame_rate * 10}</Progress>
-            <p class="mt-2  fs-10 mb-0">First Name : <b>{user.firstname}</b></p>
-            <p class="mt-2 mb-0">Last Name : <b>{user.lastname}</b></p>
-            <p class="mt-2 mb-0">{user.bio}</p>
+            <p className="mt-2  fs-10 mb-0">First Name : <b>{user.firstname}</b></p>
+            <p className="mt-2 mb-0">Last Name : <b>{user.lastname}</b></p>
+            <p className="mt-2 mb-0">{user.bio}</p>
         </div>
         // <Paper className={classes.root + ' ' + classes.center} >
         //     <UserImagesDisplay className="rounded-circle" imgs={user.images} />

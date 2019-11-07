@@ -22,6 +22,8 @@ router.post('/search', async (request, response) => {
         let user = await db.personalQuery('SELECT * FROM users WHERE id = ?', [ info.user ]);
         user = user[0];
 
+        console.log(res);
+
         res = res.filter((item) => {
             let dis = distance(user.latitude, user.longitude, item.latitude, item.longitude);
 
@@ -31,6 +33,8 @@ router.post('/search', async (request, response) => {
         res.forEach((item) => {
             item.distance = distance(user.latitude, user.longitude, item.latitude, item.longitude);
         });
+
+        
         
         response.json( res );
     } catch (error) {

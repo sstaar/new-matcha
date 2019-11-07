@@ -19,13 +19,13 @@ export default function (state = initialState, action) {
 				}
 			};
 		case ADD_IMG:
-		return {
-			...state,
-			info: {
-				...state.info,
-				images: [ ...state.info.images, action.payload ]
-			}
-		};
+			return {
+				...state,
+				info: {
+					...state.info,
+					images: [ ...state.info.images, action.payload ]
+				}
+			};
 		case INFO_FAILED:
 			return {
 				error		: action.payload,

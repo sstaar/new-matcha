@@ -71,7 +71,7 @@ const EditUserInfo = ({ user }) => {
 		firstname: user.firstname,
 		lastname: user.lastname,
 		gender: user.gender,
-		bio: user.bio,
+		bio: user.bio ? user.bio : 'Please enter your bio',
 		orientation: user.orientation,
 		longitude: user.longitude,
 		latitude: user.latitude,
@@ -163,7 +163,7 @@ const EditUserInfo = ({ user }) => {
 						onChange={e => onChange(e)}
 						margin="normal"
 						variant="outlined"
-						value={bio ? bio : 'Please enter your bio'}
+						value={bio}
 					/>
 
 					<Input

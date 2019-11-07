@@ -30,27 +30,27 @@ const NavBar = () => {
               </li> */}
           {
             connected === true ?
-                <span class="liContainer">
+                <span className="liContainer">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/profile"><i class="fas fa-user-circle"></i> Profile</Link>
+                  <Link className="nav-link" to="/profile"><i className="fas fa-user-circle"></i> Profile</Link>
                 </li> 
                 <li className="nav-item">
-                  <Link className="nav-link" to="/suggestions"><i class="fas fa-user-alt"></i> Suggestion</Link>
+                  <Link className="nav-link" to="/suggestions"><i className="fas fa-user-alt"></i> Suggestion</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/Messaging"><i class="fas fa-envelope"></i> Messaging</Link>
+                  <Link className="nav-link" to="/Messaging"><i className="fas fa-envelope"></i> Messaging</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/Search"><i class="fas fa-search"></i> Search</Link>
+                  <Link className="nav-link" to="/Search"><i className="fas fa-search"></i> Search</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/notifications"><i class="fas fa-bell"></i> Notifications</Link>
+                  <Link className="nav-link" to="/notifications"><i className="fas fa-bell"></i> Notifications</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/history"><i class="fas fa-history"></i> History</Link>
+                  <Link className="nav-link" to="/history"><i className="fas fa-history"></i> History</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="#" onClick={e => onClickLogout(e)} ><i class="fas fa-sign-out-alt"></i> LogOut</Link>
+                  <Link className="nav-link" to="#" onClick={e => onClickLogout(e)} ><i className="fas fa-sign-out-alt"></i> LogOut</Link>
                 </li>
                 </span>             
             : <div></div>
@@ -59,12 +59,12 @@ const NavBar = () => {
           }
           {
             connected === false ?
-              <span class="liContainer">
+              <span className="liContainer">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login"><i class="fas fa-sign-in-alt"></i> LogIn</Link>
+                  <Link className="nav-link" to="/login"><i className="fas fa-sign-in-alt"></i> LogIn</Link>
                 </li> 
                 <li className="nav-item">
-                  <Link className="nav-link" to="/register"><i class="fas fa-plus"></i> Register</Link>
+                  <Link className="nav-link" to="/register"><i className="fas fa-plus"></i> Register</Link>
                 </li>
               </span>
               : <div></div>
