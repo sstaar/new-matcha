@@ -5,7 +5,7 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-
+import './helper.css'
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 400,
@@ -19,12 +19,11 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default,
   },
   img: {
-    height: 255,
-    maxWidth: 400,
+    height: 200,
+    width: 200,
     overflow: 'hidden',
     display: 'block',
-    width: '100%',
-    borderRadius: '2%',
+    borderRadius: '50%',
     margin: '10px auto'
   },
 }));
@@ -64,26 +63,26 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
           className={classes.img}
           src='/imgs/user.png'
         /> :
-        <img
+        <img 
           className={classes.img}
           src={(imgs[activeStep] && imgs[activeStep].path)}
         />}
       <MobileStepper
+        className="col-4 mx-auto bg-transparent"
         steps={maxSteps}
         position="static"
-        variant="text"
+        variant="dots"
         activeStep={activeStep}
         nextButton={
           <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-            Next
+            
                         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
           </Button>
         }
         backButton={
           <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
             {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-            Back
-                    </Button>
+          </Button>
         }
       />
 

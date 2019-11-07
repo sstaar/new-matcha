@@ -72,7 +72,6 @@ router.post('/register', async (request, response) => {
 		console.log(error);
 		if (error.customErrors)
 			return response.json({ errors: error.customErrors });
-		console.log(error.customErrors);
 		return;
 	}
 });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { login } from '../../actions/loginActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from '../helpers/Input';
+import './register.css';
 
 const getGeoLocation = () => {
 	return new Promise((resolve, reject) => {
@@ -62,14 +63,18 @@ const Login = () => {
 	console.log(loginStore.errors);
 
 	return (
-		<div className="container">
-			<form className="needs-validation" onSubmit={e => onSubmit(e)} noValidate>
-				<Input display="Username" type="text" name="username" onChange={e => onChange(e)} value={username} error={loginStore.errors.username} />
+		<div className=" ml-3 col-lg-6 col-md-10 col-sm-12 mx-auto">
+			<h1 class="text-center font-weight-bold mb-5 animated heartBeat">Match <span class="animated rotateIn">🔥</span>, Chat  <span class="animated rotateIn">😋</span>, Date  <span class="animated rotateIn">😍</span></h1>
+			<div class="bg-light rounded p-4 animated fadeInUp">
+				<h3>Login</h3>
+				<form className="needs-validation" onSubmit={e => onSubmit(e)} noValidate>
+					<Input display="Username" type="text" name="username" onChange={e => onChange(e)} value={username} error={loginStore.errors.username} />
 
-				<Input display="Password" type="password" name="password" onChange={e => onChange(e)} value={password} error={loginStore.errors.password} />
+					<Input display="Password" type="password" name="password" onChange={e => onChange(e)} value={password} error={loginStore.errors.password} />
 
-				<button type="submit" className="btn btn-primary">Submit</button>
-			</form>
+					<button type="submit" className="btn submit">Submit</button>
+				</form>
+			</div>
 		</div>
 	)
 }

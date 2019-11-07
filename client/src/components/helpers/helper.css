@@ -1,0 +1,18 @@
+.none{
+    display: flex;
+    padding: 8px;
+    align-items: center;
+    flex-direction: row;
+    background: #e8ecef;
+    justify-content: space-between;
+    min-width: 152px;
+    margin: auto;
+    max-width: 288px;
+}
+.profileContainer
+{
+    border-radius: 2%;
+    background-color: #ff6347!important;
+    color:#fff
+}
+.profileContainer h3{color:#fff}

@@ -1,0 +1,24 @@
+.navbar
+{
+    background-color:#ff6347;
+    color: #fff;
+    margin-bottom:15%;
+}
+.navbar a{
+    color:#fff
+}
+.liContainer{
+    display: inherit;
+}
+.footer
+{
+    margin-top:15%;
+    text-align: center;
+    background-color:#ff6347;
+    color: #fff;
+    padding: 20px;
+}
+body
+{
+    background: url('/assets/bodyBack.png');
+}

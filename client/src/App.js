@@ -18,6 +18,7 @@ import UserPage from './components/userPage/UserPage';
 
 import store from './store';
 import { Provider } from 'react-redux';
+import { Footer } from './components/footer/Footer';
 
 
 
@@ -39,6 +40,7 @@ function App() {
         <ConnectedComponent path="/history" component={History} />
         <ConnectedComponent path="/user/:id" component={UserPage} />
       </Router>
+      <Footer />
     </Provider>
   );
 }

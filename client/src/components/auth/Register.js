@@ -8,7 +8,14 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "shards-ui/dist/css/shards.min.css"
+import { FormSelect } from "shards-react";
+import { CardImg } from "shards-react";
+import { red } from '@material-ui/core/colors';
+import '../root.css'
+import './register.css';
+import '../cssTools/animate.css';
 
 const useStyles = makeStyles(theme => ({
 	center: {
@@ -26,6 +33,9 @@ const useStyles = makeStyles(theme => ({
 	selectEmpty: {
 		marginTop: theme.spacing(2),
 	},
+	changeDateStyle:{
+		color:red,
+	}
 }));
 
 const formatDate = (date) => {
@@ -99,63 +109,60 @@ const Register = () => {
 		dispatch(await register({ ...formData, birthday: formatDate(date) }));
 	}
 
+	console.log(formData);
+
 
 	//The Input tag is a custom tag that i made that we could use when ever we have an imput
 	//It manage in the error case to display the error 
 	//Can be found in /client/src/components/helpers/Input.js
 	return (
+		
+		<div className="holder col-lg-6 col-md-10 col-sm-12 mx-auto">
+			<h1 class="text-center font-weight-bold mb-5 animated heartBeat">Match <span class="animated rotateIn">🔥</span>, Chat  <span class="animated rotateIn">😋</span>, Date  <span class="animated rotateIn">😍</span></h1>
+				<div className="bg-light rounded p-4 animated fadeInUp">
+					<h3>Create new Account</h3>
+					<form className="needs-validation" onSubmit={e => onSubmit(e)} noValidate>
+						{registerationSuccess ? <div className="alert alert-success" role="alert">{registerationSuccess}</div> : <div></div>}
 
-		<div className="container">
-			<form className="needs-validation" onSubmit={e => onSubmit(e)} noValidate>
+						<Input display="Username"  type="text" name="username" onChange={e => onChange(e)} value={username} error={registerationErrors.username} />
 
-				{registerationSuccess ? <div className="alert alert-success" role="alert">{registerationSuccess}</div> : <div></div>}
+						<Input display="Firstname" type="text" name="firstname" onChange={e => onChange(e)} value={firstname} error={registerationErrors.firstname} />
 
-				<Input display="Username" type="text" name="username" onChange={e => onChange(e)} value={username} error={registerationErrors.username} />
+						<Input display="Lastname" type="text" name="lastname" onChange={e => onChange(e)} value={lastname} error={registerationErrors.lastname} />
 
-				<Input display="Firstname" type="text" name="firstname" onChange={e => onChange(e)} value={firstname} error={registerationErrors.firstname} />
+						<Input display="E-Mail" type="mail" name="email" onChange={e => onChange(e)} value={email} error={registerationErrors.email} />
 
-				<Input display="Lastname" type="text" name="lastname" onChange={e => onChange(e)} value={lastname} error={registerationErrors.lastname} />
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+							<KeyboardDatePicker
+								className="w-100 my-3"
+								disableToolbar
+								variant="inline"
+								format="yyyy-mm-dd"
+								margin="normal"
+								id="date-picker-dialog"
+								label="Birthdate"
+								value={date}
+								onChange={handleDateChange}
+								KeyboardButtonProps={{
+									'aria-label': 'change date',
+								}}
+							/>
+						</MuiPickersUtilsProvider>			
+						<FormSelect
+							value={gender ? gender : ''}
+							onChange={e => onChange(e)}
+							name="gender"
+						>
+							<option value="female">Female</option>
+							<option value="male">Male</option>
+						</FormSelect>
 
-				<Input display="E-Mail" type="mail" name="email" onChange={e => onChange(e)} value={email} error={registerationErrors.email} />
+						<Input display="Password" type="password" name="password1" onChange={e => onChange(e)} value={password1} error={registerationErrors.password1} />
 
-				<MuiPickersUtilsProvider utils={DateFnsUtils}>
-					<KeyboardDatePicker
-						disableToolbar
-						variant="inline"
-						format="yyyy-mm-dd"
-						margin="normal"
-						id="date-picker-inline"
-						label="Birthdate"
-						value={date}
-						onChange={handleDateChange}
-						KeyboardButtonProps={{
-							'aria-label': 'change date',
-						}}
-					/>
-				</MuiPickersUtilsProvider>
-
-				<FormControl variant="outlined" className={classes.formControl}>
-					<Select
-						native
-						value={gender ? gender : ''}
-						onChange={e => onChange(e)}
-						labelWidth={50}
-						inputProps={{
-							name: 'gender',
-							id: 'outlined-age-native-simple',
-						}}
-						name="gender"
-					>
-						<option>male</option>
-						<option>female</option>
-					</Select>
-				</FormControl>
-
-				<Input display="Password" type="password" name="password1" onChange={e => onChange(e)} value={password1} error={registerationErrors.password1} />
-
-				<Input display="Repeat password" type="password" name="password2" onChange={e => onChange(e)} value={password2} error={registerationErrors.password2} />
-				<button type="submit" className="btn btn-primary">Submit</button>
-			</form>
+						<Input display="Repeat password" type="password" name="password2" onChange={e => onChange(e)} value={password2} error={registerationErrors.password2} />
+						<button type="submit" className="btn submit w-100 ">Submit</button>
+					</form>
+				</div>	
 		</div>
 	);
 }
