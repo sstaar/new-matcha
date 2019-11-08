@@ -1,10 +1,11 @@
 import {
     CHANGE_SELECTED_TAGS,
-    SET_SEARCH_DATA,
     GET_SEARCH_OPTIONS,
     SEARCH_SORT_AGE,
     SEARCH_SORT_FAME,
-    SEARCH_SORT_DISTANCE
+    SEARCH_SORT_DISTANCE,
+    SET_SEARCH_DATA_SUCCESS,
+    SET_SEARCH_DATA_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -17,7 +18,7 @@ const initialState = {
         loading: true
     },
     searchRes: [],
-    errors: {}
+    error: null
 };
 
 //The user reducer is for dealing with user informations
@@ -78,7 +79,7 @@ export default function (state = initialState, action) {
                     selectedTags: action.payload
                 }
             };
-        case SET_SEARCH_DATA:
+        case SET_SEARCH_DATA_SUCCESS:
             return {
                 searchData: {
                     ...state.searchData,
@@ -88,6 +89,11 @@ export default function (state = initialState, action) {
                 searchRes: [...action.payload],
                 errors: {}
             };
+        case SET_SEARCH_DATA_FAIL:
+            return {
+                ...state,
+                error: action.payload
+            }
         default:
             return state;
     }

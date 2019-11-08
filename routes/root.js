@@ -17,6 +17,7 @@ const getusertags = require('./info/getusertags');
 const getalltags = require('./info/getalltags');
 const uploadimg = require('./info/uploadimg');
 const removeimg = require('./info/removeimg');
+const resetloc = require('./info/resetloc');
 
 const suggestion = require('./matching/suggestion');
 const relation = require('./matching/relation');
@@ -47,6 +48,7 @@ router.use('/info', getusertags);
 router.use('/info', getalltags);
 router.use('/info', uploadimg);
 router.use('/info', removeimg);
+router.use('/info', resetloc);
 
 router.use('/matching', validateToken);
 router.use('/matching', blockCheck);

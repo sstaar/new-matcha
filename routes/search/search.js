@@ -11,15 +11,17 @@ router.post('/search', async (request, response) => {
                         id IN (SELECT userid FROM usertags INNER JOIN tags ON usertags.tagid = tags.id WHERE tags.id IN (?))`;
     let info = {
         user: request.decoded.user,
-        ageGap:request.body.ageGap,
-        distanceGap:request.body.distanceGap,
+        ageGap: request.body.ageGap,
+        distanceGap: request.body.distanceGap,
         tags: request.body.tags
     };
 
     try {
-        let res = await db.personalQuery(sqlQuery, [ info.user, info.tags ]);
+        if (info.tags.length === 0)
+            return response.json({ error: 'You need to choose at least one tag.' })
+        let res = await db.personalQuery(sqlQuery, [info.user, info.tags]);
 
-        let user = await db.personalQuery('SELECT * FROM users WHERE id = ?', [ info.user ]);
+        let user = await db.personalQuery('SELECT * FROM users WHERE id = ?', [info.user]);
         user = user[0];
 
         console.log(res);
@@ -34,14 +36,14 @@ router.post('/search', async (request, response) => {
             item.distance = distance(user.latitude, user.longitude, item.latitude, item.longitude);
         });
 
-        
-        
-        response.json( res );
+        if (res.length === 0)
+            return response.json({ error: 'No user meets your conditions.' })
+        response.json(res);
     } catch (error) {
         console.log(error);
-		return response.json({
-			error: 'Something is wrong.'
-		});
+        return response.json({
+            error: 'Something is wrong.'
+        });
     }
 
 });

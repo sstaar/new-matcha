@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { visitUser, blockUser, unLikeUser, reportUser } from '../../actions/visitingUserActions';
@@ -7,6 +7,7 @@ import TagsDisplayer from '../helpers/TagsDisplayer';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { reactToUser } from '../../actions/suggestionListAction';
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -45,13 +46,17 @@ const UserPage = ({ match }) => {
         dispatch(await unLikeUser(visitedUserStore.id));
     }
 
+    const react = async (reaction) => {
+        dispatch(await reactToUser(visitedUserStore.id, reaction));
+    }
+
     if (visitedUserStore.error)
         return (<div>{visitedUserStore.error}</div>)
     return (
         <div>
             {
                 visitedUserStore.loading === true ? 'loading' :
-                    <div>
+                    <div class="container">
                         <UserInfoDisplayer user={visitedUserStore} />
                         <Button onClick={block} variant="contained" color="secondary" className={classes.button}>
                             Block
@@ -59,9 +64,21 @@ const UserPage = ({ match }) => {
                         <Button onClick={report} variant="contained" color="secondary" className={classes.button}>
                             Report fake account
                         </Button>
-                        {visitedUserStore.relation != -1 && <Button onClick={unlike} variant="contained" color="secondary" className={classes.button}>
+                        {(visitedUserStore.relation === 1 || visitedUserStore.relation === 0) && <Button onClick={unlike} variant="contained" color="secondary" className={classes.button}>
                             Unlike
                         </Button>}
+                        {
+                            visitedUserStore.relation === -1 &&
+                            <Fragment>
+                                <Button onClick={e => react(1)} variant="outlined" color="primary" className={classes.button}>
+                                    <i className="fas fa-thumbs-up"></i>
+                                </Button>
+                                <Button onClick={e => react(-1)} variant="outlined" color="secondary" className={classes.button}>
+                                    <i className="fas fa-thumbs-down"></i>
+                                </Button>
+                            </Fragment>
+
+                        }
 
                         <TagsDisplayer tags={visitedUserStore.tags} canDelete={false} />
                     </div>

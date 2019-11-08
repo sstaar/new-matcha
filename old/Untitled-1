@@ -1,0 +1,19 @@
+users: [
+    { id, username }
+]
+
+user_tags: [
+    { tagId, userId, tagName }
+]
+
+currentUserTag = [ '1', '2', '3']
+
+users.forEach((user) => {
+    let tags = [];
+    user_tags.forEach((item) => {
+        if (item.userId === user.id)
+            tags.push(item.tagId);
+    });
+    user.tags = tags;
+    user.commonTagCount = currentUserTag.filter(tag => tags.includes(tag)).length;
+});

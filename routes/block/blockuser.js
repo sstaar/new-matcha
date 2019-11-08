@@ -12,13 +12,15 @@ router.post('/blockuser', async (request, response) => {
     };
 
     try {
-        await db.personalQuery(sqlQuery, [ info.user, info.target ]);
+        if (info.user === info.target)
+            return response.json({ error: "Seb7an lah...You can't block yourself." });
+        await db.personalQuery(sqlQuery, [info.user, info.target]);
         return response.json({ success: 'You blocked the user' });
     } catch (error) {
         console.log(error);
-		return response.status(500).json({
-			error: 'Something is wrong.'
-		});
+        return response.status(500).json({
+            error: 'Something is wrong.'
+        });
     }
 
 });

@@ -3,6 +3,37 @@ const db = require('../../../modules/Database');
 const hash = require('../../../modules/bcrypt');
 const sv = require('../../../modules/validators/validator');
 const DateDiff = require('date-diff');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
+
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  secure: false,
+  auth: {
+    user: 'matcha469@gmail.com',
+    pass: 'Youssef123#'
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+var sendEmail = (to, subject, text) => {
+	var HelperOptions = {
+	  from: '"youssef" <matcha469@gmail.com',
+	  to: to,
+	  subject: subject,
+	  text: text
+	};
+	return new Promise((resolve, reject) => {
+	  if (transporter.sendMail(HelperOptions)) {
+		resolve("Mail Sent !");
+	  } else {
+		reject(Error("It broke"));
+	  }
+	});
+  }
 
 router = express.Router();
 
@@ -57,16 +88,19 @@ router.post('/register', async (request, response) => {
 			return response.json({ errors });
 			
 		let hashedPass = await hash.hashing(info.password1);
+		var token = await crypto.randomBytes(32).toString('hex');
 		await db.personalQuery(
-			"INSERT INTO users (`username`, `password`, `email`, `firstname`, `lastname`, `age`, `gender`) VALUES (?, ?, ?, ?, ?, ?, ?)", [
+			"INSERT INTO users (`username`, `password`, `email`, `firstname`, `lastname`, `age`, `gender`,`emailHash`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [
 				info.username,
 				hashedPass,
 				info.email,
 				info.firstname,
 				info.lastname,
 				age,
-				info.gender
+				info.gender,
+				token,
 			]);
+		await sendEmail(info.email, "your account is created","Hello " + info.username + "click here to validate your account http://localhost:5000/api/validateEmail/" + token );
 		return response.json({ success: 'Account has been created please chech your mail for activation.' });
 	} catch (error) {
 		console.log(error);
@@ -75,5 +109,55 @@ router.post('/register', async (request, response) => {
 		return;
 	}
 });
+
+router.get('/validateEmail/:token', async (req, res) => {
+	const token = req.params.token;
+	// Check if token exists
+	var checkToken = await db.personalQuery("select * from users where emailHash = ?",[token]);
+	if(checkToken.length > 0)
+	{
+		if(checkToken[0].activated == 0 && checkToken[0].emailHash == token)
+		{
+			await db.personalQuery("UPDATE users SET activated = 1 where emailHash = ?",[token]);
+			res.redirect('http://localhost:3000/login');
+		}
+		else if(checkToken[0].activated == 1)
+			res.redirect('http://alreadyactivated');
+		else
+			res.redirect('http://localhost:3000/register');
+	}
+	console.log(checkToken);
+
+	// User.checkTokenEmail(token)
+	//   .then(([data]) => {
+	// 	// if the is token in db do update
+	// 	console.log(data);
+	// 	if (data.length > 0) {
+	// 	  if (data[0].emailToken == token && data[0].accStat == "not active") {
+	// 		// activate account
+	// 		User.activateAccount(token)
+	// 		  .then(() => {
+	// 			req.flash('successMsg', 'your account is activated You can login now!');
+	// 			return res.redirect('/auth/login');
+	// 		  })
+	// 	  } // redirect if account is already verified
+	// 	  else if (data[0].accStat == "active") {
+	// 		req.flash('successMsg', 'your account is already verified');
+	// 		return res.redirect('/auth/login');
+	// 	  } else {
+	// 		return res.redirect('/auth/login');
+	// 	  }
+	// 	} else { // redirect because it's not found
+	// 	  return res.render('auth/login', {
+	// 		errors: [{
+	// 		  msg: "invalid Token"
+	// 		}],
+	// 		successMsg: null
+	// 	  });
+	// 	}
+	//   })
+	//   .catch(err => console.log(err));
+  }
+);
 
 module.exports = router;

@@ -48,12 +48,8 @@ const Login = () => {
 			e.preventDefault();
 			let pos = await getGeoLocation();
 			const { latitude, longitude } = pos.coords;
-			console.log('pos is :');
-			console.log(latitude, longitude );
 			setFormData({ ...formData, latitude, longitude });
 			dispatch(await login({ ...formData, latitude, longitude }));
-			console.log('Connecting...')
-				
 		} catch (error) {
 			console.log(error)
 		}

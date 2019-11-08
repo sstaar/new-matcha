@@ -13,10 +13,9 @@ router.post('/reportuser', async (request, response) => {
     };
 
     try {
+        if (info.user === info.target)
+            return response.json({ error: "Seb7an lah...You can't report yourself." });
         await db.personalQuery(sqlQuery, [info.user, info.target]);
-        // let count = await db.personalQuery(sqlQuery1, [ info.target ]);
-        //if (count[0].count >= 10 )
-        //Do something
         console.log('A user is reported');
         return response.json({ success: 'You reported the user' });
     } catch (error) {

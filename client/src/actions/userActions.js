@@ -1,5 +1,6 @@
-import { INFO_FAILED, INFO_RECIEVED, ADD_TAG, ADD_TAG_FAILED, REMOVE_TAG, UPDATE_INFO, REMOVE_IMG, ADD_IMG } from './types';
+import { INFO_FAILED, INFO_RECIEVED, ADD_TAG, ADD_TAG_FAILED, REMOVE_TAG, REMOVE_IMG, ADD_IMG, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL, RESET_LOCATION_FAIL, RESET_LOCATION_SUCCESS } from './types';
 import axios from 'axios';
+import PublicIp from 'public-ip'
 
 
 //The request to the back-end server will take the token
@@ -27,34 +28,57 @@ export const userInfo = async () => {
 export const updateInfo = async (newInfo) => {
 	const token = window.localStorage.getItem('token');
 
-	await axios.post('http://localhost:5000/api/info/edit', { ...newInfo, token });
+	try {
+		let response = await axios.post('http://localhost:5000/api/info/edit', { ...newInfo, token });
 
-
-	return {
-		type: UPDATE_INFO,
-		payload: newInfo
+		if (response.data.errors)
+			return {
+				type: UPDATE_INFO_FAIL,
+				payload: response.data.errors
+			};
+		return {
+			type: UPDATE_INFO_SUCCESS,
+			payload: newInfo
+		}
+	} catch (error) {
+		return {
+			type: UPDATE_INFO_FAIL,
+			payload: "SERVER ERRROR"
+		};
 	}
+
 }
 
 export const addTag = async (newtag) => {
 	const token = window.localStorage.getItem('token');
 
-	let res = await axios.post('http://localhost:5000/api/info/addtag', { token, tag: newtag });
+	try {
 
-	if (res.data.error)
+
+		let res = await axios.post('http://localhost:5000/api/info/addtag', { token, tag: newtag });
+
+		console.log(res);
+		if (res.data.error)
+			return {
+				type: ADD_TAG_FAILED,
+				payload: res.data.error
+			}
+
 		return {
-			type: ADD_TAG_FAILED
+			type: ADD_TAG,
+			payload: {
+				tagname: newtag,
+				tagid: res.data.id
+			}
 		}
-
-	let newer = {
-		tagname: newtag,
-		tagid: res.data.id
-	};
-
-	return {
-		type: ADD_TAG,
-		payload: newer
+	} catch (error) {
+		return {
+			type: ADD_TAG_FAILED,
+			payload: "Something is wrong."
+		}
 	}
+
+
 };
 
 export const removeTag = async (tags, tagid) => {
@@ -97,8 +121,32 @@ export const addImg = async (base64) => {
 		return {
 			type: ADD_IMG,
 			payload: {
-				path:base64,
-				id:Date.now()
+				path: base64,
+				id: img.id
 			}
 		}
 };
+
+export const resetLocation = async (latitude, longitude) => {
+	let ip = await PublicIp.v4();
+	const token = window.localStorage.getItem('token');
+
+	try {
+		let response = await axios.post('http://localhost:5000/api/info/resetloc', { latitude, longitude, ip, token })
+
+		if (response.errors)
+			return {
+				type: RESET_LOCATION_FAIL,
+				payload: response.errors
+			}
+		return {
+			type: RESET_LOCATION_SUCCESS,
+			payload: response.data
+		}
+	} catch (error) {
+		return {
+			type: RESET_LOCATION_FAIL,
+			payload: "Something is wrong."
+		}
+	}
+}

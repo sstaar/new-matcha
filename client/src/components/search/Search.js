@@ -13,6 +13,16 @@ import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import '../root.css'
+import { SnackBarError } from '../helpers/SnackBarError';
+
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: '#ff6347' }
+    },
+});
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,21 +55,23 @@ const Search = () => {
 
     const searchDataStore = useSelector(state => state.search.searchData);
 
+    const searchErrorStore = useSelector(state => state.search.error);
+
     const [value, setValue] = useState(0);
 
     const [sortOrder, setSortOrder] = useState(1);
 
-    const [searchData,setSearchData] = useState({
-        ageGap:searchDataStore.ageGap,
-        distanceGap:searchDataStore.distanceGap,
-        fameGap:searchDataStore.fameGap,
+    const [searchData, setSearchData] = useState({
+        ageGap: searchDataStore.ageGap,
+        distanceGap: searchDataStore.distanceGap,
+        fameGap: searchDataStore.fameGap,
     })
 
     const handleSliderChange = (event, newValue, name) => {
         console.log(name)
         setSearchData({
             ...searchData,
-            [name]:newValue
+            [name]: newValue
         })
         // setValue(newValue);
         // console.log(newValue);
@@ -68,7 +80,7 @@ const Search = () => {
     const sendSearchRequest = async () => {
         dispatch(await searchRequest({
             ageGap: searchData.ageGap,
-            fameGap:searchData.fameGap,
+            fameGap: searchData.fameGap,
             distanceGap: searchData.distanceGap,
             tags: searchDataStore.selectedTags
         }));
@@ -91,25 +103,26 @@ const Search = () => {
 
 
     return (
-        <div className={classes.root}>
-            <Grid className={classes.parent} container spacing={3}>
-                <Grid className={classes.item} item xs={8} sm={4}>
-                    <Paper className={classes.paper}>
-                    AgeGap
+        <div className="container">
+            <h3 className="font-weight-bold mb-5 text-center">🔍 Search</h3>
+            <div className="row ">
+                <div className="col-lg-4 col-md-6 col-sm-12 search p-4 rounded mr-auto">
+                    <ThemeProvider theme={theme}>
+                        AgeGap
                         <Slider
                             value={typeof value === 'number' ? searchData.ageGap : 0}
                             onChange={(event, newValue) => handleSliderChange(event, newValue, 'ageGap')}
                             aria-labelledby="input-slider"
                             name="ageGap"
                         />
-                    DistanceGap
+                        DistanceGap
                         <Slider
                             value={typeof value === 'number' ? searchData.distanceGap : 0}
                             onChange={(event, newValue) => handleSliderChange(event, newValue, 'distanceGap')}
                             aria-labelledby="input-slider"
                             name="distanceGap"
                         />
-                    fameGap
+                        fameGap
                         <Slider
                             value={typeof value === 'number' ? searchData.fameGap : 0}
                             onChange={(event, newValue) => handleSliderChange(event, newValue, 'fameGap')}
@@ -120,21 +133,16 @@ const Search = () => {
                         <Button onClick={e => sendSearchRequest()} variant="contained" color="primary" className={classes.button}>
                             Search
                         </Button>
-
-                        <ButtonGroup size="small" aria-label="small outlined button group">
-                            <Button onClick={sortAgeButton} >Sort age</Button>
-                            <Button onClick={sortDistanceButton} >Sort distance</Button>
-                            <Button onClick={sortFameButton} >Sort fame rating</Button>
-                        </ButtonGroup>
-                    </Paper>
-                </Grid>
-                <Grid className={classes.item} item xs={11} sm={8}>
-                    <Paper className={classes.paper}>
-                        <UsersList />
-                    </Paper>
-                </Grid>
-
-            </Grid>
+                        <Button variant="outlined" color="primary" className={classes.button} onClick={sortAgeButton} >Sort age</Button>
+                        <Button variant="outlined" color="primary" className={classes.button} onClick={sortDistanceButton} >Sort distance</Button>
+                        <Button variant="outlined" color="primary" className={classes.button} onClick={sortFameButton} >Sort fame rating</Button>
+                    </ThemeProvider>
+                </div>
+                <div className="col-lg-8 col-md-6 col-sm-12 ml-auto">
+                    <div className="col-lg-6 float-left"><UsersList /></div>
+                </div>
+            </div>
+            <SnackBarError message={searchErrorStore} type="error" />
         </div>
     );
 }

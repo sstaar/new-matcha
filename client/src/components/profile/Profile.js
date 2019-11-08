@@ -13,6 +13,16 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import EditUserImages from './EditUserImages';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import '../root.css'
+import { ResetLocation } from './ResetLocation';
+
+const theme = createMuiTheme({
+	palette: {
+		primary: { main: '#ff6347' }
+	},
+});
 
 const useStyles = makeStyles(theme => ({
 	button: {
@@ -55,25 +65,27 @@ const Profile = () => {
 	//And once we have the info we display them in a card
 	if (userStore.loading === false)
 		return (
-			<div>
-				<h1 className="font-weight-bold text-center mb-3">👨Your Profile</h1>
-				<UserInfoDisplayer user={userStore.info} />
-				<EditUserInfo className="d-inline" user={userStore.info} />
-				<EditUserImages className="d-inline"/>
-				<Grid container>
-					{
-						tags.length > 0 ?
-							<Grid
-								item
-								xs={12}
-								sm={8}
-								style={{ margin: '20px auto' }} >
-								<TagsDisplayer tags={tags} canDelete={true} />
-							</Grid> : <div></div>
-					}
+			<div className="container">
+				<h3 className="font-weight-bold mb-5 text-center">👶🏻 Your Profile</h3>
+				<div className="row mt-5">
+					<div className="col-lg-5 mx-3 col-md-10 col-sm-12 fl-left mx-auto  ">
+						<h4>Your Public Profile :</h4>
+						<UserInfoDisplayer user={userStore.info} />
+						<h4 className="mt-4">Your Tags :</h4>
+						<div>
+							{
+								tags.length > 0 ? <TagsDisplayer tags={tags} canDelete={true} /> : <div></div>
+							}
+							<AddTags />
+						</div>
+					</div>
+					<div className="col-lg-5 col-md-10 col-sm-12 mx-3  text-left bg-light rounded fl-right p-4 ">
+						<h4 className="mt-2">Edit Profile :</h4>
+						<EditUserInfo className="d-inline" user={userStore.info} />
+						<ResetLocation />
+					</div>
+				</div>
 
-					<Grid item xs={10} sm={5} style={{ margin: '20px auto' }} ><AddTags /></Grid>
-				</Grid>
 
 
 			</div>
