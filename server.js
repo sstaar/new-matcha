@@ -35,17 +35,6 @@ app.use((err, request, response, next) => {
 		});
 })
 
-app.use('/test', (request, response) => {
-	console.log('AAAA');
-	var base64Data = request.body.img.split(';base64,').pop();
-	console.log(base64Data);
-	require("fs").writeFile("imgs/out.png", base64Data, { encoding: 'base64' }, function (err) {
-		console.log(err);
-	});
-	response.json(request.body.img)
-});
-
-
 const api = require('./routes/root');
 app.use('/api', api);
 

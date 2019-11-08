@@ -97,7 +97,7 @@ const EditUserImages = () => {
     
     return (
 
-        <div className={classes.center}>
+        <div >
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                 Edit Your images
       		</Button>
@@ -108,16 +108,11 @@ const EditUserImages = () => {
                 aria-labelledby="draggable-dialog-title"
             >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                    Subscribe
+                    Edit Your Images
         		</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        To subscribe to this website, please enter your email address here. We will send updates
-						occasionally.
-          			</DialogContentText>
-
                     <UserImagesDisplay imgs={imagesStore} deleteImg={deleteImg} />
-
+                    <Input onChange={e => onChange(e)} type="file" name="avatar" />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
@@ -126,7 +121,6 @@ const EditUserImages = () => {
                     <Button onClick={handleSave} color="primary">
                         Save
           			</Button>
-                      <input onChange={e => onChange(e)} type="file" name="avatar" />
                 </DialogActions>
             </Dialog>
         </div>

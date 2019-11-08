@@ -20,10 +20,10 @@ const useStyles = makeStyles(theme => ({
 	textField: {
 		marginLeft: theme.spacing(1),
 		marginRight: theme.spacing(1),
-	  },
-	  button: {
+	},
+	button: {
 		margin: theme.spacing(1),
-	  },
+	},
 }));
 
 const Tags = () => {
@@ -43,8 +43,7 @@ const Tags = () => {
 	};
 
 	return (
-
-		<Paper className={classes.root}>
+		<div>
 			<TextField
 				id="outlined-name"
 				label="Tag"
@@ -55,10 +54,12 @@ const Tags = () => {
 				variant="outlined"
 				name='newtag'
 			/>
-			<Button onClick={add} variant="contained" className={classes.button}>
-				Add a new tag
-      		</Button>
-		</Paper>
+			<Button onClick={add} className="d-inline-block test-white bg-warning p-3 mt-3" variant="contained">
+				<i className="fas fa-plus"></i>
+			</Button>
+
+
+		</div>
 	)
 }
 

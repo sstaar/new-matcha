@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -35,17 +36,13 @@ const UsersList = () => {
                     <React.Fragment key={user.id}>
                         <CssBaseline />
                         <Container maxWidth="sm">
-                            <img className="main-img card-img-top" src="/imgs/user.png" alt="Main pic" />
-                            <Divider />
-                            <div>{user.firstname + ' ' + user.lastname}</div>
-                            <div>{user.age}</div>
-                            <Divider />
-                            <Button variant="outlined" color="secondary" className={classes.button}>
-                                dislike
-                            </Button>
+                            <Link to={"/user/" + user.id}>
+                                <img className="main-img card-img-top" src="/imgs/user.png" alt="Main pic" />
+                            </Link>
+                            <h4 className="bg-warning text-center text-white py-3">{user.firstname + ' ' + user.lastname} <span className="badge badge-secondary">{user.age}</span></h4>
                         </Container>
                     </React.Fragment>
-                ):<div></div>}
+                ) : <div></div>}
         </div>
 
     )

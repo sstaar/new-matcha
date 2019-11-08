@@ -18,11 +18,13 @@ router.post('/suggestion', async (request, response) => {
         res = await db.personalQuery(`SELECT * FROM users WHERE (id NOT LIKE ?)
                                         AND id NOT IN (SELECT secondaryuser FROM relations WHERE primaryuser = ?)
                                         AND id NOT IN (SELECT user1 FROM matches WHERE user2 LIKE ?)
-                                        AND id NOT IN (SELECT user2 FROM matches WHERE user1 LIKE ?)`, [
+                                        AND id NOT IN (SELECT user2 FROM matches WHERE user1 LIKE ?)
+                                        AND id NOT IN (SELECT user2 FROM block WHERE user1 LIKE ?)`, [
                 info.user,
                 info.user,
                 info.user,
                 info.user,
+                info.user
             ]);
         let userOrientation = await db.personalQuery('SELECT orientation FROM users WHERE id = ?', [info.user]);
         userOrientation = userOrientation[0].orientation;

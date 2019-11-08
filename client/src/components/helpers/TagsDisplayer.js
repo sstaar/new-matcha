@@ -7,7 +7,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
+const theme = createMuiTheme({
+	palette: {
+	  primary: {  main: '#ff6347' }
+	},
+  }); 
 const useStyles = makeStyles(theme => ({
     root: {
         padding: theme.spacing(3, 2),
@@ -30,7 +37,8 @@ const TagsDisplayer = ({ tags, canDelete }) => {
     const dispatch = useDispatch();
 
     return (
-        <Paper className={classes.root}>
+        <div class="">
+            <ThemeProvider theme={theme}>
             {tags.map((tag) => {
                 return (canDelete === true ?
                     <Chip
@@ -49,9 +57,10 @@ const TagsDisplayer = ({ tags, canDelete }) => {
                         variant="outlined"
                     />)
             }
-
+           
             )}
-        </Paper>
+             </ThemeProvider>
+        </div>
     )
 }
 

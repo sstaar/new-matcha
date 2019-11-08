@@ -32,16 +32,19 @@ const History = () => {
 
     if (historyStore.loading === false)
         return (
-            <div>
+            <div class="container">
+                <h3 className="font-weight-bold mb-5 text-center">🕓 History</h3>
+                <ul className="list-group col-lg-5 col-sm-8 mx-auto ">
                 {
                     historyStore.history.map((notif) =>
-                        <div>
+                        <li class="list-group-item">
                             <Link className={classes.link} to={"/user/" + notif.invoker}>{notif.username}</Link>
                             <div key={notif.id}>{notif.content}</div>
-                        </div>
+                        </li>
 
                     )
                 }
+                </ul>
             </div>
         )
     else

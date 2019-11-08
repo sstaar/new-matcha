@@ -49,13 +49,6 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
 
 
 
-  // if (imgs.length === 0)
-  //   return (<div>
-  //     <img
-  //       className={classes.img}
-  //       src='/imgs/user.png'
-  //     />
-  //   </div>)
   return (
     <div>
       {imgs.length === 0 ?
@@ -63,7 +56,7 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
           className={classes.img}
           src='/imgs/user.png'
         /> :
-        <img 
+        <img
           className={classes.img}
           src={(imgs[activeStep] && imgs[activeStep].path)}
         />}
@@ -75,8 +68,8 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
         activeStep={activeStep}
         nextButton={
           <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-            
-                        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+
+            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
           </Button>
         }
         backButton={
@@ -85,14 +78,13 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
           </Button>
         }
       />
-
       {imgs.length > 0 && deleteImg && <Button
         variant="contained"
         color="secondary"
         className={classes.button}
         onClick={e => deleteImg(imgs[activeStep].id)}
       >
-        Delete
+        <i className="fas fa-trash"></i>
       </Button>}
     </div>
   )

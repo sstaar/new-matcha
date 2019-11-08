@@ -4,7 +4,7 @@ const db = require('../../../modules/Database');
 const hash = require('../../../modules/bcrypt');
 const jwt = require('jsonwebtoken');
 const sv = require('../../../modules/validators/validator');
-// const ipInfo = require('ipinfo');
+const iplocation = require("iplocation").default;
 
 router = express.Router();
 
@@ -18,12 +18,17 @@ router.post('/login', async (request, response) => {
 	}
 
 	try {
+
 		let info = await sv.validate(request.body, userSchema);
 
-		// const referer = request.connection.remoteAddress;
-		// ipInfo('8.8.8.8', (err, loc) => {
-		// 	console.log(loc);
-		// });
+		console.log(info)
+
+		if (info.latitude === 0 && info.longitude === 0) {
+			let loc = await iplocation(request.body.ip);
+			info.longitude = loc.longitude;
+			info.latitude = loc.latitude;
+		}
+		console.log("Connect")
 
 		let res = await db.personalQuery('SELECT * FROM users WHERE username LIKE ?', [info.username]);
 		let match = false;
@@ -52,7 +57,7 @@ router.post('/login', async (request, response) => {
 		}
 		return;
 	} catch (error) {
-		console.log('error : ');
+		console.log(error);
 		if (error.customErrors)
 			return response.json({ errors: error.customErrors });
 		console.log(error.customErrors);

@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     },
     paper: {
         paddingBottom: 50,
-        minHeight:700,
+        minHeight: 700,
         maxHeight: 700,
         overflow: 'auto',
         marginTop: 10,
@@ -93,7 +93,7 @@ const Conversation = () => {
     if (socketStore) {
         const array = socketStore.listeners("message");
         if (array.length !== 0)
-        socketStore.listeners("message").splice(0, 1);
+            socketStore.listeners("message").splice(0, 1);
         socketStore.on('message', async (msg) => {
             dispatch(newMessage(msg))
         });
@@ -123,29 +123,33 @@ const Conversation = () => {
                     </List>
                 </Paper>
 
-                <div className='messages-input'>
-                    <TextField
-                        id="outlined-multiline-flexible"
-                        label="Message"
-                        multiline
-                        rowsMax="2"
-                        value={message}
-                        onChange={e => handleChange(e)}
-                        className={classes.textField}
-                        margin="normal"
-                        // helperText="hello"
-                        variant="outlined"
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={e => send()}
-                    >
-                        Send
+                {
+                    receiverStore.id &&
+                    <div className='messages-input'>
+                        <TextField
+                            id="outlined-multiline-flexible"
+                            label="Message"
+                            multiline
+                            rowsMax="2"
+                            value={message}
+                            onChange={e => handleChange(e)}
+                            className={classes.textField}
+                            margin="normal"
+                            // helperText="hello"
+                            variant="outlined"
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                            onClick={e => send()}
+                        >
+                            Send
                         <Icon className={classes.rightIcon}>send</Icon>
-                    </Button>
-                </div>
+                        </Button>
+                    </div>
+                }
+
             </React.Fragment>
         </div>
 

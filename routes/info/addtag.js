@@ -20,6 +20,9 @@ router.post('/addtag', async (request, response) => {
 		return response.json({ error: "Something is wrong with your tag!" });
 	}
 	try {
+		let userTags = await db.personalQuery(`SELECT * FROM usertags WHERE userid= ?`, [info.user]);
+		if (userTags.length >= 5)
+			return response.json({ error: 'You can only have 5 tags.' });
 		let tags = await db.personalQuery("SELECT * FROM tags WHERE `tagname` LIKE ?", [info.tag]);
 		if (tags.length == 0) {
 			await db.personalQuery('INSERT INTO tags (tagname) VALUES (?)', [info.tag])

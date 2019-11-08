@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider'
 import SettingsInputHdmiRoundedIcon from '@material-ui/icons/SettingsInputHdmiRounded';
 import Tooltip from '@material-ui/core/Tooltip';
+import { FormSelect } from "shards-react";
 import { Progress } from "shards-react";
 import './helper.css';
 
@@ -78,7 +79,7 @@ const UserInfoDisplayer = ({ user }) => {
     const classes = useStyles();
 
     return (
-        <div className="col-6 p-10 profileContainer p-4 mx-auto text-center">
+        <div className="w-100 p-10 profileContainer p-4 mx-auto text-center">
             <UserImagesDisplay className="w-100" imgs={user.images} />
             <h3>{user.username} <span className="badge badge-secondary">{user.age}</span></h3>
             <Progress className="w-50 mx-auto" theme="warning" value={user.fame_rate * 10}>{user.fame_rate * 10}</Progress>

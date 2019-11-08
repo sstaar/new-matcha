@@ -2,7 +2,7 @@
 {
     background-color:#ff6347;
     color: #fff;
-    margin-bottom:15%;
+    margin-bottom:10%;
 }
 .navbar a{
     color:#fff
@@ -21,4 +21,12 @@
 body
 {
     background: url('/assets/bodyBack.png');
+}
+h1,h2,h3,h4,h5,h6{
+    color: #585656;
+}
+
+.search{
+    background: #fff;
+    border: 3px dashed #eee;
 }

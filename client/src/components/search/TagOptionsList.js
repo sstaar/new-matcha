@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles(theme => ({
     paper: {
-      width: 200,
+      width: 332,
       height: 230,
       overflow: 'auto',
     }

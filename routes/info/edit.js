@@ -1,7 +1,8 @@
 const express = require('express');
 const db = require('../../modules/Database');
-const jwt = require('jsonwebtoken');
 const sv = require('../../modules/validators/validator');
+const hash = require('../../modules/bcrypt');
+
 
 router = express.Router();
 
@@ -12,8 +13,10 @@ router.post('/edit', async (request, response) => {
 		lastname: sv.string().required(),
 		orientation: sv.string().required().match(/^(male|female|both)$/),
 		gender: sv.string().required().match(/^(male|female)$/),
-		longitude: sv.number().required(),
-		latitude: sv.number().required(),
+		newUsername: sv.string().required(),
+		newPassword: sv.string().required(),
+		oldPassword: sv.string().required()
+
 	}
 
 	let info = {
@@ -23,8 +26,9 @@ router.post('/edit', async (request, response) => {
 		gender: request.body.gender,
 		bio: request.body.bio,
 		orientation: request.body.orientation,
-		longitude: request.body.longitude,
-		latitude: request.body.latitude
+		newUsername: request.body.newUsername,
+		newPassword: request.body.newPassword,
+		oldPassword: request.body.oldPassword
 	};
 
 	console.log(info);
@@ -33,19 +37,27 @@ router.post('/edit', async (request, response) => {
 		await sv.validate(info, userSchema);
 		console.log(info);
 
+		let oldPass = await db.personalQuery(`SELECT password FROM users WHERE id = ?`, [info.user]);
+		console.log(oldPass[0].password, info.oldPassword)
+		let match = await hash.comparing(info.oldPassword, oldPass[0].password);
+		if (match === false)
+			return response.json({ errors: { oldPassword: 'Old password is not correct.' } })
+
+		let newPass = await hash.hashing(info.newPassword);
+
 		await db.personalQuery(`UPDATE users SET
-					firstname = ?, lastname = ?, gender = ?, bio = ?, orientation = ?, longitude = ?, latitude = ?
+					username = ?, password =?, firstname = ?, lastname = ?, gender = ?, bio = ?, orientation = ?
 					WHERE id LIKE ? `, [
+				info.newUsername,
+				newPass,
 				info.firstname,
 				info.lastname,
 				info.gender,
 				info.bio,
 				info.orientation,
-				info.longitude,
-				info.latitude,
 				info.user,
 			]);
-		return response.json({ success: 'You informations have been updated.' })
+		return response.json({ success: 'Your informations have been updated.' })
 
 	} catch (error) {
 		console.log(error);

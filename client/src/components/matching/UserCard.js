@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { reactToUser } from '../../actions/suggestionListAction';
 
@@ -37,22 +38,22 @@ export default function UserCard({ user }) {
         <React.Fragment>
             <CssBaseline />
             <Container maxWidth="sm">
-                <img className="main-img card-img-top" src="/imgs/user.png" alt="Main pic" />
+                <Link to={"/user/" + user.id}>
+                    <img className="main-img card-img-top" src="/imgs/user.png" alt="Main pic" />
+                </Link>
                 <Divider />
-                <div>{user.firstname + ' ' + user.lastname}</div>
-                <div>{user.age}</div>
-                <Divider />
+                <h4 className="bg-warning text-center text-white py-3">{user.firstname + ' ' + user.lastname} <span className="badge badge-secondary">{user.age}</span></h4>
                 <Paper className={classes.root}>
                     <Typography component="p">
-                        {user.bio?user.bio:'No bio yet!.'}
+                        {user.bio ? user.bio : 'No bio yet!.'}
                     </Typography>
                 </Paper>
-                <Button onClick={e => react(-1)} variant="outlined" color="secondary" className={classes.button}>
-                    dislike
-                </Button>
                 <Button onClick={e => react(1)} variant="outlined" color="primary" className={classes.button}>
-                    Like
-                </Button> 
+                    <i className="fas fa-thumbs-up"></i>
+                </Button>
+                <Button onClick={e => react(-1)} variant="outlined" color="secondary" className={classes.button}>
+                    <i className="fas fa-thumbs-down"></i>
+                </Button>
             </Container>
         </React.Fragment>
     );

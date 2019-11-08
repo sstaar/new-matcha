@@ -58,11 +58,9 @@ const TagSelection = () => {
         return (<div></div>);
     else
         return (
-            <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
-                <Grid item>
-                    <TagOptionsList selectedTags={selectedTags} handleToggle={handleToggle} items={searchDataStore.tags} />
-                </Grid>
-            </Grid>
+            <div className="w-100">
+                <TagOptionsList selectedTags={selectedTags} handleToggle={handleToggle} items={searchDataStore.tags} />
+            </div>
         )
 }
 

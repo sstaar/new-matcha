@@ -32,7 +32,6 @@ const _daysOfMonth = function (month, year) {
 
 //yyyy-mm-dd
 const isDate = (date) => {
-	console.log(date);
 	let datePattern = /^([0-9]{4,4})-([0-9]{1,2})-([0-9]{1,2})(?: ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}))?$/;
 
 	const matches = date.match(datePattern);

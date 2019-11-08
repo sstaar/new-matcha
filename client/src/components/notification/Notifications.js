@@ -21,10 +21,13 @@ const Notifications = () => {
 
     if (notificationsStore.loading === false)
         return (
-            <div>
-                {
-                    notificationsStore.notifications.map((notif) => <div key={notif.id}>{notif.content}</div>)
-                }
+            <div class="container">
+                <h3 className="font-weight-bold mb-5 text-center">🔔 Notifications</h3>
+                <ul class="list-group col-lg-5 col-sm-8 mx-auto ">
+                    {
+                        notificationsStore.notifications.map((notif) => <li class="list-group-item" key={notif.id}>{notif.content}</li>)
+                    }
+                </ul>
             </div>
         )
     else
