@@ -92,9 +92,6 @@ export const SnackBarError = ({ message, type }) => {
         // setOpen(false);
     };
 
-
-    // console.log()
-
     if (!message)
         return (<div></div>)
     return (

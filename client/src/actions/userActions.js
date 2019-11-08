@@ -122,7 +122,7 @@ export const addImg = async (base64) => {
 			type: ADD_IMG,
 			payload: {
 				path: base64,
-				id: Date.now()
+				id: img.id
 			}
 		}
 };
