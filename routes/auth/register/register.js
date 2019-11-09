@@ -5,35 +5,7 @@ const sv = require('../../../modules/validators/validator');
 const DateDiff = require('date-diff');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-
-
-let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  secure: false,
-  auth: {
-    user: 'matcha469@gmail.com',
-    pass: 'Youssef123#'
-  },
-  tls: {
-    rejectUnauthorized: false
-  }
-});
-
-var sendEmail = (to, subject, text) => {
-	var HelperOptions = {
-	  from: '"youssef" <matcha469@gmail.com',
-	  to: to,
-	  subject: subject,
-	  text: text
-	};
-	return new Promise((resolve, reject) => {
-	  if (transporter.sendMail(HelperOptions)) {
-		resolve("Mail Sent !");
-	  } else {
-		reject(Error("It broke"));
-	  }
-	});
-  }
+const mail = require('../../../modules/mail');
 
 router = express.Router();
 
@@ -100,7 +72,7 @@ router.post('/register', async (request, response) => {
 				info.gender,
 				token,
 			]);
-		await sendEmail(info.email, "your account is created","Hello " + info.username + "click here to validate your account http://localhost:5000/api/validateEmail/" + token );
+		await mail.sendEmail(info.email, "your account is created","Hello " + info.username + "click here to validate your account http://localhost:5000/api/validateEmail/" + token );
 		return response.json({ success: 'Account has been created please chech your mail for activation.' });
 	} catch (error) {
 		console.log(error);

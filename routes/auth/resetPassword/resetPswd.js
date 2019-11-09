@@ -52,7 +52,7 @@ router.post('/resetChangePassword' , async (req,res) => {
 	const newPassword = req.body.newPassword;
 	// check password
 		// 3afak dir hna check dial pass ma3reftx kifax ndir b module dialk
-	const token = req.body.resetToken;
+	const token = reqrbody.resetToken;
 	
 	//check token in database
 	const user = await db.personalQuery("SELECT * FROM users WHERE resetToken = ?",[token]);
