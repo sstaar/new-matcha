@@ -1,5 +1,13 @@
-const db = require('./Database');
+const db = require("./Database");
 
-module.exports = notify = async (user, message) => {
-    await db.personalQuery('INSERT INTO notifications (userid, content) VALUES (?, ?)', [ user, message ]);
-}
+module.exports = notify = async (user, message, socket) => {
+  try {
+    await db.personalQuery(
+      "INSERT INTO notifications (userid, content) VALUES (?, ?)",
+      [user, message]
+    );
+    socket.emit("notification", message);
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -1,4 +1,4 @@
-import { REGISTER_FAIL, REGISTER_SUCCEED } from '../actions/types';
+import { REGISTER_FAIL, REGISTER_SUCCEED, ACTIVATION_SUCCESS, ACTIVATION_FAIL } from '../actions/types';
 
 //This initial state will always be empty until we make a request
 //to the server then we will fill it
@@ -6,7 +6,10 @@ import { REGISTER_FAIL, REGISTER_SUCCEED } from '../actions/types';
 //In REGISTER_FAIL we will fill it with all the errors returned in the back-end
 const initialState = {
 	errors: {},
-	success: null
+	success: null,
+	activationSuccess:null,
+	activationFailure:null,
+	activationLoading:true
 }
 
 export default function(state = initialState, action) {
@@ -20,6 +23,18 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				success: action.payload
+			}
+		case ACTIVATION_SUCCESS:
+			return {
+				...state,
+				activationSuccess:action.payload,
+				activationLoading:false
+			}
+		case ACTIVATION_FAIL:
+			return {
+				...state,
+				activationFailure:action.payload,
+				activationLoading:false
 			}
 		default:
 			return state;
