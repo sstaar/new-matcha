@@ -116,48 +116,19 @@ router.get('/validateEmail/:token', async (req, res) => {
 	var checkToken = await db.personalQuery("select * from users where emailHash = ?",[token]);
 	if(checkToken.length > 0)
 	{
+		//check if the accounnt is not activated and the token is right
 		if(checkToken[0].activated == 0 && checkToken[0].emailHash == token)
 		{
-			await db.personalQuery("UPDATE users SET activated = 1 where emailHash = ?",[token]);
-			res.redirect('http://localhost:3000/login');
+			await db.personalQuery("UPDATE users SET activated = 1 where emailHash = ?",[token]);	
+			res.json({success: 'Your account is now activated'});
 		}
 		else if(checkToken[0].activated == 1)
-			res.redirect('http://alreadyactivated');
+			res.json({success: 'Your account is already verified'});
 		else
 			res.redirect('http://localhost:3000/register');
 	}
 	console.log(checkToken);
-
-	// User.checkTokenEmail(token)
-	//   .then(([data]) => {
-	// 	// if the is token in db do update
-	// 	console.log(data);
-	// 	if (data.length > 0) {
-	// 	  if (data[0].emailToken == token && data[0].accStat == "not active") {
-	// 		// activate account
-	// 		User.activateAccount(token)
-	// 		  .then(() => {
-	// 			req.flash('successMsg', 'your account is activated You can login now!');
-	// 			return res.redirect('/auth/login');
-	// 		  })
-	// 	  } // redirect if account is already verified
-	// 	  else if (data[0].accStat == "active") {
-	// 		req.flash('successMsg', 'your account is already verified');
-	// 		return res.redirect('/auth/login');
-	// 	  } else {
-	// 		return res.redirect('/auth/login');
-	// 	  }
-	// 	} else { // redirect because it's not found
-	// 	  return res.render('auth/login', {
-	// 		errors: [{
-	// 		  msg: "invalid Token"
-	// 		}],
-	// 		successMsg: null
-	// 	  });
-	// 	}
-	//   })
-	//   .catch(err => console.log(err));
-  }
+	}
 );
 
 module.exports = router;

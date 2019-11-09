@@ -8,6 +8,7 @@ const router = express.Router();
 //Routes
 const register = require('./auth/register/register');
 const login = require('./auth/login/login');
+const reset = require('./auth/resetPassword/resetPswd');
 
 const generalInfo = require('./info/general');
 const editInfo = require('./info/edit');
@@ -37,6 +38,7 @@ const reportuser = require('./block/reportuser');
 
 router.use('', register);
 router.use('', login);
+router.use('', reset);
 
 router.use('/info', validateToken);
 router.use('/info', blockCheck);
