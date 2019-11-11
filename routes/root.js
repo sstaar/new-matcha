@@ -1,7 +1,7 @@
 'use strict'
 const express = require('express');
-const validateToken = require('../modules/token').validateToken;
-const blockCheck = require('../modules/blockCheck').blockCheck;
+const validateToken = require('../middlewares/token').validateToken;
+const blockCheck = require('../middlewares/blockCheck').blockCheck;
 
 const router = express.Router();
 
@@ -19,6 +19,7 @@ const getalltags = require('./info/getalltags');
 const uploadimg = require('./info/uploadimg');
 const removeimg = require('./info/removeimg');
 const resetloc = require('./info/resetloc');
+const serveImg = require('./info/serveimg');
 
 const suggestion = require('./matching/suggestion');
 const relation = require('./matching/relation');
@@ -51,6 +52,7 @@ router.use('/info', getalltags);
 router.use('/info', uploadimg);
 router.use('/info', removeimg);
 router.use('/info', resetloc);
+router.use('/info', serveImg);
 
 router.use('/matching', validateToken);
 router.use('/matching', blockCheck);

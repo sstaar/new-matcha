@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import Axios from 'axios';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
@@ -6,6 +7,12 @@ import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import './helper.css'
+
+const getImage = async (imgId) => {
+  const token = window.localStorage.getItem('token');
+  return await Axios.post('http://localhost:5000/api/info/serveimg', { token, imgId });
+}
+
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 400,
@@ -36,6 +43,8 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
 
   const [activeStep, setActiveStep] = React.useState(0);
 
+  const [image, setImage] = useState(null)
+
   const maxSteps = imgs.length;
 
   const handleNext = () => {
@@ -46,20 +55,23 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
+  useEffect(() => {
 
+    const test = async () => {
+      let img = await getImage(imgs[activeStep].id)
+      setImage(img.data.img);
+    };
+
+    test();
+  });
 
 
   return (
     <div>
-      {imgs.length === 0 ?
-        <img
-          className={classes.img}
-          src='/imgs/user.png'
-        /> :
-        <img
-          className={classes.img}
-          src={(imgs[activeStep] && imgs[activeStep].path)}
-        />}
+      <img
+        className={classes.img}
+        src={image || '/imgs/user.png'}
+      />
       <MobileStepper
         className="col-4 mx-auto bg-transparent"
         steps={maxSteps}

@@ -1,6 +1,6 @@
 'use strict'
 const express = require('express');
-const db = require('../../modules/Database');
+const db = require('../../helpers/Database');
 
 router = express.Router();
 
@@ -11,7 +11,7 @@ router.post('/getusertags', async (request, response) => {
     };
 
     try {
-        let result = await db.personalQuery('SELECT tagname, tagid FROM users INNER JOIN usertags ON users.id = usertags.userid INNER JOIN tags ON usertags.tagid = tags.id WHERE users.id LIKE ?', [ info.user ]);
+        let result = await db.personalQuery('SELECT tagname, tagid FROM users INNER JOIN usertags ON users.id = usertags.userid INNER JOIN tags ON usertags.tagid = tags.id WHERE users.id LIKE ?', [info.user]);
         response.json(result);
     } catch (err) {
         console.log(err);

@@ -110,18 +110,30 @@ export const removeImg = async (imageId) => {
 	}
 };
 
-export const addImg = async (base64) => {
+export const addImg = async (formData) => {
 
 	const token = window.localStorage.getItem('token');
 
-	let img = await axios.post('http://localhost:5000/api/info/uploadimg', { img: base64, token })
+	formData.append('token', token);
+
+	// let img = await axios.post('http://localhost:5000/api/info/uploadimg', { img: file, token })
+	let img = await axios({
+		url: 'http://localhost:5000/api/info/uploadimg',
+		data: formData,
+		method: 'POST',
+		params: {
+			token
+		},
+		contentType: false,
+		processData: false,
+	})
 	img = img.data;
 
 	if (!img.warning || !img.error)
 		return {
 			type: ADD_IMG,
 			payload: {
-				path: base64,
+				path: null/*base64*/,
 				id: img.id
 			}
 		}

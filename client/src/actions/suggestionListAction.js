@@ -2,7 +2,9 @@ import {
   SUGGESTIONS_FAILED,
   SUGGESTIONS_RECIEVED,
   SUGGESTIONS_REACT_SUCCESS,
-  SUGGESTIONS_REACT_FAIL
+  SUGGESTIONS_REACT_FAIL,
+  GET_IMG_FAIL,
+  GET_IMG_SUCCESS
 } from "./types";
 import axios from "axios";
 
@@ -53,3 +55,21 @@ export const reactToUser = async (target, reaction) => {
     };
   }
 };
+
+
+
+export const getImage = async (imgId) => {
+  const token = window.localStorage.getItem('token');
+
+  try {
+    let response = await axios.post('http://localhost:5000/api/info/serveimg', { token, imgId })
+    return {
+      type: GET_IMG_SUCCESS,
+      payload: response.data.img
+    }
+  } catch (error) {
+    return {
+      type: GET_IMG_FAIL
+    }
+  }
+}

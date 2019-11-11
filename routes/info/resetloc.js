@@ -1,6 +1,6 @@
 const express = require('express');
-const db = require('../../modules/Database');
-const sv = require('../../modules/validators/validator');
+const db = require('../../helpers/Database');
+const sv = require('../../helpers/validators/validator');
 const iplocation = require("iplocation").default;
 
 

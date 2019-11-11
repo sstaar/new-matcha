@@ -1,8 +1,8 @@
 "use strict";
 const express = require("express");
-const db = require("../../modules/Database");
+const db = require("../../helpers/Database");
 const distance = require("../../helpers/distance");
-const addToHistory = require("../../modules/history").addToHistory;
+const addToHistory = require("../../helpers/history").addToHistory;
 
 router = express.Router();
 

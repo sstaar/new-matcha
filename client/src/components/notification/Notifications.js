@@ -25,7 +25,7 @@ const Notifications = () => {
                 <h3 className="font-weight-bold mb-5 text-center">🔔 Notifications</h3>
                 <ul class="list-group col-lg-5 col-sm-8 mx-auto ">
                     {
-                        notificationsStore.notifications.map((notif) => <li class="list-group-item" key={notif.id}>{notif.content}</li>)
+                        notificationsStore.notifications.length > 0 && notificationsStore.notifications.map((notif) => <li class="list-group-item" key={notif.id}>{notif.content}</li>)
                     }
                 </ul>
             </div>

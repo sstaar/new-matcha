@@ -1,6 +1,6 @@
 'use strict'
 const express = require('express');
-const db = require('../../modules/Database');
+const db = require('../../helpers/Database');
 const distance = require('../../helpers/distance');
 
 router = express.Router();

@@ -87,67 +87,6 @@ const UserInfoDisplayer = ({ user }) => {
             <p className="mt-2 mb-0">Last Name : <b>{user.lastname}</b></p>
             <p className="mt-2 mb-0">{user.bio}</p>
         </div>
-        // <Paper className={classes.root + ' ' + classes.center} >
-        //     <UserImagesDisplay className="rounded-circle" imgs={user.images} />
-        //     {
-        //         user.is_online === 1 ?
-        //             <Tooltip disableFocusListener title="Connected" placement="bottom">
-        //                 <SettingsInputHdmiRoundedIcon color="primary" />
-        //             </Tooltip> :
-        //             <div></div>
-
-        //     }
-        //     {
-        //         user.is_online === 0 ?
-        //             <Tooltip disableFocusListener title={user.last_connection} placement="bottom">
-        //                 <SettingsInputHdmiRoundedIcon />
-        //             </Tooltip> :
-        //             <div></div>
-        //     }
-         
-        //     <Grid container>
-        //         <Grid item xs={12} sm={12}>
-        //             <Typography className={classes.center} variant="h5" component="h3">
-        //                 {user.username}
-        //             </Typography>
-        //         </Grid>
-        //         <Grid item xs={12} sm={8}>
-        //             <Typography className={classes.center} component="p">
-        //                 {user.firstname + ' ' + user.lastname}
-        //             </Typography>
-        //         </Grid>
-        //         <Grid item xs={12} sm={4}>
-        //             <Typography className={classes.center} component="p">
-        //                 {user.age}
-        //             </Typography>
-        //         </Grid>
-        //         <Grid item xs={12} sm={12}>
-        //             <Typography className={classes.center} component="p">
-        //                 {user.gender}
-        //             </Typography>
-        //         </Grid>
-        //         <Grid item xs={12} sm={12}>
-        //             <Typography className={classes.center} component="p">
-        //                 {user.bio}
-        //             </Typography>
-        //             <Typography className={classes.center} component="p">
-        //                 {user.fame_rate}
-        //             </Typography>
-
-        //         </Grid>
-        //         <Grid className={classes.center} item xs={12} sm={10}>
-        //             <Progress value={user.fame_rate * 10}>{user.fame_rate * 10}</Progress>
-        //             <p>{user.fame_rate * 10}</p>
-        //             {/* <Slider
-        //                 value={user.fame_rate * 10}
-        //                 aria-labelledby="discrete-slider-always"
-        //                 marks={marks}
-        //                 valueLabelDisplay="on"
-        //             /> */}
-        //         </Grid>
-
-        //     </Grid>
-        // </Paper>
     )
 }
 

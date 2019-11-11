@@ -1,5 +1,5 @@
 'use strict';
-const db = require('./Database');
+const db = require('../helpers/Database');
 
 exports.blockCheck = async (request, response, next) => {
     let target = request.body.target;

@@ -1,9 +1,17 @@
 "use strict";
 const express = require("express");
-const db = require("../../modules/Database");
+const db = require("../../helpers/Database");
 const distance = require("../../helpers/distance");
+const fs = require('fs')
 
 router = express.Router();
+
+// const getBase64 = (file) => {
+//   // read binary data
+//   var bitmap = ;
+//   console.log(bitmap);
+//   // convert binary data to base64 encoded string
+// }
 
 router.post("/suggestion", async (request, response) => {
   let info = {
@@ -93,6 +101,16 @@ router.post("/suggestion", async (request, response) => {
         item.longitude
       );
     });
+
+    let imgs = await db.personalQuery(`SELECT * FROM images`);
+    console.log(imgs)
+    let i = 0;
+    for (let item of res) {
+
+      var img = imgs.find((img) => img.user === item.id);
+      if (img)
+        item.imageId = img.id;
+    }
 
     response.json(res);
   } catch (error) {

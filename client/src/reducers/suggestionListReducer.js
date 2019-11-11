@@ -6,17 +6,24 @@ import {
   SUGGESTIONS_SORT_FAME,
   SUGGESTIONS_SORT_COMMON_TAGS,
   SUGGESTIONS_FILTER,
-  SUGGESTIONS_REACT_SUCCESS
+  SUGGESTIONS_REACT_SUCCESS,
+  GET_IMG_SUCCESS
 } from "../actions/types";
 
 const initialState = {
   list: [],
+  img: null,
   loading: true
 };
 
 //The user reducer is for dealing with user informations
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
+    case GET_IMG_SUCCESS:
+      return {
+        ...state,
+        img: action.payload
+      }
     case SUGGESTIONS_FILTER:
       if (state.list.length === 0) return { ...state };
       return {

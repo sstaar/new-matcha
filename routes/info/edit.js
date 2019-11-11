@@ -1,7 +1,7 @@
 const express = require('express');
-const db = require('../../modules/Database');
-const sv = require('../../modules/validators/validator');
-const hash = require('../../modules/bcrypt');
+const db = require('../../helpers/Database');
+const sv = require('../../helpers/validators/validator');
+const hash = require('../../helpers/bcrypt');
 
 
 router = express.Router();

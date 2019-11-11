@@ -1,10 +1,10 @@
 "use strict";
 const express = require("express");
-const db = require("../../modules/Database");
-const notify = require("../../modules/notify");
+const db = require("../../helpers/Database");
+const notify = require("../../helpers/notify");
 const fameRate = require("../../helpers/fameRate").fameRate;
-const addToHistory = require("../../modules/history").addToHistory;
-const imageValidator = require("../../modules/imageValidator").imageValidator;
+const addToHistory = require("../../helpers/history").addToHistory;
+const imageValidator = require("../../middlewares/imageValidator").imageValidator;
 
 router = express.Router();
 

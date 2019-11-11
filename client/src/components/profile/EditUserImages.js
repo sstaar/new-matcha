@@ -47,13 +47,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const getBase64 = (file) => {
-	return new Promise((resolve, reject) => {
-		let reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onloadend = async () => {
-			resolve(reader.result);
-		};
-	})
+    return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = async () => {
+            resolve(reader.result);
+        };
+    });
 }
 
 const EditUserImages = () => {
@@ -90,11 +90,13 @@ const EditUserImages = () => {
 
     const onChange = async e => {
         if (imagesStore.length < 5) {
-		    let base = await getBase64(e.target.files[0])
-		    dispatch(await addImg(base));
+            let formData = new FormData();
+            formData.append('image', e.target.files[0]);
+            // let base = await getBase64(e.target.files[0])
+            dispatch(await addImg(formData));
         }
     };
-    
+
     return (
 
         <div >

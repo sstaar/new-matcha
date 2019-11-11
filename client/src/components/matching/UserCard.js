@@ -1,8 +1,8 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { reactToUser } from "../../actions/suggestionListAction";
+import { reactToUser, getImage } from "../../actions/suggestionListAction";
 
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -29,6 +29,8 @@ export default function UserCard({ user }) {
 
   const classes = useStyles();
 
+  const imgStore = useSelector(state => state.suggestionList.img);
+
   const react = async reaction => {
     dispatch(await reactToUser(user, reaction));
   };
@@ -40,7 +42,7 @@ export default function UserCard({ user }) {
         <Link to={"/user/" + user.id}>
           <img
             className="main-img card-img-top"
-            src="/imgs/user.png"
+            src={imgStore || "/imgs/user.png"}
             alt="Main pic"
           />
         </Link>

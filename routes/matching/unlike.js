@@ -1,7 +1,7 @@
 "use strict";
 const express = require("express");
-const db = require("../../modules/Database");
-const notify = require("../../modules/notify");
+const db = require("../../helpers/Database");
+const notify = require("../../helpers/notify");
 
 router = express.Router();
 

@@ -1,10 +1,11 @@
 const express = require("express");
-const db = require("../../../modules/Database");
-const hash = require("../../../modules/bcrypt");
-const sv = require("../../../modules/validators/validator");
+const db = require("../../../helpers/Database");
+const hash = require("../../../helpers/bcrypt");
+const sv = require("../../../helpers/validators/validator");
 const DateDiff = require("date-diff");
 const crypto = require("crypto");
-const mail = require("../../../modules/mail");
+const mail = require("../../../helpers/mail");
+const user = require('../../../modules/user');
 
 router = express.Router();
 
@@ -15,18 +16,9 @@ router.post("/register", async (request, response) => {
     password2: sv.string().required(),
     firstname: sv.string().required(),
     lastname: sv.string().required(),
-    email: sv
-      .string()
-      .required()
-      .email(),
-    birthday: sv
-      .string()
-      .required()
-      .date(),
-    gender: sv
-      .string()
-      .required()
-      .match(/^(male|female)$/)
+    email: sv.string().required().email(),
+    birthday: sv.string().required().date(),
+    gender: sv.string().required().match(/^(male|female)$/)
   };
 
   let info = {
@@ -47,12 +39,11 @@ router.post("/register", async (request, response) => {
   try {
     console.log("HAHA");
     let info = await sv.validate(request.body, userSchema);
-    let res = await db.personalQuery(
-      "SELECT * FROM users WHERE username LIKE ?",
-      [info.username]
-    );
 
-    if (res.length > 0) errors["username"] = "Username already exists.";
+    let usernameExists = await user.usernameExists(info.username);
+
+    if (usernameExists === true)
+      errors["username"] = "Username already exists.";
     if (info.password1 && info.password2 && info.password1 !== info.password2) {
       errors["password1"] = "Passwords do not match.";
       errors["password2"] = "Passwords do not match.";
@@ -69,8 +60,7 @@ router.post("/register", async (request, response) => {
 
     let hashedPass = await hash.hashing(info.password1);
     var token = await crypto.randomBytes(32).toString("hex");
-    await db.personalQuery(
-      "INSERT INTO users (`username`, `password`, `email`, `firstname`, `lastname`, `age`, `gender`,`emailHash`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    await user.createUser(
       [
         info.username,
         hashedPass,
@@ -81,14 +71,14 @@ router.post("/register", async (request, response) => {
         info.gender,
         token
       ]
-    );
+    )
     await mail.sendEmail(
       info.email,
       "your account is created",
       "Hello " +
-        info.username +
-        "click here to validate your account http://localhost:3000/validateEmail/" +
-        token
+      info.username +
+      "click here to validate your account http://localhost:3000/validateEmail/" +
+      token
     );
     return response.json({
       success: "Account has been created please chech your mail for activation."
@@ -101,34 +91,18 @@ router.post("/register", async (request, response) => {
   }
 });
 
-router.get("/validateEmail/:token", async (req, res) => {
-  const token = req.params.token;
+router.get("/validateEmail/:token", async (request, response) => {
+  const token = request.params.token;
 
   try {
-    var checkToken = await db.personalQuery(
-      "select * from users where emailHash = ?",
-      [token]
-    );
-
-    if (checkToken.length === 0) return res.json({ error: "Invalid token." });
-
-    //check if the accounnt is not activated and the token is right
-    if (checkToken[0].activated == 0 && checkToken[0].emailHash == token) {
-      await db.personalQuery(
-        "UPDATE users SET activated = 1 where emailHash = ?",
-        [token]
-      );
-      res.json({ success: "Your account is now activated" });
-    } else if (checkToken[0].activated == 1)
-      res.json({ error: "Your account is already verified" });
-    else res.json({ error: "Something is wrong." });
+    var accountActivationResponse = await user.activateAccount(token);
+    response.json(accountActivationResponse);
   } catch (error) {
     console.log(error);
     if (error.customErrors)
       return response.json({ errors: error.customErrors });
     return;
   }
-  // Check if token exists
 });
 
 module.exports = router;

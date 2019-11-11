@@ -1,10 +1,10 @@
 'use strict'
 const express = require('express');
-const db = require('../../../modules/Database');
-const hash = require('../../../modules/bcrypt');
+const hash = require('../../../helpers/bcrypt');
 const jwt = require('jsonwebtoken');
-const sv = require('../../../modules/validators/validator');
+const sv = require('../../../helpers/validators/validator');
 const iplocation = require("iplocation").default;
+const user = require('../../../modules/user');
 
 router = express.Router();
 
@@ -21,41 +21,35 @@ router.post('/login', async (request, response) => {
 
 		let info = await sv.validate(request.body, userSchema);
 
-		console.log(info)
-
 		if (info.latitude === 0 && info.longitude === 0) {
 			let loc = await iplocation(request.body.ip);
 			info.longitude = loc.longitude;
 			info.latitude = loc.latitude;
 		}
-		console.log("Connect")
 
-		let res = await db.personalQuery('SELECT * FROM users WHERE username LIKE ?', [info.username]);
+		let userInfo = await user.getUserByUsername(info.username);
 		let match = false;
-		if (res.length !== 0)
-			match = await hash.comparing(info.password, res[0].password);
-		if (res.length === 0 || match === false) {
-			response.json({
+		if (userInfo !== null)
+			match = await hash.comparing(info.password, userInfo.password);
+		if (userInfo === null || match === false) {
+			return response.json({
 				errors: {
 					password: 'Username or password is incorect.',
 					username: 'Username or password is incorect.'
 				}
-			})
-		}
-		else {
-			await db.personalQuery('UPDATE users SET longitude = ?, latitude = ? WHERE username LIKE ?', [info.longitude, info.latitude, info.username]);
-			const payload = { user: res[0].id }
-			//const options = { expiresIn: '2d' }
-			const result = await jwt.sign(payload, /*process.env.JWT_SECRET*/ "GALATA");
-			response.json({
-				id: res[0].id,
-				username: res[0].username,
-				firstname: res[0].firstname,
-				lastname: res[0].lastname,
-				token: result
 			});
 		}
-		return;
+		await user.updateLocation([info.longitude, info.latitude, info.username]);
+		const payload = { user: userInfo.id }
+		//const options = { expiresIn: '2d' }
+		const result = await jwt.sign(payload, /*process.env.JWT_SECRET*/ "GALATA");
+		return response.json({
+			id: userInfo.id,
+			username: userInfo.username,
+			firstname: userInfo.firstname,
+			lastname: userInfo.lastname,
+			token: result
+		});
 	} catch (error) {
 		console.log(error);
 		if (error.customErrors)

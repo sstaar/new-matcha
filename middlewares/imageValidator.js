@@ -1,5 +1,5 @@
 'use strict'
-const db = require('./Database')
+const db = require('../helpers/Database')
 
 exports.imageValidator = async (request, response, next) => {
 

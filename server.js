@@ -9,10 +9,12 @@ const app = express();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
-const db = require("./modules/Database");
-const notify = require("./modules/notify");
+const db = require("./helpers/Database");
+const notify = require("./helpers/notify");
 const tokenToId = require("./helpers/tokenToId").tokenToId;
 const saveMessage = require("./helpers/saveMessage");
+const multer = require('multer');
+
 
 var sockets = {};
 
@@ -26,6 +28,23 @@ db.init({
   database: "db_helbouaz"
 });
 
+//Configuration for multer
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + "-" + file.originalname);
+  }
+});
+// to filter type of files
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg')
+    cb(null, true);
+  else
+    cb(null, false);
+}
+
 // Used to parse the post data of the body.
 app.use(bodyParser.json({ limit: "10mb" })); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: false })); // to support URL-encoded bodies
@@ -34,6 +53,11 @@ app.use((request, response, next) => {
   request.sockets = sockets;
   next();
 });
+
+app.use(multer({
+  storage: fileStorage,
+  fileFilter: fileFilter
+}).single('image')) // we did here this Middleware to use it in any incoming req to see if the is a file with image name
 
 app.use((err, request, response, next) => {
   if (err !== null)
@@ -45,7 +69,7 @@ app.use((err, request, response, next) => {
 const api = require("./routes/root");
 app.use("/api", api);
 
-io.on("connection", function(socket) {
+io.on("connection", function (socket) {
   let token = socket.request._query["token"];
   let id = tokenToId(token);
   console.log("A user is connected, User id :" + id);

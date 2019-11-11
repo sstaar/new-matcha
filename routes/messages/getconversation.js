@@ -1,6 +1,6 @@
 'use strict'
 const express = require('express');
-const db = require('../../modules/Database');
+const db = require('../../helpers/Database');
 
 router = express.Router();
 
@@ -21,9 +21,9 @@ router.post('/getconversation', async (request, response) => {
         return response.status(200).json(messages);
     } catch (error) {
         console.log(error);
-		return response.status(500).json({
-			error: 'Something is wrong.'
-		});
+        return response.status(500).json({
+            error: 'Something is wrong.'
+        });
     }
 });
 

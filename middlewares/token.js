@@ -1,6 +1,6 @@
 'use strict'
 const jwt = require('jsonwebtoken');
-const db = require('./Database')
+const db = require('../helpers/Database')
 
 exports.validateToken = async (request, res, next) => {
 

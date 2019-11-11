@@ -1,6 +1,6 @@
 'use strict'
 const express = require('express');
-const db = require('../../modules/Database');
+const db = require('../../helpers/Database');
 
 router = express.Router();
 
@@ -11,13 +11,13 @@ router.post('/getnotifs', async (request, response) => {
     };
 
     try {
-        let res = await db.personalQuery(sqlQuery, [ info.user ]);
+        let res = await db.personalQuery(sqlQuery, [info.user]);
         response.json(res);
     } catch (error) {
         console.log(error);
-		return response.json({
-			error: 'Something is wrong.'
-		});
+        return response.json({
+            error: 'Something is wrong.'
+        });
     }
 
 });

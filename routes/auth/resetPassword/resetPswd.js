@@ -1,9 +1,9 @@
 "use strict";
 const express = require("express");
-const db = require("../../../modules/Database");
-const hash = require("../../../modules/bcrypt");
-const sv = require("../../../modules/validators/validator");
-const mail = require("../../../modules/mail");
+const db = require("../../../helpers/Database");
+const hash = require("../../../helpers/bcrypt");
+const sv = require("../../../helpers/validators/validator");
+const mail = require("../../../helpers/mail");
 const crypto = require("crypto");
 
 router = express.Router();

@@ -1,6 +1,6 @@
 'use strict'
 const express = require('express');
-const db = require('../../modules/Database');
+const db = require('../../helpers/Database');
 
 router = express.Router();
 
@@ -19,7 +19,7 @@ router.post('/removetag', async (request, response) => {
                 error: 'You do not have this tag.'
             })
         } else {
-            await db.personalQuery('DELETE FROM usertags WHERE userid LIKE ? AND tagid LIKE ?', [ info.user, info.tag ]);
+            await db.personalQuery('DELETE FROM usertags WHERE userid LIKE ? AND tagid LIKE ?', [info.user, info.tag]);
             response.json({
                 error: 'The tag has been removed successfuly.'
             });
