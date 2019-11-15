@@ -4,23 +4,24 @@ let token = window.localStorage.getItem("token");
 let connected = window.localStorage.getItem("connected");
 
 var initialState = {
-  socket: null
+	socket: null
 };
 
 var socket = null;
 
 if (connected === "true") {
-  socket = io(":5000", { query: "token=" + token });
-  // socket.emit('message', 'hello');
+	console.log("SOCKET is trying to connect.")
+	socket = io(":5000", { query: "token=" + token });
+	// socket.emit('message', 'hello');
 
-  initialState = {
-    socket: socket
-  };
+	initialState = {
+		socket: socket
+	};
 }
 
-export default function(state = initialState, action) {
-  switch (action.type) {
-    default:
-      return state;
-  }
+export default function (state = initialState, action) {
+	switch (action.type) {
+		default:
+			return state;
+	}
 }

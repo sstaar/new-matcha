@@ -1,94 +1,70 @@
 "use strict";
 const express = require("express");
-const db = require("../../helpers/Database");
 const notify = require("../../helpers/notify");
 const fameRate = require("../../helpers/fameRate").fameRate;
 const addToHistory = require("../../helpers/history").addToHistory;
 const imageValidator = require("../../middlewares/imageValidator").imageValidator;
+const matching = require('../../modules/matching');
+const user = require('../../modules/user');
 
 router = express.Router();
 
 router.post("/relation", imageValidator, async (request, response) => {
-  if (!request.body.target || !request.body.relation)
-    return response.status(400).json({ error: "Bad request." });
-  let info = {
-    user: request.decoded.user,
-    target: request.body.target,
-    relation: request.body.relation
-  };
+	if (!request.body.target || !request.body.relation)
+		return response.status(400).json({ error: "Bad request." });
+	let info = {
+		user: request.decoded.user,
+		target: request.body.target,
+		relation: request.body.relation
+	};
 
-  try {
-    let res = await db.personalQuery(
-      "SELECT * FROM matches WHERE (user1 LIKE ? AND user2 LIKE ?) OR (user1 LIKE ? AND user2 LIKE ?)",
-      [info.user, info.target, info.target, info.user]
-    );
-    if (res.length != 0) {
-      return response.status(400).json({
-        error: "Something is wrong, You are already matched with that user."
-      });
-    }
-    res = await db.personalQuery(
-      "SELECT * FROM relations WHERE primaryuser LIKE ? AND secondaryuser LIKE ?",
-      [info.user, info.target]
-    );
-    if (res.length != 0)
-      return response.status(400).json({
-        error: "Something is wrong, You already interacted with that person."
-      });
-    res = await db.personalQuery(
-      "SELECT * FROM relations WHERE primaryuser LIKE ? AND secondaryuser LIKE ?",
-      [info.target, info.user]
-    );
-    if (res.length == 0 || res[0].relation == -1) {
-      await db.personalQuery(
-        "INSERT INTO relations ( primaryuser, secondaryuser, relation ) VALUES (?, ?, ?)",
-        [info.user, info.target, info.relation]
-      );
-      let fameRating = await fameRate(info.target);
-      await db.personalQuery(
-        "UPDATE users SET fame_rating = ? WHERE id LIKE ?",
-        [fameRating, info.target]
-      );
-      if (info.relation == 1) {
-        notify(
-          info.target,
-          "You have received a like",
-          request.sockets[info.target]
-        );
-        addToHistory(info.target, info.user, " has liked you."); //In the front-end we will display for example "Test has liked you."
-      }
-      return response.status(200).json({
-        success: "You have interacted with that person successfully.",
-        match: false
-      });
-    } else if (res[0].relation == 1) {
-      await db.personalQuery(
-        "INSERT INTO matches ( user1, user2 ) VALUES (?, ?)",
-        [info.user, info.target]
-      );
-      await db.personalQuery(
-        "DELETE FROM relations WHERE primaryuser LIKE ? AND secondaryuser LIKE ? AND relation = 1",
-        [info.target, info.user]
-      );
-      let fameRating = await fameRate(info.target);
-      await db.personalQuery(
-        "UPDATE users SET fame_rating = ? WHERE id LIKE ?",
-        [fameRating, info.target]
-      );
-      notify(info.target, "You have a new match", request.sockets[info.target]);
-      notify(info.user, "You have a new match", request.sockets[info.user]);
-      addToHistory(info.target, info.user, " has liked you.");
-      return response.status(200).json({
-        success: "You have matched with that person.",
-        match: true
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    return response.status(200).json({
-      error: error
-    });
-  }
+	try {
+		let matched = await matching.userMatchedWith(info.user, info.target);
+		if (matched !== null) {
+			return response.status(400).json({
+				error: "Something is wrong, You are already matched with that user."
+			});
+		}
+		let relation = await matching.userRelationWith(info.user, info.target);
+		if (relation !== null)
+			return response.status(400).json({
+				error: "Something is wrong, You already interacted with that person."
+			});
+		relation = await matching.userRelationWith(info.target, info.user);
+		if (relation !== null || relation === -1) {
+			await matching.createRelation(info.user, info.target, info.relation);
+			let fameRating = await fameRate(info.target);
+			await user.updateFameRating(info.target, fameRating);
+			if (info.relation == 1) {
+				notify(
+					info.target,
+					"You have received a like",
+					request.sockets[info.target]
+				);
+				addToHistory(info.target, info.user, " has liked you."); //In the front-end we will display for example "Test has liked you."
+			}
+			return response.status(200).json({
+				success: "You have interacted with that person successfully.",
+				match: false
+			});
+		} else if (relation == 1) {
+			await matching.matchUserWith(info.user, info.target);
+			let fameRating = await fameRate(info.target);
+			await user.updateFameRating(info.user, fameRating);
+			notify(info.target, "You have a new match", request.sockets[info.target]);
+			notify(info.user, "You have a new match", request.sockets[info.user]);
+			addToHistory(info.target, info.user, " has liked you.");
+			return response.status(200).json({
+				success: "You have matched with that person.",
+				match: true
+			});
+		}
+	} catch (error) {
+		console.log(error);
+		return response.status(200).json({
+			error: error
+		});
+	}
 });
 
 module.exports = router;

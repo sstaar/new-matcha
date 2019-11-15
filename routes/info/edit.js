@@ -1,7 +1,7 @@
 const express = require('express');
-const db = require('../../helpers/Database');
 const sv = require('../../helpers/validators/validator');
 const hash = require('../../helpers/bcrypt');
+const user = require('../../modules/user');
 
 
 router = express.Router();
@@ -37,28 +37,22 @@ router.post('/edit', async (request, response) => {
 		await sv.validate(info, userSchema);
 		console.log(info);
 
-		let oldPass = await db.personalQuery(`SELECT password FROM users WHERE id = ?`, [info.user]);
-		console.log(oldPass[0].password, info.oldPassword)
-		let match = await hash.comparing(info.oldPassword, oldPass[0].password);
+		let userInfo = user.getUserById(info.user);
+		let match = await hash.comparing(info.oldPassword, userInfo.password);
 		if (match === false)
 			return response.json({ errors: { oldPassword: 'Old password is not correct.' } })
-
 		let newPass = await hash.hashing(info.newPassword);
-
-		await db.personalQuery(`UPDATE users SET
-					username = ?, password =?, firstname = ?, lastname = ?, gender = ?, bio = ?, orientation = ?
-					WHERE id LIKE ? `, [
-				info.newUsername,
-				newPass,
-				info.firstname,
-				info.lastname,
-				info.gender,
-				info.bio,
-				info.orientation,
-				info.user,
-			]);
+		await user.updateUserInfo([
+			info.newUsername,
+			newPass,
+			info.firstname,
+			info.lastname,
+			info.gender,
+			info.bio,
+			info.orientation,
+			info.user,
+		])
 		return response.json({ success: 'Your informations have been updated.' })
-
 	} catch (error) {
 		console.log(error);
 		if (error.customErrors)

@@ -1,6 +1,6 @@
 const express = require('express');
-const db = require('../../helpers/Database');
 const fs = require('fs');
+const images = require('../../modules/images');
 
 router = express.Router();
 
@@ -12,11 +12,15 @@ router.post('/removeimg', async (request, response) => {
 	};
 
 	try {
-		let imgPath = await db.personalQuery('SELECT path FROM images WHERE id = ?', [info.imageId]);
+		let img = await images.getImgById(info.imageId);
+		if (!img)
+			return response.json({
+				error: 'Something is wrong.'
+			});
 		imgPath = imgPath[0].path;
 		if (fs.existsSync(imgPath))
 			await fs.unlinkSync(imgPath);
-		await db.personalQuery('DELETE FROM images WHERE id = ?', [info.imageId]);
+		await images.deleteImg(info.imageId);
 		return response.json({ success: 'You have deleted the images successfully.' });
 	} catch (err) {
 		console.log(err);

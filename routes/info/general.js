@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../../helpers/Database');
+const user = require('../../modules/user');
 
 router = express.Router();
 
@@ -10,22 +10,22 @@ router.post('/general', async (request, response) => {
 	};
 
 	try {
-		user = await db.personalQuery('SELECT * FROM users WHERE id LIKE ?', [info.user]);
-		if (user.length === 0)
+		userInfo = await user.getUserById(info.user);
+		if (!userInfo)
 			return response.json({ error: "Something is wrong!" });
-		let userImgs = await db.personalQuery('SELECT path, id from images WHERE user = ?', [info.user]);
+		let userImgs = await user.getUserImgs(info.user);
 		return response.json({
-			username: user[0].username,
-			firstname: user[0].firstname,
-			lastname: user[0].lastname,
-			gender: user[0].gender,
-			age: user[0].age,
-			bio: user[0].bio,
-			fame_rate: user[0].fame_rating,
-			longitude: user[0].longitude,
-			latitude: user[0].latitude,
+			username: userInfo.username,
+			firstname: userInfo.firstname,
+			lastname: userInfo.lastname,
+			gender: userInfo.gender,
+			age: userInfo.age,
+			bio: userInfo.bio,
+			fame_rate: userInfo.fame_rating,
+			longitude: userInfo.longitude,
+			latitude: userInfo.latitude,
 			images: userImgs,
-			orientation: user[0].orientation
+			orientation: userInfo.orientation
 		});
 	} catch (err) {
 		console.log(err);
