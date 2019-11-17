@@ -111,6 +111,11 @@ const updateFameRating = async (userId, newFame) => {
 	);
 }
 
+const getAllUsers = async () => {
+	let users = await db.personalQuery('SELECT * FROM users');
+	return users;
+}
+
 module.exports = {
 	createUser,
 	usernameExists,
@@ -125,5 +130,6 @@ module.exports = {
 	updateUserInfo,
 	getUserImgs,
 	getUsersInfo,
-	updateFameRating
+	updateFameRating,
+	getAllUsers
 }

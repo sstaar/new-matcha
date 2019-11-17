@@ -48,7 +48,7 @@ const deleteUserTag = async (userId, tagId) => {
 
 const getUsersTags = async (users) => {
 	let tags = await db.personalQuery(
-		"SELECT * FROM usertags WHERE userid IN (?)",
+		"SELECT usertags.userid as userid, usertags.tagid, tags.tagname as tagname FROM usertags INNER JOIN tags ON usertags.tagid = tags.id WHERE usertags.userid IN (?)",
 		[users]
 	);
 	return tags;

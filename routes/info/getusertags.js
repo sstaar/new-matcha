@@ -13,7 +13,6 @@ router.post('/getusertags', async (request, response) => {
 
 	try {
 		let result = await tags.getUserTags(info.user);
-		console.log(result);
 		response.json(result);
 	} catch (err) {
 		console.log(err);

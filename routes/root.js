@@ -30,6 +30,7 @@ const getconversation = require('./messages/getconversation');
 
 const search = require('./search/search');
 const getuser = require('./search/getuser');
+const getSearchOptions = require('./search/getsearchoptions')
 
 const getnotifs = require('./notifications/getnotifs');
 const gethistory = require('./notifications/gethistory');
@@ -69,6 +70,7 @@ router.use('/search', validateToken);
 router.use('/search', blockCheck);
 router.use('/search', search);
 router.use('/search', getuser);
+router.use('/search', getSearchOptions);
 
 router.use('/notifications', validateToken);
 router.use('/notifications', getnotifs);

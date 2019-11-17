@@ -12,14 +12,15 @@ router.post('/uploadimg', async (request, response) => {
 	};
 
 	try {
+		console.log(info);
 		let imgsCount = await images.getUserImages(info.user);
-		if (imgsCount[0].count >= 5)
+		if (imgsCount && imgsCount[0].count >= 5)
 			return response.json({ warning: "You exceeded 5 images." })
 		let newImg = await images.addImage(info.user, info.img.path);
 		return response.json(newImg);
 	} catch (err) {
 		console.log(err);
-		response.json({
+		return response.json({
 			error: 'Something is wrong.'
 		});
 	}

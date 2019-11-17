@@ -42,7 +42,7 @@ const fileFilter = (req, file, cb) => {
 	if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg')
 		cb(null, true);
 	else
-		cb(null, false);
+		cb(new Error('invalid image type.'), false);
 }
 
 // Used to parse the post data of the body.
@@ -60,10 +60,10 @@ app.use(multer({
 }).single('image')) // we did here this Middleware to use it in any incoming req to see if the is a file with image name
 
 app.use((err, request, response, next) => {
-	if (err !== null)
-		return response.json({
-			message: "You're doing this on purpose huh?"
-		});
+	// console.log(err)
+	return response.json({
+		message: "You're doing this on purpose huh?"
+	});
 });
 
 const api = require("./routes/root");

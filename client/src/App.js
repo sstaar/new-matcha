@@ -25,38 +25,38 @@ import { ResetPasswordInfo } from "./components/auth/ResetPasswordInfo";
 //This app file is the main file where we gonna have the main layout
 //It contains the navbar and the router
 function App() {
-  return (
-    <Provider store={store}>
-      <Router>
-        <NavBar />
-        <Switch>
-          <NotConnectedComponent
-            path="/resetPassword/:token"
-            component={ResetPasswordInfo}
-          />
-          <NotConnectedComponent
-            path="/resetPassword/"
-            component={ResetPassword}
-          />
+	return (
+		<Provider store={store}>
+			<Router>
+				<NavBar />
+				<Switch>
+					<NotConnectedComponent
+						path="/resetPassword/:token"
+						component={ResetPasswordInfo}
+					/>
+					<NotConnectedComponent
+						path="/resetPassword/"
+						component={ResetPassword}
+					/>
 
-          <NotConnectedComponent
-            path="/validateEmail/:token"
-            component={ValidateEmail}
-          />
-          <NotConnectedComponent path="/register" component={Register} />
-          <NotConnectedComponent path="/login" component={Login} />
-          <ConnectedComponent path="/profile" component={Profile} />
-          <ConnectedComponent path="/suggestions" component={Suggestion} />
-          <ConnectedComponent path="/Messaging" component={Messaging} />
-          <ConnectedComponent path="/Search" component={Search} />
-          <ConnectedComponent path="/notifications" component={Notifications} />
-          <ConnectedComponent path="/history" component={History} />
-          <ConnectedComponent path="/user/:id" component={UserPage} />
-        </Switch>
-      </Router>
-      <Footer />
-    </Provider>
-  );
+					<NotConnectedComponent
+						path="/validateEmail/:token"
+						component={ValidateEmail}
+					/>
+					<NotConnectedComponent path="/register" component={Register} />
+					<NotConnectedComponent path="/login" component={Login} />
+					<ConnectedComponent path="/profile" component={Profile} />
+					<ConnectedComponent path="/suggestions" component={Suggestion} />
+					<ConnectedComponent path="/Messaging" component={Messaging} />
+					<ConnectedComponent path="/Search" component={Search} />
+					<ConnectedComponent path="/notifications" component={Notifications} />
+					<ConnectedComponent path="/history" component={History} />
+					<ConnectedComponent path="/user/:id" component={UserPage} />
+				</Switch>
+			</Router>
+			{/* <Footer /> */}
+		</Provider>
+	);
 }
 
 export default App;

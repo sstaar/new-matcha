@@ -14,7 +14,6 @@ exports.validateToken = async (request, res, next) => {
 		};
 		try {
 
-			console.log("Validating token...")
 			// Verify makes sure that the token hasn't expired and has been issued by us.
 			result = jwt.verify(token, process.env.JWT_SECRET || "GALATA", options);
 
@@ -24,7 +23,6 @@ exports.validateToken = async (request, res, next) => {
 			if (user.length != 1)
 				return res.status(401).json({ error: `Authentication error.7mar.` })
 			// We call next to pass execution to the subsequent middleware.
-			console.log("Token validated")
 			return next();
 		} catch (err) {
 			// Throw an error just in case anything goes wrong with verification.

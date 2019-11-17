@@ -115,28 +115,40 @@ export const addImg = async (formData) => {
 	const token = window.localStorage.getItem('token');
 
 	formData.append('token', token);
+	try {
+		let img = await axios({
+			url: 'http://localhost:5000/api/info/uploadimg',
+			data: formData,
+			method: 'POST',
+			params: {
+				token
+			},
+			contentType: false,
+			processData: false,
+		})
+		img = img.data;
 
-	// let img = await axios.post('http://localhost:5000/api/info/uploadimg', { img: file, token })
-	let img = await axios({
-		url: 'http://localhost:5000/api/info/uploadimg',
-		data: formData,
-		method: 'POST',
-		params: {
-			token
-		},
-		contentType: false,
-		processData: false,
-	})
-	img = img.data;
+		console.log(img)
 
-	if (!img.warning || !img.error)
+		if (!img.warning || !img.error)
+			return {
+				type: ADD_IMG,
+				payload: {
+					path: null/*base64*/,
+					id: img.id
+				}
+			}
+
+	} catch (error) {
 		return {
 			type: ADD_IMG,
 			payload: {
-				path: null/*base64*/,
-				id: img.id
+				path: '/imgs/user.png',
+				id: Date.now()
 			}
 		}
+	}
+
 };
 
 export const resetLocation = async (latitude, longitude) => {

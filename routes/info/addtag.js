@@ -31,7 +31,7 @@ router.post('/addtag', async (request, response) => {
 				id: tag.id
 			});
 		} else {
-			let newTag = await tags.addTagToUser(info.user, tags[0].id)
+			let newTag = await tags.addTagToUser(info.user, tag.id)
 			if (!newTag)
 				return response.json({
 					error: 'You already have this tag please enter another one.'

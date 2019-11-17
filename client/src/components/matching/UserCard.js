@@ -13,66 +13,64 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(3, 2)
-  },
-  button: {
-    margin: theme.spacing(1)
-  },
-  input: {
-    display: "none"
-  }
+	root: {
+		padding: theme.spacing(3, 2)
+	},
+	button: {
+		margin: theme.spacing(1)
+	},
+	input: {
+		display: "none"
+	}
 }));
 
-export default function UserCard({ user }) {
-  const dispatch = useDispatch();
+export default function UserCard({ user, img }) {
+	const dispatch = useDispatch();
 
-  const classes = useStyles();
+	const classes = useStyles();
 
-  const imgStore = useSelector(state => state.suggestionList.img);
+	const react = async reaction => {
+		dispatch(await reactToUser(user, reaction));
+	};
 
-  const react = async reaction => {
-    dispatch(await reactToUser(user, reaction));
-  };
-
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <Link to={"/user/" + user.id}>
-          <img
-            className="main-img card-img-top"
-            src={imgStore || "/imgs/user.png"}
-            alt="Main pic"
-          />
-        </Link>
-        <Divider />
-        <h4 className="bg-warning text-center text-white py-3">
-          {user.firstname + " " + user.lastname}{" "}
-          <span className="badge badge-secondary">{user.age}</span>
-        </h4>
-        <Paper className={classes.root}>
-          <Typography component="p">
-            {user.bio ? user.bio : "No bio yet!."}
-          </Typography>
-        </Paper>
-        <Button
-          onClick={e => react(1)}
-          variant="outlined"
-          color="primary"
-          className={classes.button}
-        >
-          <i className="fas fa-thumbs-up"></i>
-        </Button>
-        <Button
-          onClick={e => react(-1)}
-          variant="outlined"
-          color="secondary"
-          className={classes.button}
-        >
-          <i className="fas fa-thumbs-down"></i>
-        </Button>
-      </Container>
-    </React.Fragment>
-  );
+	return (
+		<React.Fragment>
+			<CssBaseline />
+			<Container maxWidth="sm">
+				<Link to={"/user/" + user.id}>
+					<img
+						className="main-img card-img-top"
+						src={img || "/imgs/user.png"}
+						alt="Main pic"
+					/>
+				</Link>
+				<Divider />
+				<h4 className="bg-warning text-center text-white py-3">
+					{user.firstname + " " + user.lastname}{" "}
+					<span className="badge badge-secondary">{user.age}</span>
+				</h4>
+				<Paper className={classes.root}>
+					<Typography component="p">
+						{user.bio ? user.bio : "No bio yet!."}
+					</Typography>
+				</Paper>
+				<Button
+					onClick={e => react(1)}
+					variant="outlined"
+					color="primary"
+					className={classes.button}
+				>
+					<i className="fas fa-thumbs-up"></i>
+				</Button>
+				<Button
+					onClick={e => react(-1)}
+					variant="outlined"
+					color="secondary"
+					className={classes.button}
+				>
+					<i className="fas fa-thumbs-down"></i>
+				</Button>
+			</Container>
+		</React.Fragment>
+	);
 }

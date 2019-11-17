@@ -14,7 +14,6 @@ router.post('/serveimg', async (request, response) => {
 	}
 
 	try {
-		console.log("HERE");
 		let img = await images.getImgById(info.imgId);
 		if (img === null)
 			return response.json({ error: "Something is wrong." });

@@ -3,8 +3,8 @@ const express = require("express");
 const distance = require("../../helpers/distance");
 const user = require('../../modules/user');
 const matching = require('../../modules/matching');
-const tags = require('../../modules/tags');
 const images = require('../../modules/images');
+const usersManipulation = require('../../helpers/usersManipulation');
 
 router = express.Router();
 
@@ -17,73 +17,28 @@ router.post("/suggestion", async (request, response) => {
 	try {
 		let userInfo = await user.getUserById(info.user);
 		info = { ...info, ...userInfo };
-		const dist = 10000;
 		let res = await matching.getPossibleSuggestions(info.user);
 
-		res = res.filter(item => {
-			let distanceBetween = distance(
-				info.latitude,
-				info.longitude,
-				item.latitude,
-				item.longitude
-			);
-			return (
-				distanceBetween < dist &&
-				(info.orientation === item.gender || info.orientation === "both")
-			);
-		});
-		res = res.sort((user1, user2) => {
-			let distance1 = distance(
-				info.latitude,
-				info.longitude,
-				user1.latitude,
-				user1.longitude
-			);
-			let distance2 = distance(
-				info.latitude,
-				info.longitude,
-				user2.latitude,
-				user2.longitude
-			);
-			return distance1 - distance2;
-		});
+		res = usersManipulation.usersFilterByOrientation(res, info.orientation);
+
+		//This function will map tags to each user
+		//Each user in the res will contain the distance between him and the connected user
+		res = usersManipulation.mapDistanceToUsers(userInfo, res);
+		res = usersManipulation.usersFilterByDistance(res, 10000);
+		res = usersManipulation.sortUsersByDistance(res);
 
 		if (res.length === 0) return response.json({ res });
 
-		//------------
-		let existingUsers = res.map(item => item.id);
-		let connectedUserTags = await tags.getUserTags(info.user);
-		let suggestionUsersTags = await tags.getUsersTags(existingUsers);
-		res.forEach(user => {
-			let tags = [];
-			console.log(user.username);
-			suggestionUsersTags.forEach(item => {
-				if (item.userid === user.id) tags.push(item.tagid);
-			});
-			console.log(tags);
-			user.commonTagsCount = connectedUserTags.filter(tag =>
-				tags.includes(tag.tagid)
-			).length;
-		});
-		//------------
+		//This function will map tags to each user
+		//Each user in the res will contain his own tags
+		//And will contain a count of commun tags between him and the connected user
+		res = await usersManipulation.mapTagsToUsers(info.user, res);
 
-		res.forEach(item => {
-			item.distance = distance(
-				info.latitude,
-				info.longitude,
-				item.latitude,
-				item.longitude
-			);
-		});
+		//This function will map tags to each user
+		//Each user in the res will contain his own profile image
+		res = await usersManipulation.mapImagesToUsers(res);
 
-		let imgs = await images.getAllImgs();
-		for (let item of res) {
-			var img = imgs.find((img) => img.user === item.id);
-			if (img)
-				item.imageId = img.id;
-		}
-
-		response.json(res);
+		return response.json(res);
 	} catch (error) {
 		console.log(error);
 		return response.json({
