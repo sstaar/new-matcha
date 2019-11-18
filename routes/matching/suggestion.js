@@ -1,9 +1,7 @@
 "use strict";
 const express = require("express");
-const distance = require("../../helpers/distance");
 const user = require('../../modules/user');
 const matching = require('../../modules/matching');
-const images = require('../../modules/images');
 const usersManipulation = require('../../helpers/usersManipulation');
 
 router = express.Router();

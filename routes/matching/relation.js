@@ -19,19 +19,21 @@ router.post("/relation", imageValidator, async (request, response) => {
 	};
 
 	try {
+
 		let matched = await matching.userMatchedWith(info.user, info.target);
 		if (matched !== null) {
 			return response.status(400).json({
 				error: "Something is wrong, You are already matched with that user."
 			});
 		}
+
 		let relation = await matching.userRelationWith(info.user, info.target);
 		if (relation !== null)
 			return response.status(400).json({
 				error: "Something is wrong, You already interacted with that person."
 			});
 		relation = await matching.userRelationWith(info.target, info.user);
-		if (relation !== null || relation === -1) {
+		if (relation === null || relation === -1) {
 			await matching.createRelation(info.user, info.target, info.relation);
 			let fameRating = await fameRate(info.target);
 			await user.updateFameRating(info.target, fameRating);
@@ -47,7 +49,7 @@ router.post("/relation", imageValidator, async (request, response) => {
 				success: "You have interacted with that person successfully.",
 				match: false
 			});
-		} else if (relation == 1) {
+		} else if (relation === 1) {
 			await matching.matchUserWith(info.user, info.target);
 			let fameRating = await fameRate(info.target);
 			await user.updateFameRating(info.user, fameRating);

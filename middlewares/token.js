@@ -20,7 +20,7 @@ exports.validateToken = async (request, res, next) => {
 			// Let's pass back the decoded token to the request object.
 			request.decoded = result;
 			const user = await db.personalQuery('SELECT * FROM users WHERE id = ?', [result.user]);
-			if (user.length != 1)
+			if (user.length !== 1)
 				return res.status(401).json({ error: `Authentication error.7mar.` })
 			// We call next to pass execution to the subsequent middleware.
 			return next();

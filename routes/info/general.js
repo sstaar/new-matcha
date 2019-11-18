@@ -25,6 +25,8 @@ router.post('/general', async (request, response) => {
 			longitude: userInfo.longitude,
 			latitude: userInfo.latitude,
 			images: userImgs,
+			is_online: userInfo.is_online,
+			last_connection: userInfo.last_connection,
 			orientation: userInfo.orientation
 		});
 	} catch (err) {

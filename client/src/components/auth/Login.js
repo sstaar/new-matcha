@@ -3,6 +3,7 @@ import { login } from '../../actions/loginActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from '../helpers/Input';
 import './register.css';
+import { activateSocket } from '../../actions/notificationsActions';
 
 const getGeoLocation = () => {
 	return new Promise((resolve, reject) => {

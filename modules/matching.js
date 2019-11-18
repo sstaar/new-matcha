@@ -78,7 +78,8 @@ const search = async (info) => {
 	console.log(info)
 	let res = await db.personalQuery(`SELECT * FROM users WHERE
                         id != ? AND
-						id IN (SELECT userid FROM usertags WHERE tagid IN (?))`,
+						id IN (SELECT userid FROM usertags WHERE tagid IN (?)) AND
+						id NOT IN (SELECT user2 FROM block WHERE user1 LIKE ?)`,
 		info);
 	return res;
 }

@@ -58,7 +58,7 @@ const UsersList = () => {
 		};
 		if (searchDataStore.length > 0)
 			test();
-	}, [dispatch, searchDataStore, activeStep]);
+	}, [dispatch, searchDataStore, activeStep, maxSteps]);
 
 	const handleBack = async () => {
 		setActiveStep(prevActiveStep => prevActiveStep - 1);

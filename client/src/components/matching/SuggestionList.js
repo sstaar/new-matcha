@@ -52,7 +52,7 @@ export const SuggestionList = ({ list }) => {
 		};
 		if (maxSteps > 0)
 			test();
-	}, [dispatch, activeStep]);
+	}, [dispatch, activeStep, maxSteps]);
 
 	const handleBack = async () => {
 		setActiveStep(prevActiveStep => prevActiveStep - 1);

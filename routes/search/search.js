@@ -19,7 +19,7 @@ router.post('/search', async (request, response) => {
 	try {
 		if (info.tags.length === 0)
 			return response.json({ error: 'You need to choose at least one tag.' })
-		let res = await matching.search([info.user, info.tags]);
+		let res = await matching.search([info.user, info.tags, info.user]);
 
 		console.log(res);
 		let userInfo = await user.getUserById(info.user);

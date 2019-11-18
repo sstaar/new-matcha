@@ -45,7 +45,7 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
 
 	const [image, setImage] = useState(null)
 
-	const maxSteps = imgs.length;
+	const maxSteps = imgs ? imgs.length : 0;
 
 	const handleNext = () => {
 		setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -56,7 +56,7 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
 	};
 
 	useEffect(() => {
-		if (imgs[activeStep]) {
+		if (imgs && imgs[activeStep]) {
 			const test = async () => {
 				let img = await getImage(imgs[activeStep].id)
 				console.log(img)
@@ -91,7 +91,7 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
 					</Button>
 				}
 			/>
-			{imgs.length > 0 && deleteImg && <Button
+			{imgs && imgs.length > 0 && deleteImg && <Button
 				variant="contained"
 				color="secondary"
 				className={classes.button}

@@ -17,6 +17,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import '../root.css'
 import { ResetLocation } from './ResetLocation';
+import { activateSocket } from '../../actions/notificationsActions';
 
 const theme = createMuiTheme({
 	palette: {
@@ -46,6 +47,8 @@ const Profile = () => {
 	//Allows as to access the redux store
 	const userStore = useSelector(state => state.user);
 
+	const connected = useSelector(state => state.login.connected);
+
 	const tags = useSelector(state => state.user.tags);
 
 	//The useEffect function calls it's first parameter
@@ -55,10 +58,12 @@ const Profile = () => {
 
 		const test = async () => {
 			dispatch(await userInfo());
-		};
 
+		};
+		console.log(connected);
+		dispatch(activateSocket())
 		test();
-	}, [dispatch]);
+	}, [dispatch, connected]);
 
 	//The if statment ensures that while we still don't have the userInfo
 	//The component will display a loading screen
