@@ -69,7 +69,7 @@ const UsersList = () => {
 		return (<div></div>)
 	return (
 		<div className={classes.root}>
-			<UserCard user={searchDataStore[activeStep]} img={imgStore} />
+			<UserCard user={searchDataStore[activeStep]} img={imgStore} search={true} />
 			<MobileStepper
 				steps={maxSteps}
 				position="static"

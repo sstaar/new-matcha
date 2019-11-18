@@ -59,7 +59,7 @@ router.post("/resetChangePassword", async (request, response) => {
 	//check token in database
 	const infoSchema = {
 		resetToken: sv.string().required(),
-		newPassword: sv.string().required()
+		newPassword: sv.string().required().match(/^ (?=.* [a - z])(?=.* [A - Z])(?=.* [0 - 9])(?=.{ 8, 50}) /, "Password not stront enough.")
 	};
 
 	try {

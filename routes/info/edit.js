@@ -14,7 +14,7 @@ router.post('/edit', async (request, response) => {
 		orientation: sv.string().required().match(/^(male|female|both)$/),
 		gender: sv.string().required().match(/^(male|female)$/),
 		newUsername: sv.string().required(),
-		newPassword: sv.string().required(),
+		newPassword: sv.string().required().match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,50})/, "Password not stront enough."),
 		oldPassword: sv.string().required()
 
 	}
@@ -37,7 +37,8 @@ router.post('/edit', async (request, response) => {
 		await sv.validate(info, userSchema);
 		console.log(info);
 
-		let userInfo = user.getUserById(info.user);
+		let userInfo = await user.getUserById(info.user);
+		console.log(userInfo)
 		let match = await hash.comparing(info.oldPassword, userInfo.password);
 		if (match === false)
 			return response.json({ errors: { oldPassword: 'Old password is not correct.' } })

@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function UserCard({ user, img }) {
+export default function UserCard({ user, img, search = false }) {
 	const dispatch = useDispatch();
 
 	const classes = useStyles();
@@ -54,22 +54,30 @@ export default function UserCard({ user, img }) {
 						{user.bio ? user.bio : "No bio yet!."}
 					</Typography>
 				</Paper>
-				<Button
-					onClick={e => react(1)}
-					variant="outlined"
-					color="primary"
-					className={classes.button}
-				>
-					<i className="fas fa-thumbs-up"></i>
-				</Button>
-				<Button
-					onClick={e => react(-1)}
-					variant="outlined"
-					color="secondary"
-					className={classes.button}
-				>
-					<i className="fas fa-thumbs-down"></i>
-				</Button>
+				{
+					search === false &&
+
+					<Button
+						onClick={e => react(1)}
+						variant="outlined"
+						color="primary"
+						className={classes.button}
+					>
+						<i className="fas fa-thumbs-up"></i>
+					</Button>
+
+
+				}
+				{search === false &&
+					<Button
+						onClick={e => react(-1)}
+						variant="outlined"
+						color="secondary"
+						className={classes.button}
+					>
+						<i className="fas fa-thumbs-down"></i>
+					</Button>
+				}
 			</Container>
 		</React.Fragment>
 	);

@@ -7,10 +7,10 @@ const { numberValidationErrors } = require('./setters-checkers/numbervalidator')
 
 const validate = (obj, schema) => {
 	return new Promise((resolve, reject) => {
-		let	details = {};
-		let	has_error = false;
-		let	error = null;
-		
+		let details = {};
+		let has_error = false;
+		let error = null;
+
 
 		for (const key in schema) {
 			const input = obj[key];
@@ -42,19 +42,20 @@ const number = () => {
 }
 
 const string = () => {
-    return {
-        'label': '',
+	return {
+		'label': '',
 		'type': 'string',
 		'isDate': false,
 		'isEmail': false,
 		'isRequired': false,
 		'pattern': null,
+		'patternMsg': null,
 		'validate': stringValidationErrors,
 		'email': setEmail,
 		'required': setRequired,
 		'match': setPattern,
 		'date': setDate,
-    }
+	}
 }
 
 module.exports = {

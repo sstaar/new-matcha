@@ -6,6 +6,11 @@ const getUserMatches = async (userId) => {
 	return [...res1, ...res2];
 };
 
+const getUserRelations = async (userId) => {
+	let relations = await db.personalQuery('SELECT secondaryuser FROM relations WHERE primaryuser LIKE ?', [userId])
+	return relations;
+};
+
 const userMatchedWith = async (userId, targetId) => {
 	let res = await db.personalQuery(
 		"SELECT * FROM matches WHERE user1 IN (?, ?) AND user2 IN (?, ?)",
@@ -93,5 +98,6 @@ module.exports = {
 	getPossibleSuggestions,
 	removeMatch,
 	removeRelation,
-	search
+	search,
+	getUserRelations
 }

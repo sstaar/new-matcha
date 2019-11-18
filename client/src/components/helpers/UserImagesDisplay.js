@@ -6,11 +6,12 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import { HOST } from '../../actions/types';
 import './helper.css'
 
 const getImage = async (imgId) => {
 	const token = window.localStorage.getItem('token');
-	return await Axios.post('http://localhost:5000/api/info/serveimg', { token, imgId });
+	return await Axios.post(`${HOST}/info/serveimg`, { token, imgId });
 }
 
 const useStyles = makeStyles(theme => ({

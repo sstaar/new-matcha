@@ -118,6 +118,8 @@ const Register = () => {
 
 
 	const handleDateChange2 = (date) => {
+		if (!startDate)
+			return setStartDate(new Date())
 		console.log(startDate.toLocaleString())
 		setStartDate(date)
 	}

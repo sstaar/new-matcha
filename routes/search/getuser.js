@@ -22,7 +22,7 @@ router.post("/getuser", async (request, response) => {
 
 		if (target === null)
 			return response.json({ error: "Error 404 user not found." });
-		// for relation 1=> matched|0=>liked|-1=>no relation
+		// for relation 1=> matched|0=>liked|-1=>no relation|-2=>disliked
 		let relation = -1;
 		if (likes === 0)
 			relation = 0;
@@ -43,10 +43,6 @@ router.post("/getuser", async (request, response) => {
 		); //In the front-end we will display for example "Test has visited you."
 		let userImgs = await images.getUserImages(info.target);
 		let userTags = await tags.getUserTags(info.taget)
-		// let tags = await db.personalQuery(
-		// 	"select tagname, userid, tagid from usertags INNER JOIN tags ON usertags.tagid = tags.id WHERE userid = ?",
-		// 	[info.target]
-		// );
 		return response.json({
 			id: target.id,
 			username: target.username,

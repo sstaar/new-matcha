@@ -21,12 +21,13 @@ const NavBar = () => {
 	const socketStore = useSelector(state => state.socket.socket);
 
 	if (socketStore) {
-		const array = socketStore.listeners("message");
-		if (array.length !== 0) socketStore.listeners("message").splice(0, 1);
-		socketStore.on("notification", async msg => {
-			console.log(msg);
-			setCusStyle("text-warning");
-		});
+		const array = socketStore.listeners("notification");
+		if (array.length === 0) {
+			socketStore.on("notification", async msg => {
+				console.log(msg);
+				setCusStyle("text-warning");
+			});
+		}
 	}
 
 	//A simple navbar containing the logout dispatch

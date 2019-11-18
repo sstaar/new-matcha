@@ -21,7 +21,9 @@ exports.validateToken = async (request, res, next) => {
 			request.decoded = result;
 			const user = await db.personalQuery('SELECT * FROM users WHERE id = ?', [result.user]);
 			if (user.length !== 1)
-				return res.status(401).json({ error: `Authentication error.7mar.` })
+				return res.json({ error: `Authentication error.7mar.` })
+			if (user[0].activated === 0)
+				return res.json({ error: 'Please activate your account.' })
 			// We call next to pass execution to the subsequent middleware.
 			return next();
 		} catch (err) {

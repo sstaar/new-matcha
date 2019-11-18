@@ -1,10 +1,10 @@
-import { GET_SEARCH_OPTIONS, CHANGE_SELECTED_TAGS, SET_SEARCH_DATA_SUCCESS, SET_SEARCH_DATA_FAIL, GET_SEARCH_IMAGE_SUCCESS, GET_SEARCH_IMAGE_FAIL } from './types';
+import { HOST, GET_SEARCH_OPTIONS, CHANGE_SELECTED_TAGS, SET_SEARCH_DATA_SUCCESS, SET_SEARCH_DATA_FAIL, GET_SEARCH_IMAGE_SUCCESS, GET_SEARCH_IMAGE_FAIL } from './types';
 import axios from 'axios';
 
 export const getSearchOptions = async () => {
 	const token = window.localStorage.getItem('token');
 
-	const tags = await axios.post('http://localhost:5000/api/search/getsearchoptions', { token: token });
+	const tags = await axios.post(`${HOST}/search/getsearchoptions`, { token: token });
 
 	if (tags.data.error)
 		return;
@@ -25,7 +25,7 @@ export const searchRequest = async (info) => {
 	const token = window.localStorage.getItem('token');
 
 	try {
-		let res = await axios.post('http://localhost:5000/api/search/search', { ...info, token });
+		let res = await axios.post(`${HOST}/search/search`, { ...info, token });
 		console.log("SEARCH")
 		console.log(res);
 		if (res.data.error)
@@ -49,7 +49,7 @@ export const getSearchImage = async (imgId) => {
 	const token = window.localStorage.getItem('token');
 
 	try {
-		let response = await axios.post('http://localhost:5000/api/info/serveimg', { token, imgId })
+		let response = await axios.post(`${HOST}/info/serveimg`, { token, imgId })
 		return {
 			type: GET_SEARCH_IMAGE_SUCCESS,
 			payload: response.data.img

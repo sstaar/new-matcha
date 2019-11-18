@@ -1,4 +1,4 @@
-import { LOGIN_FAIL, LOGIN_SUCCEED, LOGOUT } from "../actions/types";
+import { LOGIN_FAIL, LOGIN_SUCCEED, LOGOUT, TOKEN_ERROR, TOKEN_ERROR_REMOVE } from "../actions/types";
 
 //Pulling the informations from the local storage
 //In the user browser and initiating the redux store with it
@@ -9,7 +9,8 @@ let connected = window.localStorage.getItem("connected");
 const initialState = {
 	token: token,
 	connected: connected === "true" ? true : false,
-	errors: {}
+	errors: {},
+	tokenError: null
 };
 
 //In login_success we store the informations for latter extraction
@@ -40,6 +41,16 @@ export default function (state = initialState, action) {
 				connected: false,
 				errors: {}
 			};
+		case TOKEN_ERROR:
+			return {
+				...state,
+				tokenError: action.payload
+			}
+		case TOKEN_ERROR_REMOVE:
+			return {
+				...state,
+				tokenError: null
+			}
 		default:
 			return state;
 	}

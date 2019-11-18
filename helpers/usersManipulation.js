@@ -1,6 +1,7 @@
 'use strict'
 const tags = require('../modules/tags');
 const images = require('../modules/images');
+const matching = require('../modules/matching');
 const distance = require("./distance");
 
 const mapTagsToUsers = async (user, users) => {
@@ -85,6 +86,24 @@ const getBiggestFame = (users) => {
 	let res = Math.max.apply(null, fames);
 	return res;
 }
+
+// const mapRelationToUsers = async (users, userId) => {
+// 	let matches = await matching.getUserMatches(userId);
+// 	let relations = await matching.getUserRelations(userId);
+// 	let relationsIds = relations.map((item) => item.user1 ? item.user1 : item.user2);
+// 	let matchesIds = matches.map((item) => item.secondaryuser);
+// 	let key = 0;
+
+// 	let res = users.map((item) => {
+// 		let relation = relationsIds.indexOf(item.id);
+// 		let match = matchesIds.indexOf(item.id);
+// 		let finalRelation = -1; 
+// 		if (relation !== - 1)
+// 			finalRelation = relations[re]
+
+// 		return item;
+// 	});
+// }
 
 module.exports = {
 	mapTagsToUsers,

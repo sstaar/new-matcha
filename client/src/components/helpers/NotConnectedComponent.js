@@ -16,7 +16,7 @@ const NotConnectedComponent = ({ component: Component, ...rest }) => {
 				return <Redirect to="/profile" />
 		}} />
 	);
-		
+
 }
 
 export default NotConnectedComponent;

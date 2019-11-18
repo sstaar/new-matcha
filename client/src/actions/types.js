@@ -11,6 +11,8 @@ export const RESET_PASSWORD_FAIL = "RESET_PASSWORD_FAIL";
 
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGIN_SUCCEED = "LOGIN_SUCCEED";
+export const TOKEN_ERROR = "TOKEN_ERROR";
+export const TOKEN_ERROR_REMOVE = "TOKEN_ERROR_REMOVE";
 
 export const LOGOUT = "LOGOUT";
 
@@ -64,3 +66,5 @@ export const UNLIKE_USER_SECCESS = "UNLIKE_USER_SECCESS";
 export const UNLIKE_USER_FAIL = "UNLIKE_USER_FAIL";
 
 export const ACTIVATE_SOCKET = "ACTIVATE_SOCKET";
+
+export const HOST = "http://e1r4p14.1337.ma:5000/api"

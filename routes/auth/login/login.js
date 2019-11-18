@@ -39,6 +39,8 @@ router.post('/login', async (request, response) => {
 				}
 			});
 		}
+		if (userInfo.activated === 0)
+			return response.json({ error: 'Please activate your account.' })
 		await user.updateLocation([info.longitude, info.latitude, info.username]);
 		const payload = { user: userInfo.id }
 		//const options = { expiresIn: '2d' }

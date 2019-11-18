@@ -3,8 +3,8 @@ const { isDate } = require('./date');
 const { isEmail } = require('./email');
 const { isString } = require('./string');
 
-const stringValidationErrors = function(input) {
-  if (this.isRequired === false && (input === undefined || input === ''))
+const stringValidationErrors = function (input) {
+	if (this.isRequired === false && (input === undefined || input === ''))
 		return (null);
 	if (this.isRequired === true && (input === undefined || input === ''))
 		return `${this.label} is required.`;
@@ -15,10 +15,10 @@ const stringValidationErrors = function(input) {
 	else if (this.isEmail === true && isEmail(input) === false)
 		return `"${this.label}" must be an email.`;
 	else if (this.pattern instanceof RegExp && this.pattern.test(input) === false)
-		return `"${this.label}" must be valid.`;
-    return (null);
+		return this.patternMsg;
+	return (null);
 }
 
 module.exports = {
-    stringValidationErrors
+	stringValidationErrors
 }

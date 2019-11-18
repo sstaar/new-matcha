@@ -17,6 +17,8 @@ router.post("/suggestion", async (request, response) => {
 		info = { ...info, ...userInfo };
 		let res = await matching.getPossibleSuggestions(info.user);
 
+		console.log(res);
+
 		res = usersManipulation.usersFilterByOrientation(res, info.orientation);
 
 		//This function will map tags to each user

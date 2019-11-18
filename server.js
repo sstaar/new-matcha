@@ -16,8 +16,6 @@ const saveMessage = require("./helpers/saveMessage");
 const multer = require('multer');
 
 
-var sockets = {};
-
 app.use(cors());
 app.disable("x-powered-by");
 
@@ -49,6 +47,8 @@ const fileFilter = (req, file, cb) => {
 app.use(bodyParser.json({ limit: "10mb" })); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: false })); // to support URL-encoded bodies
 
+var sockets = {};
+
 app.use((request, response, next) => {
 	request.sockets = sockets;
 	next();
@@ -69,32 +69,36 @@ app.use((err, request, response, next) => {
 const api = require("./routes/root");
 app.use("/api", api);
 
+
+
 io.on("connection", function (socket) {
-	console.log("SOCKET is trying to connect.")
+	// console.log("SOCKET is trying to connect.")
 	let token = socket.request._query["token"];
 	let id = tokenToId(token);
-	console.log("A user is connected, User id :" + id);
+	console.log(id + " Connected");
 	sockets[id] = socket;
 	db.personalQuery("UPDATE users SET is_online = 1 WHERE id = ? ", [id]);
+
 	socket.on("disconnect", () => {
-		console.log(id);
+		console.log(id + " Disconnected");
 		db.personalQuery(
 			"UPDATE users SET is_online = 0, last_connection = NOW() WHERE id = ?",
 			[id]
 		);
 	});
+
 	socket.on("message", async msg => {
 		try {
-			console.log(msg);
+			// console.log(sockets);
 			let response = await saveMessage(msg.token, msg.receiver, msg.message);
-			console.log(response);
 			notify(
 				msg.receiver,
 				"You have recieved a message",
 				sockets[msg.receiver]
 			);
 			if (sockets[msg.receiver]) {
-				sockets[msg.receiver].send(response);
+				console.log("Message:" + msg.message);
+				sockets[msg.receiver].emit('message', response);
 			}
 			socket.send(response);
 		} catch (error) {

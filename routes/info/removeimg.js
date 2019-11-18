@@ -17,7 +17,7 @@ router.post('/removeimg', async (request, response) => {
 			return response.json({
 				error: 'Something is wrong.'
 			});
-		imgPath = imgPath[0].path;
+		imgPath = img.path;
 		if (fs.existsSync(imgPath))
 			await fs.unlinkSync(imgPath);
 		await images.deleteImg(info.imageId);

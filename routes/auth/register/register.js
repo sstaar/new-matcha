@@ -10,9 +10,9 @@ router = express.Router();
 
 router.post("/register", async (request, response) => {
 	let userSchema = {
-		username: sv.string().required(),
-		password1: sv.string().required(),
-		password2: sv.string().required(),
+		username: sv.string().required().match(/^\w{ 4, 20}$/, "A username must be character and numbers only."),
+		password1: sv.string().required().match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,50})/, "Password not stront enough."),
+		password2: sv.string().required().match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,50})/, "Password not stront enough."),
 		firstname: sv.string().required(),
 		lastname: sv.string().required(),
 		email: sv.string().required().email(),

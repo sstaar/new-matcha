@@ -1,4 +1,4 @@
-import { INFO_FAILED, INFO_RECIEVED, ADD_TAG, ADD_TAG_FAILED, REMOVE_TAG, REMOVE_IMG, ADD_IMG, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL, RESET_LOCATION_FAIL, RESET_LOCATION_SUCCESS } from './types';
+import { HOST, INFO_FAILED, INFO_RECIEVED, ADD_TAG, ADD_TAG_FAILED, REMOVE_TAG, REMOVE_IMG, ADD_IMG, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL, RESET_LOCATION_FAIL, RESET_LOCATION_SUCCESS } from './types';
 import axios from 'axios';
 import PublicIp from 'public-ip'
 
@@ -9,8 +9,8 @@ import PublicIp from 'public-ip'
 export const userInfo = async () => {
 	const token = window.localStorage.getItem('token');
 
-	const info = await axios.post('http://localhost:5000/api/info/general', { token: token });
-	const tags = await axios.post('http://localhost:5000/api/info/getusertags', { token: token });
+	const info = await axios.post(`${HOST}/info/general`, { token: token });
+	const tags = await axios.post(`${HOST}/info/getusertags`, { token: token });
 
 	if (info.error || tags.data.error)
 		return {
@@ -29,7 +29,7 @@ export const updateInfo = async (newInfo) => {
 	const token = window.localStorage.getItem('token');
 
 	try {
-		let response = await axios.post('http://localhost:5000/api/info/edit', { ...newInfo, token });
+		let response = await axios.post(`${HOST}/info/edit`, { ...newInfo, token });
 
 		if (response.data.errors)
 			return {
@@ -55,7 +55,7 @@ export const addTag = async (newtag) => {
 	try {
 
 
-		let res = await axios.post('http://localhost:5000/api/info/addtag', { token, tag: newtag });
+		let res = await axios.post(`${HOST}/info/addtag`, { token, tag: newtag });
 
 		console.log(res);
 		if (res.data.error)
@@ -84,7 +84,7 @@ export const addTag = async (newtag) => {
 export const removeTag = async (tags, tagid) => {
 	const token = window.localStorage.getItem('token');
 
-	await axios.post('http://localhost:5000/api/info/removetag', { token, tagid: tagid });
+	await axios.post(`${HOST}/info/removetag`, { token, tagid: tagid });
 
 	console.log(tagid);
 	let newtags = [];
@@ -101,7 +101,7 @@ export const removeTag = async (tags, tagid) => {
 export const removeImg = async (imageId) => {
 	const token = window.localStorage.getItem('token');
 
-	await axios.post('http://localhost:5000/api/info/removeimg', { token, imageId });
+	await axios.post(`${HOST}/info/removeimg`, { token, imageId });
 
 
 	return {
@@ -117,7 +117,7 @@ export const addImg = async (formData) => {
 	formData.append('token', token);
 	try {
 		let img = await axios({
-			url: 'http://localhost:5000/api/info/uploadimg',
+			url: `${HOST}/info/uploadimg`,
 			data: formData,
 			method: 'POST',
 			params: {
@@ -156,7 +156,7 @@ export const resetLocation = async (latitude, longitude) => {
 	const token = window.localStorage.getItem('token');
 
 	try {
-		let response = await axios.post('http://localhost:5000/api/info/resetloc', { latitude, longitude, ip, token })
+		let response = await axios.post(`${HOST}/info/resetloc`, { latitude, longitude, ip, token })
 
 		if (response.errors)
 			return {
