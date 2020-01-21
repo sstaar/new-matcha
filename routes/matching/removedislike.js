@@ -7,18 +7,15 @@ const user = require('../../modules/user');
 
 router = express.Router();
 
-router.post("/unlike", async (request, response) => {
+router.post("/removedislike", async (request, response) => {
 	let info = {
 		user: request.decoded.user,
 		target: request.body.target
 	};
 
 	try {
-		let match = await matching.userMatchedWith(info.user, info.target);
 		let relation = await matching.userRelationWith(info.user, info.target);
-		if (match !== null)
-			await matching.removeMatch(info.user, info.target);
-		if (relation === 1)
+		if (relation === -1)
 			await matching.removeRelation(info.user, info.target);
 		let username = await user.getUserById(info.user);
 		username = username.username;

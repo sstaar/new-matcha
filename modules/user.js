@@ -86,6 +86,9 @@ const blockUser = async (info) => {
 };
 
 const reportUser = async (info) => {
+	let res = await db.personalQuery('SELECT * FROM reports WHERE user1 = ? AND user2 = ?', info)
+	if (res.length > 0)
+		return null;
 	await db.personalQuery(`INSERT INTO reports (user1, user2) VALUES (?, ?)`, info);
 };
 

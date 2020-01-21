@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { LOGOUT } from "../../actions/types";
-import { activateSocket } from "../../actions/notificationsActions";
+import { recieveNotifications } from "../../actions/notificationsActions";
 
 const NavBar = () => {
 	const dispatch = useDispatch();
@@ -15,16 +15,28 @@ const NavBar = () => {
 		dispatch({ type: LOGOUT });
 	};
 
-
 	const connected = useSelector(state => state.login.connected);
 
+	useEffect(() => {
+		const test = async () => {
+			dispatch(await recieveNotifications());
+		};
+
+		if (connected)
+			test();
+	}, [dispatch, connected]);
+
 	const socketStore = useSelector(state => state.socket.socket);
+
+	const notifsStore = useSelector(state => state.notifications.notifications);
+
+	if (notifsStore.length !== 0 && notifsStore[0].read === 0)
+		setCusStyle("text-warning");
 
 	if (socketStore) {
 		const array = socketStore.listeners("notification");
 		if (array.length === 0) {
 			socketStore.on("notification", async msg => {
-				console.log(msg);
 				setCusStyle("text-warning");
 			});
 		}

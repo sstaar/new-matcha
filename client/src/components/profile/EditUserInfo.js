@@ -6,37 +6,10 @@ import { updateInfo } from '../../actions/userActions';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper from '@material-ui/core/Paper';
-import Draggable from 'react-draggable';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
 import { FormSelect } from "shards-react";
 import { FormTextarea } from "shards-react";
 import EditUserImages from './EditUserImages';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
 
-const theme = createMuiTheme({
-	palette: {
-		primary: { main: '#ff6347' }
-	},
-});
-
-function PaperComponent(props) {
-	return (
-		<Draggable cancel={'[class*="MuiDialogContent-root"]'}>
-			<Paper {...props} />
-		</Draggable>
-	);
-}
 
 const useStyles = makeStyles(theme => ({
 	center: {
@@ -68,11 +41,8 @@ const EditUserInfo = ({ user }) => {
 
 	const editErrrorsStore = useSelector(state => state.user.errors);
 
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
 	const handleClose = () => {
+		if (open);
 		setOpen(false);
 	};
 
@@ -89,8 +59,6 @@ const EditUserInfo = ({ user }) => {
 		orientation: user.orientation,
 	});
 
-	//Getting the token from the redux store
-
 	//simplifications
 	const { newUsername, newPassword, oldPassword, firstname, lastname, gender, bio, orientation } = formData;
 
@@ -104,9 +72,6 @@ const EditUserInfo = ({ user }) => {
 		dispatch(await updateInfo(formData));
 		setOpen(false);
 	}
-
-	console.log(formData);
-
 
 	return (
 
@@ -153,7 +118,7 @@ const EditUserInfo = ({ user }) => {
 			>
 				<option value="female">Female</option>
 				<option value="male">Male</option>
-				<option value="both">both</option>
+				<option value="both">everyone</option>
 			</FormSelect>
 
 			<label>Bio</label>

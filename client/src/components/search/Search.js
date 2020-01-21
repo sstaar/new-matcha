@@ -12,11 +12,8 @@ import {
 } from "../../actions/types";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import "../root.css";
@@ -62,8 +59,6 @@ const Search = () => {
 
 	const searchErrorStore = useSelector(state => state.search.error);
 
-	const [value, setValue] = useState(0);
-
 	const [sortOrder, setSortOrder] = useState(1);
 
 	const [searchData, setSearchData] = useState({
@@ -73,7 +68,6 @@ const Search = () => {
 	});
 
 	const handleSliderChange = (event, newValue, name) => {
-		console.log(searchData);
 		setSearchData({
 			...searchData,
 			[name]: newValue
@@ -108,7 +102,7 @@ const Search = () => {
 
 	return (
 		<div className="container">
-			<h3 className="font-weight-bold mb-5 text-center">🔍 Search</h3>
+			<h3 className="font-weight-bold mb-5 text-center"><span role="img" aria-label="SEARCH">🔍</span> Search</h3>
 			<div className="row ">
 				<div className="col-lg-4 col-md-6 col-sm-12 search p-4 rounded mr-auto">
 					<ThemeProvider theme={theme}>
@@ -116,7 +110,7 @@ const Search = () => {
             			<Slider
 							min={18}
 							max={searchDataStore.maxAge}
-							value={typeof value === "number" ? searchData.ageGap : 0}
+							value={searchData.ageGap}
 							onChange={(event, newValue) =>
 								handleSliderChange(event, newValue, "ageGap")
 							}
@@ -126,7 +120,7 @@ const Search = () => {
 						DistanceGap
             			<Slider
 							max={searchDataStore.maxDistance}
-							value={typeof value === "number" ? searchData.distanceGap : 0}
+							value={searchData.distanceGap}
 							onChange={(event, newValue) =>
 								handleSliderChange(event, newValue, "distanceGap")
 							}
@@ -136,7 +130,7 @@ const Search = () => {
 						fameGap
             			<Slider
 							max={searchDataStore.maxFame}
-							value={typeof value === "number" ? searchData.fameGap : 0}
+							value={searchData.fameGap}
 							onChange={(event, newValue) =>
 								handleSliderChange(event, newValue, "fameGap")
 							}

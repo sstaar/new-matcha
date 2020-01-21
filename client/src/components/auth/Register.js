@@ -1,61 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../actions/registerActions";
 import Input from "../helpers/Input";
 
-import { makeStyles } from "@material-ui/core/styles";
-import {
-	KeyboardDatePicker,
-	MuiPickersUtilsProvider
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css";
 import { FormSelect } from "shards-react";
-import { CardImg } from "shards-react";
-import { red } from "@material-ui/core/colors";
 import DatePicker from "react-datepicker";
 
 import "../root.css";
 import "./register.css";
 import "../cssTools/animate.css";
 
-const useStyles = makeStyles(theme => ({
-	center: {
-		margin: "20px auto",
-		textAlign: "center"
-	},
-	root: {
-		display: "flex",
-		flexWrap: "wrap"
-	},
-	formControl: {
-		margin: theme.spacing(1),
-		minWidth: 120
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(2)
-	},
-	changeDateStyle: {
-		color: red
-	}
-}));
-
 const formatDate = date => {
-	let dateInfo = date.toLocaleString();
-	console.log(dateInfo);
-	let datePattern = /^(?:([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})).+$/;
-	let matches = dateInfo.match(datePattern);
-	let res = matches[3] + "-" + matches[1] + "-" + matches[2];
-	console.log(res);
-	return res;
+	try {
+
+		let dateInfo = date.toLocaleString();
+		let datePattern = /^(?:([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})).+$/;
+		let matches = dateInfo.match(datePattern);
+		let res = matches[3] + "-" + matches[1] + "-" + matches[2];
+		return res;
+	} catch (error) {
+		console.log("jma3 karek");
+	}
 };
 
 const Register = () => {
-	const classes = useStyles();
-
 	//This just initialize the state im going to use throughout the form
 	const [formData, setFormData] = useState({
 		username: "",
@@ -66,8 +36,6 @@ const Register = () => {
 		lastname: "",
 		gender: "male"
 	});
-
-	const [date, setDate] = useState(new Date());
 
 	const [startDate, setStartDate] = useState(new Date());
 
@@ -90,10 +58,6 @@ const Register = () => {
 	const onChange = e =>
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 
-	const handleDateChange = date => {
-		setDate(date);
-	};
-
 	//This part is for getting the data from the redux store
 	//The main store can be found in /client/src/store.js
 	const registration = useSelector(state => state.register);
@@ -110,8 +74,12 @@ const Register = () => {
 	const onSubmit = async e => {
 		//This prevent the from from reloading the page or redirecting to somewhere else
 		e.preventDefault();
+
+		if (!startDate)
+			return setStartDate(new Date())
 		//This dispatch the action that sends the request to the ap
 		//and storing the result into the redux store
+		setFormData({ ...formData, password1: "", password2: "" })
 		dispatch(await register({ ...formData, birthday: formatDate(startDate) }));
 	};
 
@@ -120,8 +88,11 @@ const Register = () => {
 	const handleDateChange2 = (date) => {
 		if (!startDate)
 			return setStartDate(new Date())
-		console.log(startDate.toLocaleString())
+		if (date.getYear() < 0)
+			return setStartDate(new Date())
+
 		setStartDate(date)
+
 	}
 
 	//The Input tag is a custom tag that i made that we could use when ever we have an imput
@@ -130,9 +101,9 @@ const Register = () => {
 	return (
 		<div className="holder col-lg-6 col-md-10 col-sm-12 mx-auto">
 			<h1 className="text-center font-weight-bold mb-5 animated heartBeat">
-				Match <span className="animated rotateIn">🔥</span>, Chat{" "}
-				<span className="animated rotateIn">😋</span>, Date{" "}
-				<span className="animated rotateIn">😍</span>
+				Match <span className="animated rotateIn" role="img" aria-label="FIRE">🔥</span>, Chat{" "}
+				<span className="animated rotateIn" role="img" aria-label="SMILY">😋</span>, Date{" "}
+				<span className="animated rotateIn" role="img" aria-label="LLOVE">😍</span>
 			</h1>
 			<div className="bg-light rounded p-4 animated fadeInUp">
 				<h3>Create new Account</h3>
@@ -185,7 +156,9 @@ const Register = () => {
 						error={registerationErrors.email}
 					/>
 
-					<DatePicker selected={startDate} onChange={date => handleDateChange2(date)} />
+					<label className="mb-2 d-block">BithDate</label>
+					<DatePicker className="form-control mb-2" selected={startDate} onChange={date => handleDateChange2(date)} />
+					{registerationErrors.birthday}
 
 					<FormSelect
 						value={gender ? gender : ""}

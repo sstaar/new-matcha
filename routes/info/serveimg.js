@@ -19,10 +19,9 @@ router.post('/serveimg', async (request, response) => {
 			return response.json({ error: "Something is wrong." });
 		img = fs.readFileSync(img.path, { encoding: 'base64' });
 		img = "data:" + "image/jpg" + ";base64," + img;
-		response.json({ img })
+		return response.json({ img })
 	} catch (error) {
-		console.log(error);
-		response.json({
+		return response.json({
 			error: 'Something is wrong.'
 		});
 	}

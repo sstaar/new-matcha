@@ -14,7 +14,6 @@ router.post('/getconversation', async (request, response) => {
 		let convo = await messages.getConversation(info.user, info.target);
 		return response.status(200).json(convo);
 	} catch (error) {
-		console.log(error);
 		return response.status(500).json({
 			error: 'Something is wrong.'
 		});

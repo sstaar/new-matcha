@@ -4,7 +4,7 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import NavBar from "./components/navbar/NavBar";
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import ConnectedComponent from "./components/helpers/ConnectedComponent";
 import NotConnectedComponent from "./components/helpers/NotConnectedComponent";
 import Profile from "./components/profile/Profile";
@@ -17,11 +17,9 @@ import UserPage from "./components/userPage/UserPage";
 
 import store from "./store";
 import { Provider } from "react-redux";
-import { Footer } from "./components/footer/Footer";
 import { ValidateEmail } from "./components/auth/ValidateEmail";
 import { ResetPassword } from "./components/auth/ResetPassword";
 import { ResetPasswordInfo } from "./components/auth/ResetPasswordInfo";
-import { NotFound } from "./components/404/NotFound";
 
 //This app file is the main file where we gonna have the main layout
 //It contains the navbar and the router
@@ -53,9 +51,9 @@ function App() {
 					<ConnectedComponent path="/notifications" component={Notifications} />
 					<ConnectedComponent path="/history" component={History} />
 					<ConnectedComponent path="/user/:id" component={UserPage} />
+					<ConnectedComponent component={Profile} />
 				</Switch>
 			</Router>
-			{/* <Footer /> */}
 		</Provider>
 	);
 }

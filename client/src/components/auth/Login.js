@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Input from '../helpers/Input';
 import './register.css';
 
-import Button from '@material-ui/core/Button';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
@@ -91,17 +90,8 @@ function MySnackbarContentWrapper(props) {
 	);
 }
 
-const useStyles2 = makeStyles(theme => ({
-	margin: {
-		margin: theme.spacing(1),
-	},
-}));
 
 const Login = () => {
-
-	const classes = useStyles2();
-
-
 	//This just initialize the state im going to use throughout the form
 	const [formData, setFormData] = useState({
 		username: '',
@@ -115,7 +105,6 @@ const Login = () => {
 	//This is just for simplification when calling a state variable
 	const { username, password } = formData;
 
-
 	//This allows me to dispatch my action
 	//My action is to send a request to the login api
 	const dispatch = useDispatch();
@@ -126,9 +115,7 @@ const Login = () => {
 	//To get the informations in case of login fail
 	const loginStore = useSelector(state => state.login);
 
-
 	const loginError = useSelector(state => state.login.tokenError);
-
 
 	const [open, setOpen] = React.useState(false);
 
@@ -136,14 +123,13 @@ const Login = () => {
 	//This is activated on the submit
 	const onSubmit = async e => {
 		try {
-			console.log('You are trying to connect.')
 			e.preventDefault();
 			let pos = await getGeoLocation();
 			const { latitude, longitude } = pos.coords;
 			setFormData({ ...formData, latitude, longitude });
 			dispatch(await login({ ...formData, latitude, longitude }));
 		} catch (error) {
-			console.log(error)
+			console.log("SOMETHING IS WRONG...BONUS <3.");
 		}
 
 	}
@@ -155,9 +141,6 @@ const Login = () => {
 
 		dispatch({ type: TOKEN_ERROR_REMOVE })
 	};
-
-	console.log(loginStore.error);
-
 	useEffect(() => {
 		if (loginError) {
 			setOpen(true)
@@ -165,11 +148,11 @@ const Login = () => {
 				dispatch({ type: TOKEN_ERROR_REMOVE })
 			}, 3000);
 		}
-	}, [loginError])
+	}, [dispatch, loginError])
 
 	return (
 		<div className=" ml-3 col-lg-6 col-md-10 col-sm-12 mx-auto">
-			<h1 className="text-center font-weight-bold mb-5 animated heartBeat">Match <span className="animated rotateIn">🔥</span>, Chat  <span className="animated rotateIn">😋</span>, Date  <span className="animated rotateIn">😍</span></h1>
+			<h1 className="text-center font-weight-bold mb-5 animated heartBeat">Match <span aria-label="FIRE" role="img" className="animated rotateIn"  >🔥</span>, Chat  <span aria-label="FIRE" role="img" className="animated rotateIn">😋</span>, Date  <span aria-label="FIRE" role="img" className="animated rotateIn">😍</span></h1>
 			<div className="bg-light rounded p-4 animated fadeInUp">
 				<h3>Login</h3>
 				{loginError && <Snackbar

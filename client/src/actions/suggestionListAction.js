@@ -20,8 +20,6 @@ export const suggestionsList = async () => {
 		{ token: token }
 	);
 
-	console.log("list");
-
 	if (list.error)
 		return {
 			type: SUGGESTIONS_FAILED,
@@ -43,7 +41,6 @@ export const reactToUser = async (target, reaction) => {
 			target: target.id,
 			relation: reaction
 		});
-		console.log(res.data);
 		if (res.data.error)
 			return {
 				type: SUGGESTIONS_REACT_FAIL
@@ -53,7 +50,6 @@ export const reactToUser = async (target, reaction) => {
 			payload: target
 		};
 	} catch (error) {
-		console.log("Jma3 karek lay darek.");
 		return {
 			type: SUGGESTIONS_REACT_FAIL
 		};

@@ -9,13 +9,10 @@ import {
 	SUGGESTIONS_SORT_DISTANCE,
 	SUGGESTIONS_SORT_FAME
 } from '../../actions/types';
-import UserCard from './UserCard'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Slider from "@material-ui/core/Slider";
-import Paper from '@material-ui/core/Paper';
 import Typography from "@material-ui/core/Typography";
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
@@ -122,7 +119,7 @@ export default function Suggestion() {
 	if (suggestionList.loading === false)
 		return (
 			<div className="container">
-				<h3 className="font-weight-bold mb-5 text-center">🤷🏼‍ Suggestion</h3>
+				<h3 className="font-weight-bold mb-5 text-center"><span role="img" aria-label="MAN">🤷🏼</span>‍ Suggestion</h3>
 				<div className="row ">
 					<div className="col-lg-4 col-md-6 col-sm-12  mr-auto">
 						<div className="search search p-3 rounded">

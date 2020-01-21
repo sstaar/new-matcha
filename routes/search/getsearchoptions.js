@@ -27,7 +27,6 @@ router.post('/getsearchoptions', async (request, response) => {
 			maxFame
 		});
 	} catch (err) {
-		console.log(err);
 		response.json({
 			error: 'Something is wrong.'
 		});

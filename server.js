@@ -60,7 +60,6 @@ app.use(multer({
 }).single('image')) // we did here this Middleware to use it in any incoming req to see if the is a file with image name
 
 app.use((err, request, response, next) => {
-	// console.log(err)
 	return response.json({
 		message: "You're doing this on purpose huh?"
 	});
@@ -72,15 +71,12 @@ app.use("/api", api);
 
 
 io.on("connection", function (socket) {
-	// console.log("SOCKET is trying to connect.")
 	let token = socket.request._query["token"];
 	let id = tokenToId(token);
-	console.log(id + " Connected");
 	sockets[id] = socket;
 	db.personalQuery("UPDATE users SET is_online = 1 WHERE id = ? ", [id]);
 
 	socket.on("disconnect", () => {
-		console.log(id + " Disconnected");
 		db.personalQuery(
 			"UPDATE users SET is_online = 0, last_connection = NOW() WHERE id = ?",
 			[id]
@@ -89,7 +85,6 @@ io.on("connection", function (socket) {
 
 	socket.on("message", async msg => {
 		try {
-			// console.log(sockets);
 			let response = await saveMessage(msg.token, msg.receiver, msg.message);
 			notify(
 				msg.receiver,
@@ -97,12 +92,10 @@ io.on("connection", function (socket) {
 				sockets[msg.receiver]
 			);
 			if (sockets[msg.receiver]) {
-				console.log("Message:" + msg.message);
 				sockets[msg.receiver].emit('message', response);
 			}
 			socket.send(response);
 		} catch (error) {
-			console.log(error);
 		}
 	});
 });

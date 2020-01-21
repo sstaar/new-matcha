@@ -90,10 +90,8 @@ const Conversation = () => {
 	//2-A message the user received
 	if (receiverStore && socketStore) {
 		const array = socketStore.listeners("message");
-		console.log(socketStore)
 		if (array.length === 0) {
 			socketStore.on("message", async msg => {
-				console.log("You have received a message")
 				dispatch(newMessage(msg));
 			});
 		}
@@ -116,7 +114,7 @@ const Conversation = () => {
 										key={singleMessage.id}
 										message={singleMessage.message}
 										right={
-											receiverStore.id == singleMessage.sender ? false : true
+											receiverStore.id === singleMessage.sender ? false : true
 										}
 									/>
 								))

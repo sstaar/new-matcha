@@ -15,7 +15,6 @@ router.post('/blockuser', async (request, response) => {
 		await user.blockUser([info.user, info.target]);
 		return response.json({ success: 'You blocked the user' });
 	} catch (error) {
-		console.log(error);
 		return response.status(500).json({
 			error: 'Something is wrong.'
 		});

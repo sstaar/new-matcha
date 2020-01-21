@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // import './Profile.css';
@@ -8,39 +8,12 @@ import AddTags from './AddTags';
 import UserInfoDisplayer from '../helpers/UserInfoDisplayer';
 import TagsDisplayer from '../helpers/TagsDisplayer';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import axios from 'axios';
-import EditUserImages from './EditUserImages';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
 import '../root.css'
 import { ResetLocation } from './ResetLocation';
 import { activateSocket } from '../../actions/notificationsActions';
 
-const theme = createMuiTheme({
-	palette: {
-		primary: { main: '#ff6347' }
-	},
-});
-
-const useStyles = makeStyles(theme => ({
-	button: {
-		margin: theme.spacing(1),
-	},
-	input: {
-		display: 'none',
-	},
-}));
-
-
 
 const Profile = () => {
-
-
-	const classes = useStyles();
-
 	//Allows to use dispatch
 	const dispatch = useDispatch();
 
@@ -60,7 +33,6 @@ const Profile = () => {
 			dispatch(await userInfo());
 
 		};
-		console.log(connected);
 		dispatch(activateSocket())
 		test();
 	}, [dispatch, connected]);
@@ -71,7 +43,7 @@ const Profile = () => {
 	if (userStore.loading === false)
 		return (
 			<div className="container">
-				<h3 className="font-weight-bold mb-5 text-center">👶🏻 Your Profile</h3>
+				<h3 className="font-weight-bold mb-5 text-center"><span role="img" aria-label="BABY">👶🏻</span> Your Profile</h3>
 				<div className="row mt-5">
 					<div className="col-lg-5 mx-3 col-md-10 col-sm-12 fl-left mx-auto  ">
 						<h4>Your Public Profile :</h4>

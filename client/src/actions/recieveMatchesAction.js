@@ -1,4 +1,4 @@
-import { SEND_MESSAGE, RECIEVE_MATCHES, HOST } from './types';
+import { RECIEVE_MATCHES, HOST } from './types';
 import axios from 'axios';
 
 export const recieveMatches = async () => {

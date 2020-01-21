@@ -23,7 +23,6 @@ router.post('/removeimg', async (request, response) => {
 		await images.deleteImg(info.imageId);
 		return response.json({ success: 'You have deleted the images successfully.' });
 	} catch (err) {
-		console.log(err);
 		return response.json({
 			error: 'Something is wrong.'
 		});

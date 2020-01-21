@@ -26,8 +26,7 @@ export const searchRequest = async (info) => {
 
 	try {
 		let res = await axios.post(`${HOST}/search/search`, { ...info, token });
-		console.log("SEARCH")
-		console.log(res);
+
 		if (res.data.error)
 			return {
 				type: SET_SEARCH_DATA_FAIL,

@@ -9,6 +9,5 @@ module.exports = notify = async (user, message, socket) => {
 		if (socket)
 			socket.emit("notification", message);
 	} catch (error) {
-		console.log(error);
 	}
 };

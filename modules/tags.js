@@ -1,9 +1,8 @@
 const db = require('../helpers/Database');
 
 const getUserTags = async (userId) => {
-	let userTags = await db.personalQuery(`SELECT tagname, tagid FROM users INNER JOIN usertags ON users.id = usertags.userid
-											INNER JOIN tags ON usertags.tagid = tags.id
-											WHERE users.id LIKE ?`, [userId]);
+	let userTags = await db.personalQuery(`SELECT tagname, tagid FROM tags INNER JOIN usertags ON tags.id = usertags.tagid
+											WHERE usertags.userid LIKE ?`, [userId]);
 	return userTags;
 };
 

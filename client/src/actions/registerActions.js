@@ -15,7 +15,6 @@ import axios from "axios";
 //That returns an object containing the type and the payload
 //We can change the names (type and payload) Its just a fitting name
 export const register = async info => {
-	console.log(info);
 	let res = await axios.post(`${HOST}/register`, info);
 	if (res.data.errors)
 		return {
@@ -58,7 +57,6 @@ export const sendResetPassword = async info => {
 			info
 		);
 
-		console.log(res.data);
 		if (res.data.errors)
 			return {
 				type: SEND_RESET_PASSWORD_FAIL,

@@ -1,9 +1,9 @@
 import React from 'react'
 
-export const CusButton = ({ handleClick }) => {
-    return (
-        <div>
+export const CusButton = () => {
+	return (
+		<div>
 
-        </div>
-    )
+		</div>
+	)
 }

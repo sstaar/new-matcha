@@ -31,14 +31,10 @@ router.post('/edit', async (request, response) => {
 		oldPassword: request.body.oldPassword
 	};
 
-	console.log(info);
-
 	try {
 		await sv.validate(info, userSchema);
-		console.log(info);
 
 		let userInfo = await user.getUserById(info.user);
-		console.log(userInfo)
 		let match = await hash.comparing(info.oldPassword, userInfo.password);
 		if (match === false)
 			return response.json({ errors: { oldPassword: 'Old password is not correct.' } })
@@ -55,14 +51,10 @@ router.post('/edit', async (request, response) => {
 		])
 		return response.json({ success: 'Your informations have been updated.' })
 	} catch (error) {
-		console.log(error);
 		if (error.customErrors)
 			return response.json({ errors: error.customErrors });
-		console.log(error.customErrors);
 		return;
 	}
-
-	response.json(resp);
 });
 
 module.exports = router;

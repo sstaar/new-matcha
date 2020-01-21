@@ -12,9 +12,8 @@ router.post('/gethistory', async (request, response) => {
 
 	try {
 		let userHistory = await history.getUserHistory(info.user);
-		response.json(userHistory);
+		return response.json(userHistory);
 	} catch (error) {
-		console.log(error);
 		return response.json({
 			error: 'Something is wrong.'
 		});

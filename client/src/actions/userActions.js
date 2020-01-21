@@ -56,8 +56,6 @@ export const addTag = async (newtag) => {
 
 
 		let res = await axios.post(`${HOST}/info/addtag`, { token, tag: newtag });
-
-		console.log(res);
 		if (res.data.error)
 			return {
 				type: ADD_TAG_FAILED,
@@ -86,7 +84,6 @@ export const removeTag = async (tags, tagid) => {
 
 	await axios.post(`${HOST}/info/removetag`, { token, tagid: tagid });
 
-	console.log(tagid);
 	let newtags = [];
 	tags.forEach(element => {
 		if (element.tagid !== tagid)
@@ -127,14 +124,11 @@ export const addImg = async (formData) => {
 			processData: false,
 		})
 		img = img.data;
-
-		console.log(img)
-
 		if (!img.warning || !img.error)
 			return {
 				type: ADD_IMG,
 				payload: {
-					path: null/*base64*/,
+					path: null,
 					id: img.id
 				}
 			}

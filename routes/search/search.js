@@ -13,6 +13,7 @@ router.post('/search', async (request, response) => {
 		user: request.decoded.user,
 		ageGap: request.body.ageGap,
 		distanceGap: request.body.distanceGap,
+		fameGap: request.body.fameGap,
 		tags: request.body.tags
 	};
 
@@ -21,7 +22,6 @@ router.post('/search', async (request, response) => {
 			return response.json({ error: 'You need to choose at least one tag.' })
 		let res = await matching.search([info.user, info.tags, info.user]);
 
-		console.log(res);
 		let userInfo = await user.getUserById(info.user);
 
 		res = usersManipulation.mapDistanceToUsers(userInfo, res);
@@ -29,13 +29,14 @@ router.post('/search', async (request, response) => {
 
 		res = usersManipulation.usersFilterByAge(res, userInfo.age, info.distanceGap);
 
+		res = usersManipulation.usersFilterByFame(res, info.fameGap);
+
 		res = await usersManipulation.mapImagesToUsers(res);
 
 		if (res.length === 0)
 			return response.json({ error: 'No user meets your conditions.' })
 		return response.json(res);
 	} catch (error) {
-		console.log(error);
 		return response.json({
 			error: 'Something is wrong.'
 		});

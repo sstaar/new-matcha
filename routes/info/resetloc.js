@@ -21,9 +21,6 @@ router.post('/resetloc', async (request, response) => {
 		ip: request.body.ip
 	};
 
-
-	console.log(info);
-
 	try {
 		await sv.validate(info, userSchema);
 
@@ -34,7 +31,6 @@ router.post('/resetloc', async (request, response) => {
 			info.latitude = loc.latitude;
 		}
 
-		console.log(info);
 		await user.updateLocation([
 			info.longitude,
 			info.latitude,
@@ -43,14 +39,10 @@ router.post('/resetloc', async (request, response) => {
 		return response.json({ success: 'Your informations have been updated.' })
 
 	} catch (error) {
-		console.log(error);
 		if (error.customErrors)
 			return response.json({ errors: error.customErrors });
-		console.log(error.customErrors);
 		return;
 	}
-
-	response.json(resp);
 });
 
 module.exports = router;

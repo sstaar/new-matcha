@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
@@ -65,7 +62,7 @@ const UsersList = () => {
 	};
 
 
-	if (maxSteps === 0)
+	if (searchDataStore.length === 0 || maxSteps === 0)
 		return (<div></div>)
 	return (
 		<div className={classes.root}>
@@ -89,25 +86,6 @@ const UsersList = () => {
 				}
 			/>
 		</div>
-	)
-
-
-	return (
-		<div>
-			{searchDataStore.length > 0 ?
-				searchDataStore.map((user) =>
-					<React.Fragment key={user.id}>
-						<CssBaseline />
-						<Container maxWidth="sm">
-							<Link to={"/user/" + user.id}>
-								<img className="main-img card-img-top" src="/imgs/user.png" alt="Main pic" />
-							</Link>
-							<h4 className="bg-warning text-center text-white py-3">{user.firstname + ' ' + user.lastname} <span className="badge badge-secondary">{user.age}</span></h4>
-						</Container>
-					</React.Fragment>
-				) : <div></div>}
-		</div>
-
 	)
 }
 

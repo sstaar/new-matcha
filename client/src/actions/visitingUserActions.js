@@ -45,10 +45,27 @@ export const unLikeUser = async (target) => {
 			type: UNLIKE_USER_SECCESS
 		}
 	} catch (error) {
-		console.log(error);
 		return {
 			type: UNLIKE_USER_FAIL
 		}
 	}
+};
 
+export const removeDislike = async (target) => {
+	const token = window.localStorage.getItem('token');
+
+	try {
+		let response = await axios.post(`${HOST}/matching/removedislike`, { token, target });
+		if (response.data.error)
+			return {
+				type: UNLIKE_USER_FAIL
+			}
+		return {
+			type: UNLIKE_USER_SECCESS
+		}
+	} catch (error) {
+		return {
+			type: UNLIKE_USER_FAIL
+		}
+	}
 };

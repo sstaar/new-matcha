@@ -34,7 +34,6 @@ exports.validateToken = async (request, res, next) => {
 		}
 	}
 	else {
-		console.log("HAHA");
 		result = {
 			error: `Authentication error. Token required al7mar.`,
 		};

@@ -11,10 +11,7 @@ var initialState = {
 var socket = null;
 
 if (connected === "true") {
-	console.log("SOCKET is trying to connect.")
 	socket = io("http://e1r4p14.1337.ma:5000", { query: "token=" + token });
-	// socket.emit('message', 'hello');
-
 	initialState = {
 		socket: socket
 	};

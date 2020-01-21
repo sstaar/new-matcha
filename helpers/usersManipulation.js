@@ -59,6 +59,11 @@ const usersFilterByDistance = (users, distance) => {
 	return res;
 }
 
+const usersFilterByFame = (users, fameGap) => {
+	let res = users.filter(item => item.fame_rating <= fameGap)
+	return res;
+}
+
 const usersFilterByOrientation = (users, orientation) => {
 	let res = users.filter(item => (orientation === item.gender || orientation === "both"));
 	return res;
@@ -87,24 +92,6 @@ const getBiggestFame = (users) => {
 	return res;
 }
 
-// const mapRelationToUsers = async (users, userId) => {
-// 	let matches = await matching.getUserMatches(userId);
-// 	let relations = await matching.getUserRelations(userId);
-// 	let relationsIds = relations.map((item) => item.user1 ? item.user1 : item.user2);
-// 	let matchesIds = matches.map((item) => item.secondaryuser);
-// 	let key = 0;
-
-// 	let res = users.map((item) => {
-// 		let relation = relationsIds.indexOf(item.id);
-// 		let match = matchesIds.indexOf(item.id);
-// 		let finalRelation = -1; 
-// 		if (relation !== - 1)
-// 			finalRelation = relations[re]
-
-// 		return item;
-// 	});
-// }
-
 module.exports = {
 	mapTagsToUsers,
 	sortUsersByDistance,
@@ -115,5 +102,6 @@ module.exports = {
 	usersFilterByAge,
 	getBiggestAge,
 	getBiggestDistance,
-	getBiggestFame
+	getBiggestFame,
+	usersFilterByFame
 }

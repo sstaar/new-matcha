@@ -31,10 +31,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const SuggestionList = ({ list }) => {
-
-	console.log("THE LIST IS HERE")
-	console.log(list);
-
 	const dispatch = useDispatch();
 
 	const classes = useStyles();
@@ -52,7 +48,7 @@ export const SuggestionList = ({ list }) => {
 		};
 		if (maxSteps > 0)
 			test();
-	}, [dispatch, activeStep, maxSteps]);
+	}, [dispatch, activeStep, maxSteps, list]);
 
 	const handleBack = async () => {
 		setActiveStep(prevActiveStep => prevActiveStep - 1);
@@ -60,6 +56,8 @@ export const SuggestionList = ({ list }) => {
 
 	const imgStore = useSelector(state => state.suggestionList.img);
 
+	if (list.length === 0)
+		return (<div></div>)
 	return (
 		<div className={classes.root}>
 			<UserCard user={list[activeStep]} img={imgStore} />

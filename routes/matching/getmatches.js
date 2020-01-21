@@ -26,7 +26,6 @@ router.post('/getmatches', async (request, response) => {
 		matches = await user.getUsersInfo(ids);
 		response.json(matches);
 	} catch (error) {
-		console.log(error);
 		return response.status(200).json({
 			error: error
 		});

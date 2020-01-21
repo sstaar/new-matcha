@@ -12,6 +12,7 @@ router = express.Router();
 router.post("/relation", imageValidator, async (request, response) => {
 	if (!request.body.target || !request.body.relation)
 		return response.status(400).json({ error: "Bad request." });
+
 	let info = {
 		user: request.decoded.user,
 		target: request.body.target,
@@ -29,7 +30,7 @@ router.post("/relation", imageValidator, async (request, response) => {
 
 		let relation = await matching.userRelationWith(info.user, info.target);
 		if (relation !== null)
-			return response.status(400).json({
+			return response.status(200).json({
 				error: "Something is wrong, You already interacted with that person."
 			});
 		relation = await matching.userRelationWith(info.target, info.user);
@@ -62,7 +63,6 @@ router.post("/relation", imageValidator, async (request, response) => {
 			});
 		}
 	} catch (error) {
-		console.log(error);
 		return response.status(200).json({
 			error: error
 		});

@@ -42,7 +42,6 @@ router.post('/addtag', async (request, response) => {
 			})
 		}
 	} catch (err) {
-		console.log(err);
 		return response.json({
 			error: 'Something is wrong.'
 		});

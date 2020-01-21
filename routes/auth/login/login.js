@@ -53,10 +53,8 @@ router.post('/login', async (request, response) => {
 			token: result
 		});
 	} catch (error) {
-		console.log(error);
 		if (error.customErrors)
 			return response.json({ errors: error.customErrors });
-		console.log(error.customErrors);
 		return;
 	}
 });

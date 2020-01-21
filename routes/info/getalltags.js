@@ -14,7 +14,6 @@ router.post('/getalltags', async (request, response) => {
 		let result = await tags.getAllTags();
 		response.json(result);
 	} catch (err) {
-		console.log(err);
 		response.json({
 			error: 'Something is wrong.'
 		});

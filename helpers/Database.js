@@ -7,7 +7,6 @@ class Database {
 	}
 
 	init(connectionInfo) {
-		console.log('ALLO');
 		if (this.con)
 			return this.con;
 		let temp = mysql.createConnection(connectionInfo);

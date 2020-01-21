@@ -4,8 +4,6 @@ import axios from 'axios';
 
 
 export const newMessage = (message) => {
-	const token = window.localStorage.getItem('token');
-
 	return {
 		type: NEW_MESSAGE,
 		payload: message

@@ -12,7 +12,6 @@ router.post('/uploadimg', async (request, response) => {
 	};
 
 	try {
-		console.log(info);
 		if (!info.img || info.img.size < 100)
 			return response.json({ error: "Please upload an image." });
 		let imgsCount = await images.getUserImages(info.user);
@@ -21,7 +20,6 @@ router.post('/uploadimg', async (request, response) => {
 		let newImg = await images.addImage(info.user, info.img.path);
 		return response.json(newImg);
 	} catch (err) {
-		console.log(err);
 		return response.json({
 			error: 'Something is wrong.'
 		});

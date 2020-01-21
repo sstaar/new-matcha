@@ -58,8 +58,6 @@ const getPossibleSuggestions = async (userId) => {
                                         AND id NOT IN (SELECT user2 FROM block WHERE user1 LIKE ?)`,
 		[userId, userId, userId, userId, userId]
 	);
-	if (res.length === 0)
-		return null;
 	return res;
 };
 
@@ -80,7 +78,6 @@ const removeRelation = async (userId, targetId) => {
 };
 
 const search = async (info) => {
-	console.log(info)
 	let res = await db.personalQuery(`SELECT * FROM users WHERE
                         id != ? AND
 						id IN (SELECT userid FROM usertags WHERE tagid IN (?)) AND

@@ -26,7 +26,6 @@ router.post("/resetPassword", async (req, res) => {
 		const info = await sv.validate(req.body, infoSchema);
 		// check if the user exists
 		const userInfo = await user.getUserByUsername(info.username);
-		console.log(userInfo)
 		if (!userInfo || userInfo.email !== info.email)
 			return res.json({
 				errors: {
@@ -41,12 +40,11 @@ router.post("/resetPassword", async (req, res) => {
 			"resetPass",
 			`
 				<h1>Hello !</h1>
-				<p>Here is your link to reset the password http://localhost:3000/resetPassword/${resetToken}</p>
+				<p>Here is your link to reset the password <a href="${mail.host}/resetPassword/${resetToken}">Click here</a></p>
 			`
 		);
 		return res.json({ success: "Action Done Please check your email" });
 	} catch (error) {
-		console.log(error);
 		if (error.customErrors) return res.json({ errors: error.customErrors });
 		return;
 	}
@@ -68,7 +66,6 @@ router.post("/resetChangePassword", async (request, response) => {
 		let res = await user.resetPassword(token, hashedPass);
 		response.json(res);
 	} catch (error) {
-		console.log(error);
 		if (error.customErrors)
 			return response.json({ errors: error.customErrors });
 		return;

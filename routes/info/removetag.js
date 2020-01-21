@@ -14,7 +14,6 @@ router.post('/removetag', async (request, response) => {
 
 	try {
 		let tag = await tags.getUserTag(info.user, info.tag);
-		//response.json(info);
 		if (!tag)
 			return response.json({
 				error: 'You do not have this tag.'
@@ -24,7 +23,6 @@ router.post('/removetag', async (request, response) => {
 			error: 'The tag has been removed successfuly.'
 		});
 	} catch (err) {
-		console.log(err);
 		return response.json({
 			error: 'Something is wrong.'
 		});

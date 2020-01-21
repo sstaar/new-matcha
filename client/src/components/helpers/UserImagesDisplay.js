@@ -60,7 +60,6 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
 		if (imgs && imgs[activeStep]) {
 			const test = async () => {
 				let img = await getImage(imgs[activeStep].id)
-				console.log(img)
 				setImage(img.data.img);
 			};
 			test();
@@ -71,6 +70,7 @@ const UserImagesDisplay = ({ imgs, deleteImg }) => {
 	return (
 		<div>
 			<img
+				alt="USER"
 				className={classes.img}
 				src={image || '/imgs/user.png'}
 			/>

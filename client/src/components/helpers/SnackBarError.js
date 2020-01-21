@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -13,103 +13,103 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { makeStyles } from '@material-ui/core/styles';
 
 const variantIcon = {
-    success: CheckCircleIcon,
-    warning: WarningIcon,
-    error: ErrorIcon,
-    info: InfoIcon,
+	success: CheckCircleIcon,
+	warning: WarningIcon,
+	error: ErrorIcon,
+	info: InfoIcon,
 };
 
 const useStyles1 = makeStyles(theme => ({
-    success: {
-        backgroundColor: green[600],
-    },
-    error: {
-        backgroundColor: theme.palette.error.dark,
-    },
-    info: {
-        backgroundColor: theme.palette.primary.main,
-    },
-    warning: {
-        backgroundColor: amber[700],
-    },
-    icon: {
-        fontSize: 20,
-    },
-    iconVariant: {
-        opacity: 0.9,
-        marginRight: theme.spacing(1),
-    },
-    message: {
-        display: 'flex',
-        alignItems: 'center',
-    },
+	success: {
+		backgroundColor: green[600],
+	},
+	error: {
+		backgroundColor: theme.palette.error.dark,
+	},
+	info: {
+		backgroundColor: theme.palette.primary.main,
+	},
+	warning: {
+		backgroundColor: amber[700],
+	},
+	icon: {
+		fontSize: 20,
+	},
+	iconVariant: {
+		opacity: 0.9,
+		marginRight: theme.spacing(1),
+	},
+	message: {
+		display: 'flex',
+		alignItems: 'center',
+	},
 }));
 
 
 
 
 function MySnackbarContentWrapper(props) {
-    const classes = useStyles1();
-    const { className, message, onClose, variant, ...other } = props;
-    const Icon = variantIcon[variant];
+	const classes = useStyles1();
+	const { className, message, onClose, variant, ...other } = props;
+	const Icon = variantIcon[variant];
 
-    return (
-        <SnackbarContent
-            className={clsx(classes[variant], className)}
-            aria-describedby="client-snackbar"
-            message={
-                <span id="client-snackbar" className={classes.message}>
-                    <Icon className={clsx(classes.icon, classes.iconVariant)} />
-                    {message}
-                </span>
-            }
-            action={[
-                <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
-                    <CloseIcon className={classes.icon} />
-                </IconButton>,
-            ]}
-            {...other}
-        />
-    );
+	return (
+		<SnackbarContent
+			className={clsx(classes[variant], className)}
+			aria-describedby="client-snackbar"
+			message={
+				<span id="client-snackbar" className={classes.message}>
+					<Icon className={clsx(classes.icon, classes.iconVariant)} />
+					{message}
+				</span>
+			}
+			action={[
+				<IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
+					<CloseIcon className={classes.icon} />
+				</IconButton>,
+			]}
+			{...other}
+		/>
+	);
 }
 
 const useStyles2 = makeStyles(theme => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
+	margin: {
+		margin: theme.spacing(1),
+	},
 }));
 
 
 
 export const SnackBarError = ({ message, type }) => {
 
-    const classes = useStyles2();
+	const classes = useStyles2();
 
 
-    const [open, setOpen] = React.useState(true);
+	const [open, setOpen] = React.useState(true);
 
-    const handleClose = () => {
-        // setOpen(false);
-    };
+	const handleClose = () => {
+		setOpen(open);
+	};
 
-    if (!message)
-        return (<div></div>)
-    return (
-        <Snackbar
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-            }}
-            open={open}
-            autoHideDuration={3000}
-            onClose={handleClose}
-        >
-            <MySnackbarContentWrapper
-                onClose={handleClose}
-                className={classes.margin}
-                variant={type}
-                message={message || ''}
-            />
-        </Snackbar>
-    )
+	if (!message)
+		return (<div></div>)
+	return (
+		<Snackbar
+			anchorOrigin={{
+				vertical: 'bottom',
+				horizontal: 'right',
+			}}
+			open={open}
+			autoHideDuration={3000}
+			onClose={handleClose}
+		>
+			<MySnackbarContentWrapper
+				onClose={handleClose}
+				className={classes.margin}
+				variant={type}
+				message={message || ''}
+			/>
+		</Snackbar>
+	)
 }

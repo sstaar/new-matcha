@@ -30,7 +30,6 @@ router.post('/general', async (request, response) => {
 			orientation: userInfo.orientation
 		});
 	} catch (err) {
-		console.log(err);
 		return response.json({
 			error: 'Something is wrong.'
 		});

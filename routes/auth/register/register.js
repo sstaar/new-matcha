@@ -10,7 +10,7 @@ router = express.Router();
 
 router.post("/register", async (request, response) => {
 	let userSchema = {
-		username: sv.string().required().match(/^\w{ 4, 20}$/, "A username must be character and numbers only."),
+		username: sv.string().required().match(/^[a-zA-Z0-9_-]{6,20}$/, "A username must be character and numbers only."),
 		password1: sv.string().required().match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,50})/, "Password not stront enough."),
 		password2: sv.string().required().match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,50})/, "Password not stront enough."),
 		firstname: sv.string().required(),
@@ -54,6 +54,8 @@ router.post("/register", async (request, response) => {
 		console.log(age);
 		if (age < 18)
 			errors["birthday"] = "You have to be older than 18 years old.";
+		if (age > 100)
+			errors["birthday"] = "PEDO.";
 
 		if (Object.keys(errors).length > 0) return response.json({ errors });
 
@@ -74,16 +76,14 @@ router.post("/register", async (request, response) => {
 		await mail.sendEmail(
 			info.email,
 			"your account is created",
-			"Hello " +
+			"<h1>Hello</h1>" +
 			info.username +
-			"click here to validate your account http://localhost:3000/validateEmail/" +
-			token
+			`<p>click here to validate your account <a href="${mail.host}/validateEmail/${token}">link</a></p>`
 		);
 		return response.json({
 			success: "Account has been created please chech your mail for activation."
 		});
 	} catch (error) {
-		console.log(error);
 		if (error.customErrors)
 			return response.json({ errors: error.customErrors });
 		return;
@@ -97,7 +97,6 @@ router.get("/validateEmail/:token", async (request, response) => {
 		var accountActivationResponse = await user.activateAccount(token);
 		response.json(accountActivationResponse);
 	} catch (error) {
-		console.log(error);
 		if (error.customErrors)
 			return response.json({ errors: error.customErrors });
 		return;
