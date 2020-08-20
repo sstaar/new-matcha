@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/sstaar/new-matcha#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "date-diff": "^0.2.1",
